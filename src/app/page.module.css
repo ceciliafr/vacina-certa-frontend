@@ -2,9 +2,11 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
-  padding: 2rem 1rem;
   min-height: 100vh;
+}
+
+.title {
+  margin: 1rem;
 }
 
 /* Mobile */
@@ -26,4 +28,38 @@
   .grid {
     grid-template-columns: repeat(2, 50%);
   }
+}
+
+.menu_container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.menu_item {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  text-align: "center";
+  padding: 1rem;;
+  width: 100%;
+  height: 100%;
+  gap: 1rem;
+  background-color: var(--pure-00);
+  border: 1px solid var(--gray-10);
+}
+
+.icon_text {
+  display: flex;
+  text-align: center;
+}
+
+.loggout_container {
+  padding: 1rem;
+  display: flex;
+  width: 100%;
+  justify-content: center;
 }

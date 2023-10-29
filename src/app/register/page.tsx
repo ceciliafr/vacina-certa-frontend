@@ -38,6 +38,11 @@ const Register = () => {
             <input
               type="text"
               className={styles.input}
+              placeholder="Endereço"
+            />
+            <input
+              type="text"
+              className={styles.input}
               placeholder="Data de nascimento"
             />
             <input type="text" className={styles.input} placeholder="Email" />
