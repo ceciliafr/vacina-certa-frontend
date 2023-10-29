@@ -1,8 +1,11 @@
+"use client";
+import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import Image from "next/image";
-import Link from "next/link";
 
 const Register = () => {
+  const router = useRouter();
+
   return (
     <main className={styles.main}>
       <div className={styles.content}>
@@ -42,10 +45,11 @@ const Register = () => {
           </div>
 
           <div style={{ display: "flex", margin: "2rem 0" }}>
-            <button className={styles.deafult_button}>
-              <Link href="/login" replace>
-                Cadastrar
-              </Link>
+            <button
+              className={styles.deafult_button}
+              onClick={() => router.replace("/login")}
+            >
+              Cadastrar
             </button>
           </div>
         </div>

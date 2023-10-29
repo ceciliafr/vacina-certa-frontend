@@ -1,8 +1,12 @@
-import styles from "./page.module.css";
+"use client";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import styles from "./page.module.css";
 
 const Login = () => {
+  const router = useRouter();
+
   return (
     <main className={styles.main}>
       <div className={styles.content}>
@@ -38,7 +42,12 @@ const Login = () => {
             <a className={styles.text_tiny}>Esqueci a Senha</a>
           </div>
           <div style={{ display: "flex", margin: "2rem 0" }}>
-            <button className={styles.deafult_button}>Entrar</button>
+            <button
+              className={styles.deafult_button}
+              onClick={() => router.replace("/")}
+            >
+              Entrar
+            </button>
           </div>
         </div>
         <div style={{ width: "100%" }}>
