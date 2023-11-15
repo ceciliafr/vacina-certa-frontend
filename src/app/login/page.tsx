@@ -52,7 +52,7 @@ const Login = () => {
         </div>
         <div style={{ width: "100%" }}>
           <button className={styles.text_button}>
-            <Link href="/register">Primeiro acesso</Link>
+            <Link href="/cadastro">Primeiro acesso</Link>
           </button>
         </div>
       </div>

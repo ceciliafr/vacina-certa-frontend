@@ -1,0 +1,30 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  background-color: var(--blue-90);
+}
+
+.menu_list {
+  display: flex;
+  flex-direction: column;
+  width: 22rem;
+}
+
+@media (max-width: 700px) {
+  .menu_list {
+    width: 15rem;
+  }
+}
+
+.item {
+  height: 4rem;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--pure-00)
+}
+
+.item:hover {
+  background-color: var(--blue-01);
+}

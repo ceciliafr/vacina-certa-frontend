@@ -1,24 +1,13 @@
 import styles from "./styles.module.css";
-import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Link from "next/link";
 
-export const Menu: React.FC<{ isOpen: boolean; toggleMenu: () => void }> = ({
-  isOpen,
-  toggleMenu,
-}) => {
+export const DesktopMenu: React.FC = () => {
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        height: "100%",
-      }}
-    >
+    <div className={styles.container}>
       <List className={styles.menu_list}>
-        <Link href="/" onClick={toggleMenu}>
+        <Link href="/">
           <ListItem className={styles.item}>Tela Inicial</ListItem>
         </Link>
         <Link href="/login">
