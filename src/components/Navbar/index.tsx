@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import styles from "./styles.module.css";
 import { Menu } from "@/components/Menu";
 
-export const Navbar = () => {
+export const MobileNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -18,7 +18,7 @@ export const Navbar = () => {
         <MenuIcon sx={{ color: "#1351B4" }} />
       </Button>
 
-      <Menu isOpen={isMenuOpen} toggleMenu={toggleMenu} />
+      <Menu toggleMenu={toggleMenu} open={isMenuOpen} />
     </nav>
   );
 };

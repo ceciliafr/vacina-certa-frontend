@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100%;
+  height: 100vh;
   background-color: var(--blue-90);
 }
 
@@ -13,8 +13,8 @@
 }
 
 @media (max-width: 700px) {
-  .menu_list {
-    width: 15rem;
+  .container {
+    display: none;
   }
 }
 
@@ -22,7 +22,7 @@
   height: 4rem;
   font-size: 20px;
   font-weight: 500;
-  color: var(--pure-00)
+  color: var(--pure-00);
 }
 
 .item:hover {

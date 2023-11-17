@@ -1,19 +1,20 @@
 .menu_list {
-  display: flex;
-  flex-direction: column;
-  width: 25rem;
+  display: none;
 }
 
 @media (max-width: 700px) {
   .menu_list {
     width: 15rem;
+    display: flex;
+    flex-direction: column;
+    width: 25rem;
   }
-}
 
-.item {
-  height: 3rem;
-}
+  .item {
+    height: 3rem;
+  }
 
-.item:hover {
-  background-color: var(--blue-01);
+  .item:hover {
+    background-color: var(--blue-01);
+  }
 }

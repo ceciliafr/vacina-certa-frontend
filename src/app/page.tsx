@@ -1,6 +1,6 @@
 "use client";
 import styles from "./page.module.css";
-import { Navbar } from "@/components/Navbar";
+import { MobileNavbar } from "@/components/Navbar";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import { useRouter } from "next/navigation";

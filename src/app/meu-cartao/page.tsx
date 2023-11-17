@@ -1,11 +1,12 @@
-import Paper from "@mui/material/Paper";
+"use client";
 import styles from "./page.module.css";
 import Box from "@mui/material/Box";
 import { Title } from "@/components/Title";
-import { Tag } from "@/components/Tag";
-import { Navbar } from "@/components/Navbar";
-import { DesktopNavbar } from "@/components/desktop/Navbar";
 import { VaccineCard } from "@/components/desktop/VaccineCard";
+import { DesktopMenu } from "@/components/desktop/Menu";
+import { DesktopNavbar } from "@/components/desktop/Navbar";
+import { Menu } from "@/components/Menu";
+import { MobileNavbar } from "@/components/Navbar";
 
 const MY_VACCINES = [
   {
@@ -188,28 +189,31 @@ const MY_VACCINES = [
 export default function myCard() {
   return (
     <main className={styles.main}>
-      <DesktopNavbar />
-      <div className={styles.content}>
-        <div className={styles.right_content}>
-          <Title>Essas são as vacinas que você já tomou:</Title>
-          <Box
-            display="flex"
-            flexDirection="column"
-            gap={4}
-            className={styles.vaccines_box}
-          >
-            {MY_VACCINES.map((vaccine) => (
-              <VaccineCard
-                key={vaccine.id}
-                id={vaccine.id}
-                name={vaccine.name}
-                dose={vaccine.dose}
-                description={vaccine.description}
-                producer={vaccine.producer}
-                vaccinationDate={vaccine.vaccinationDate}
-              />
-            ))}
-          </Box>
+      <DesktopMenu />
+      <div className={styles.right_content}>
+        <DesktopNavbar name={"Cecília Fernandes de Oliveira"} />
+        <div className={styles.content}>
+          <div className={styles.vaccines_content}>
+            <Title>Essas são as vacinas que você já tomou:</Title>
+            <Box
+              display="flex"
+              flexDirection="column"
+              gap={4}
+              className={styles.vaccines_box}
+            >
+              {MY_VACCINES.map((vaccine) => (
+                <VaccineCard
+                  key={vaccine.id}
+                  id={vaccine.id}
+                  name={vaccine.name}
+                  dose={vaccine.dose}
+                  description={vaccine.description}
+                  producer={vaccine.producer}
+                  vaccinationDate={vaccine.vaccinationDate}
+                />
+              ))}
+            </Box>
+          </div>
         </div>
       </div>
     </main>
