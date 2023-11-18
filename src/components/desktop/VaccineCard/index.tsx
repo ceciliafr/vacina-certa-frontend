@@ -10,13 +10,21 @@ export const VaccineCard: React.FC<{
   description: string;
   producer: string;
   vaccinationDate: string;
-}> = ({ id, name, dose, description, producer, vaccinationDate }) => {
+  isPending?: boolean;
+}> = ({
+  id,
+  name,
+  dose,
+  description,
+  producer,
+  vaccinationDate,
+  isPending = false,
+}) => {
   return (
     <Paper
       key={id}
-      elevation={1}
       variant="outlined"
-      className={styles.container}
+      className={isPending ? styles.pending_container : styles.container}
     >
       <Box display="flex" flexDirection="column" marginBottom={3}>
         <Box

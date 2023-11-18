@@ -7,6 +7,8 @@ import { DesktopMenu } from "@/components/desktop/Menu";
 import { DesktopNavbar } from "@/components/desktop/Navbar";
 import { Menu } from "@/components/Menu";
 import { MobileNavbar } from "@/components/Navbar";
+import { Layout } from "@/components/Layout";
+import { RightContent } from "@/components/Layout/RightContent";
 
 const MY_VACCINES = [
   {
@@ -188,9 +190,9 @@ const MY_VACCINES = [
 
 export default function myCard() {
   return (
-    <main className={styles.main}>
+    <Layout>
       <DesktopMenu />
-      <div className={styles.right_content}>
+      <RightContent>
         <DesktopNavbar name={"Cecília Fernandes de Oliveira"} />
         <div className={styles.content}>
           <div className={styles.vaccines_content}>
@@ -215,7 +217,7 @@ export default function myCard() {
             </Box>
           </div>
         </div>
-      </div>
-    </main>
+      </RightContent>
+    </Layout>
   );
 }

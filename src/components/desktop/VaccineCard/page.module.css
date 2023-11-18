@@ -1,5 +1,13 @@
-.container {
+.container, .pending_container {
   padding: 1rem;
+}
+
+.pending_container {
+  border-left: 3px solid var(--red-70);
+}
+
+.container {
+  border-left: 3px solid var(--green-90);
 }
 
 .title {
@@ -7,7 +15,7 @@
 }
 
 .hr {
-  border: .5px solid var(--gray-20)
+  border: .1px solid var(--gray-20);
 }
 
 .description {
@@ -26,7 +34,7 @@
 .date {
   color: var(--gray-40);
   font-weight: 500;
-  margin-top: 1rem
+  margin-top: 1rem;
 }
 
 @media (max-width: 700px) {
