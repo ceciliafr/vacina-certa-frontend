@@ -1,8 +1,14 @@
+.menu_continer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
 .menu_list {
   display: flex;
   flex-direction: column;
   width: 25rem;
-
 }
 
 .item {
@@ -17,13 +23,6 @@
 }
 
 @media (max-width: 700px) {
-  .menu_continer {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
-  }
-
   .menu_list {
     width: 15rem;
   }
@@ -32,5 +31,4 @@
     font-weight: 400;
     color: var(--blue-70);
   }
-
 }
