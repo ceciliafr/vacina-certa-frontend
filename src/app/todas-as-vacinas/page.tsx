@@ -5,10 +5,10 @@ import { DesktopMenu } from "@/components/desktop/Menu";
 import { DesktopNavbar } from "@/components/desktop/Navbar";
 import { Layout } from "@/components/Layout";
 import { RightContent } from "@/components/Layout/RightContent";
-import { takenVaccinesTaken } from "@/utils/taken-vaccines";
 import { Vaccines } from "@/components/desktop/Vaccines";
+import { allVaccinesData } from "@/utils/all-vaccines";
 
-export default function MyCard() {
+export default function AllVaccines() {
   return (
     <Layout>
       <DesktopMenu />
@@ -17,7 +17,7 @@ export default function MyCard() {
         <div className={styles.content}>
           <div className={styles.vaccines_content}>
             <Title>Essas são as vacinas que você já tomou:</Title>
-            <Vaccines vaccines={takenVaccinesTaken} />
+            <Vaccines vaccines={allVaccinesData} />
           </div>
         </div>
       </RightContent>

@@ -1,0 +1,44 @@
+.container, .pending_container {
+  padding: 1rem;
+}
+
+.pending_container {
+  border-left: 3px solid var(--red-70);
+}
+
+.container {
+  border-left: 3px solid var(--green-90);
+}
+
+.title {
+  color: var(--blue-70);
+}
+
+.hr {
+  border: .1px solid var(--gray-20);
+}
+
+.description {
+  font-size: medium;
+  font-weight: 400;
+}
+
+.producer_container {
+  color: var(--gray-80);
+}
+
+.description_producer {
+  font-weight: 500;
+}
+
+.date {
+  color: var(--gray-40);
+  font-weight: 500;
+  margin-top: 1rem;
+}
+
+@media (max-width: 700px) {
+  .date {
+    font-weight: 400;
+  }
+}
