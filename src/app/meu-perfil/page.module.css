@@ -45,5 +45,7 @@
 }
 
 .user_info_container {
-  max-width: 30rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
