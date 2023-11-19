@@ -1,0 +1,49 @@
+.content {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+   width: 100%;
+}
+
+.right_content {
+  width: 100%;
+}
+
+.user_name {
+  font-weight: 600;
+  color: var(--gray-80);
+}
+
+.personal_data {
+  margin-bottom:3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.label_title {
+  color: var(--gray-40);
+  font-weight: 400;
+}
+
+.label_value {
+  color: var(--gray-80);
+  font-weight: 600;
+}
+
+.edit_button svg {
+  color: var(--gray-80);
+}
+
+.edit_button:hover {
+  background-color: var(--gray-20);
+}
+
+.vertical_line {
+  border-left: 1px solid var(--gray-20);
+  height: auto;
+}
+
+.user_info_container {
+  max-width: 30rem;
+}
