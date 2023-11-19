@@ -17,7 +17,7 @@ export default function MyCard() {
         <div className={styles.content}>
           <div className={styles.vaccines_content}>
             <Title>Essas são as vacinas que você já tomou:</Title>
-            <Vaccines vaccines={takenVaccinesTaken} />
+            <Vaccines vaccines={takenVaccinesTaken} variant="completed" />
           </div>
         </div>
       </RightContent>

@@ -19,7 +19,7 @@ export default function PendingVaccines() {
         <div className={styles.content}>
           <div className={styles.vaccines_content}>
             <Title>Essas são as vacinas que você ainda não tomou:</Title>
-            <Vaccines vaccines={pendingVaccinesData} isPending />
+            <Vaccines vaccines={pendingVaccinesData} variant="pending" />
           </div>
         </div>
       </RightContent>

@@ -1,45 +1,109 @@
 export const pendingVaccinesData = [
   {
-    id: 1,
-    dose: "REFORÇO",
-    description:
-      "Previne as formas graves de tuberculose, principalmente miliar e meníngea",
-    producer: "Fiocrus",
-    vaccinationDate: "03/09/2023",
-    name: "BCG",
-  },
-  {
-    id: 2,
-    dose: "REFORÇO",
-    description: "Previne a hepatite do tipo B",
-    producer: "Fiocrus",
-    vaccinationDate: "03/09/2023",
-    name: " Hepatite B",
-  },
-  {
-    id: 3,
+    id: 9,
     dose: "REFORÇO",
     description:
       "Previne difteria, tétano, coqueluche, hepatite B e meningite e infecções por HiB",
     producer: "Fiocrus",
     vaccinationDate: "03/09/2023",
-    name: "Pentavalente (DTP/HB/Hib)",
+    name: " Febre amarela",
   },
   {
-    id: 7,
+    id: 10,
     dose: "REFORÇO",
-    description: "Previne a doença meningocócica C",
+    description: "Previne a poliomielite ou paralisia infantil",
     producer: "Fiocrus",
     vaccinationDate: "03/09/2023",
-    name: "Pneumo 10",
+    name: " Tríplice viral (sarampo, caxumba e rubéola)",
   },
   {
-    id: 8,
+    id: 11,
     dose: "REFORÇO",
     description:
-      "Previne difteria, tétano, coqueluche, hepatite B e meningite e infecções por Haemóphilus influenza e tipo B",
+      "Previne difteria, tétano, coqueluche, hepatite B e meningite e infecções por HiB",
     producer: "Fiocrus",
     vaccinationDate: "03/09/2023",
-    name: " Meningo C",
+    name: " Tetra viral (sarampo, caxumba, rubéola e varicela)",
+  },
+  {
+    id: 12,
+    dose: "REFORÇO",
+    description:
+      "Previne difteria, tétano, coqueluche, hepatite B e meningite e infecções por HiB",
+    producer: "Fiocrus",
+    vaccinationDate: "03/09/2023",
+    name: " DTP",
+  },
+  {
+    id: 13,
+    dose: "REFORÇO",
+    description:
+      "Previne difteria, tétano, coqueluche, hepatite B e meningite e infecções por HiB",
+    producer: "Fiocrus",
+    vaccinationDate: "03/09/2023",
+    name: " Hepatite A",
+  },
+  {
+    id: 14,
+    dose: "REFORÇO",
+    description:
+      "Previne difteria, tétano, coqueluche, hepatite B e meningite e infecções por HiB",
+    producer: "Fiocrus",
+    vaccinationDate: "03/09/2023",
+    name: " Varicela",
+  },
+  {
+    id: 15,
+    dose: "REFORÇO",
+    description:
+      "Previne difteria, tétano, coqueluche, hepatite B e meningite e infecções por HiB",
+    producer: "Fiocrus",
+    vaccinationDate: "03/09/2023",
+    name: " Difteria e tétano adulto (dT)",
+  },
+  {
+    id: 16,
+    dose: "REFORÇO",
+    description:
+      "Previne difteria, tétano, coqueluche, hepatite B e meningite e infecções por HiB",
+    producer: "Fiocrus",
+    vaccinationDate: "03/09/2023",
+    name: " Meningocócica ACWY",
+  },
+  {
+    id: 17,
+    dose: "REFORÇO",
+    description:
+      "Previne difteria, tétano, coqueluche, hepatite B e meningite e infecções por HiB",
+    producer: "Fiocrus",
+    vaccinationDate: "03/09/2023",
+    name: " HPV quadrivalente",
+  },
+  {
+    id: 18,
+    dose: "REFORÇO",
+    description:
+      "Previne difteria, tétano, coqueluche, hepatite B e meningite e infecções por HiB",
+    producer: "Fiocrus",
+    vaccinationDate: "03/09/2023",
+    name: " dTpa",
+  },
+  {
+    id: 19,
+    dose: "REFORÇO",
+    description:
+      "Previne difteria, tétano, coqueluche, hepatite B e meningite e infecções por HiB",
+    producer: "Fiocrus",
+    vaccinationDate: "03/09/2023",
+    name: " Influenza (ofertada durante Campanha anual)",
+  },
+  {
+    id: 20,
+    dose: "REFORÇO",
+    description:
+      "Previne difteria, tétano, coqueluche, hepatite B e meningite e infecções por HiB",
+    producer: "Fiocrus",
+    vaccinationDate: "03/09/2023",
+    name: " Pneumocócica 23-valente (Pneumo 23)",
   },
 ];

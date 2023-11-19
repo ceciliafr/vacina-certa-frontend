@@ -1,11 +1,11 @@
 import Box from "@mui/material/Box";
 import { VaccineCard } from "./VaccineCard";
-import { Vaccine } from "@/types/vaccines";
+import { Vaccine, VaccineStatus } from "@/types/vaccines";
 
 export const Vaccines: React.FC<{
   vaccines: Vaccine[];
-  isPending?: boolean;
-}> = ({ vaccines, isPending = false }) => {
+  variant: VaccineStatus;
+}> = ({ vaccines, variant }) => {
   return (
     <Box display="flex" flexDirection="column" gap={4}>
       {vaccines.map((vaccine) => (
@@ -17,7 +17,7 @@ export const Vaccines: React.FC<{
           description={vaccine.description}
           producer={vaccine.producer}
           vaccinationDate={vaccine.vaccinationDate}
-          isPending={isPending}
+          variant={variant}
         />
       ))}
     </Box>

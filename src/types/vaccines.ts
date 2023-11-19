@@ -6,3 +6,5 @@ export type Vaccine = {
   vaccinationDate: string;
   name: string;
 };
+
+export type VaccineStatus = "pending" | "completed" | "information";

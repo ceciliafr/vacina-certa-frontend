@@ -1,12 +1,18 @@
-.container, .pending_container {
+.container,
+.pending_container,
+.completed_container {
   padding: 1rem;
+}
+
+.container {
+  border-left: 3px solid var(--gray-40);
 }
 
 .pending_container {
   border-left: 3px solid var(--red-70);
 }
 
-.container {
+.completed_container {
   border-left: 3px solid var(--green-90);
 }
 
@@ -15,7 +21,7 @@
 }
 
 .hr {
-  border: .1px solid var(--gray-20);
+  border: 0.1px solid var(--gray-20);
 }
 
 .description {

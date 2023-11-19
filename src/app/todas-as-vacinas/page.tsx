@@ -17,7 +17,7 @@ export default function AllVaccines() {
         <div className={styles.content}>
           <div className={styles.vaccines_content}>
             <Title>Essas são as vacinas que você já tomou:</Title>
-            <Vaccines vaccines={allVaccinesData} />
+            <Vaccines vaccines={allVaccinesData} variant="information" />
           </div>
         </div>
       </RightContent>
