@@ -3,8 +3,8 @@ import { Title } from "@/components/Title";
 import { Layout } from "@/components/Layout";
 import { DesktopMenu } from "@/components/desktop/Menu";
 import { RightContent } from "@/components/Layout/RightContent";
-import { pendingVaccinesData } from "@/utils/pending-vaccines";
-import { Vaccines } from "@/components/desktop/Vaccines";
+import { pendingVaccinesData } from "@/mocks/pending-vaccines";
+import { Vaccines } from "@/components/Vaccines";
 
 export default function PendingVaccines() {
   return (

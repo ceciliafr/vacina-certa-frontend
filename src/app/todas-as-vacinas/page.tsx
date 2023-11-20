@@ -3,8 +3,8 @@ import { Title } from "@/components/Title";
 import { DesktopMenu } from "@/components/desktop/Menu";
 import { Layout } from "@/components/Layout";
 import { RightContent } from "@/components/Layout/RightContent";
-import { Vaccines } from "@/components/desktop/Vaccines";
-import { allVaccinesData } from "@/utils/all-vaccines";
+import { Vaccines } from "@/components/Vaccines";
+import { allVaccinesData } from "@/mocks/all-vaccines";
 
 export default function AllVaccines() {
   return (

@@ -3,8 +3,8 @@ import { Title } from "@/components/Title";
 import { DesktopMenu } from "@/components/desktop/Menu";
 import { Layout } from "@/components/Layout";
 import { RightContent } from "@/components/Layout/RightContent";
-import { takenVaccinesTaken } from "@/utils/taken-vaccines";
-import { Vaccines } from "@/components/desktop/Vaccines";
+import { takenVaccinesTaken } from "@/mocks/taken-vaccines";
+import { Vaccines } from "@/components/Vaccines";
 
 export default function MyCard() {
   return (

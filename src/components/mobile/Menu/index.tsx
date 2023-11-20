@@ -1,6 +1,5 @@
-import { MenuItems } from "../MenuItems";
+import { MenuItems } from "./MenuItems";
 import Drawer from "@mui/material/Drawer";
-import styles from "./styles.module.css";
 
 export const Menu: React.FC<{ open: boolean; toggleMenu: () => void }> = ({
   open,

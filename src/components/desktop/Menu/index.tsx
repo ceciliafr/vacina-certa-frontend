@@ -1,4 +1,4 @@
-import { MenuItems } from "@/components/MenuItems";
+import { MenuItems } from "@/components/mobile/Menu/MenuItems";
 import styles from "./styles.module.css";
 
 export const DesktopMenu: React.FC = () => {

@@ -3,7 +3,7 @@ import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import Button from "@mui/material/Button";
 import styles from "./styles.module.css";
-import { Menu } from "@/components/Menu";
+import { Menu } from "@/components/mobile/Menu";
 
 export const Navbar: React.FC<{ name: string }> = ({ name }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
