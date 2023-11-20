@@ -14,10 +14,11 @@ export default function MyProfile() {
       <div className={styles.content}>
         <div className={styles.right_content}>
           <Box>
-            <Title>
-              Olá, Cissa! Essa é sua área de dados pessoais, você pode alterar
-              seus dados a qualquer momento:
-            </Title>
+            <Title
+              title=" Olá, Cissa! Essa é sua área de dados pessoais"
+              subtitle="você pode alterar
+              seus dados a qualquer momento"
+            />
           </Box>
           <Box
             display="flex"

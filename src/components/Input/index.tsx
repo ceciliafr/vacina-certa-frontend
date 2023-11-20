@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styles from "./styles.module.css";
+import { Title } from "@/components/Title";
 import Box from "@mui/material/Box";
 import Input from "@mui/material/Input";
 import IconButton from "@mui/material/IconButton";
