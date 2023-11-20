@@ -1,0 +1,20 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.label_title {
+  color: var(--gray-40);
+  font-weight: 400;
+}
+
+.error_message_container {
+  min-height: 40px;
+}
+
+.error_message {
+  color: var(--red-70);
+  font-size: small;
+}

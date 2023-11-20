@@ -1,0 +1,7 @@
+.edit_button svg {
+  color: var(--gray-80);
+}
+
+.edit_button:hover {
+  background-color: var(--gray-02);
+}

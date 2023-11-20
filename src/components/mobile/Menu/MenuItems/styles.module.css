@@ -8,7 +8,7 @@
 .menu_list {
   display: flex;
   flex-direction: column;
-  width: 25rem;
+  width: 22rem;
 }
 
 .active_route {
