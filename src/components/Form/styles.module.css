@@ -11,3 +11,9 @@
   gap: 2rem;
   max-width: 70%;
 }
+
+@media (min-width: 70px) {
+  .user_info_container {
+    max-width: 100%;
+  }
+}

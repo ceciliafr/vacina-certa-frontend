@@ -38,7 +38,7 @@ export const Edit: React.FC<{
                     />
                     <Button.Confirm
                       onClick={() => {
-                        setIsEditing(!isEditing);
+                        value && setIsEditing(!isEditing);
                       }}
                     />
                   </>

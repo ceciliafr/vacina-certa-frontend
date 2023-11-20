@@ -16,14 +16,14 @@ export const Form: React.FC = () => {
         <div className={styles.user_info_container}>
           <Grid
             container
-            columns={8}
-            rowSpacing="1rem"
+            rowSpacing={{ xs: 0, sm: 2, md: 3 }}
+            columns={{ xs: 2, sm: 8, md: 8 }}
             columnSpacing={{ xs: 1, sm: 3, md: 12 }}
           >
-            <Grid item xs={4} sm={4} md={4}>
+            <Grid item xs={1} sm={4} md={4}>
               <Input.Visualize lableName="CPF" labelValue="114.255.916-55" />
             </Grid>
-            <Grid item xs={4} sm={4} md={4}>
+            <Grid item xs={1} sm={4} md={4}>
               <Input.Visualize
                 lableName="Data de Nascimento"
                 labelValue="15/06/2000"
