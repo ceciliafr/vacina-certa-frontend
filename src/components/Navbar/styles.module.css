@@ -1,4 +1,40 @@
 .nav {
-    display: flex;
-    width: 100%;
+  display: flex;
+  padding: 2rem;
+  width: 100%;
+  gap: 0.5rem;
+  font-size: larger;
+  background-color: var(--blue-10);
+}
+
+.menu {
+  display: none;
+}
+
+.welcome_message {
+  font-weight: 300;
+  color: var(--gray-40);
+}
+
+.user_name {
+  color: var(--gray-80);
+  font-weight: 700;
+}
+
+.user_info_container {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 700px) {
+  .menu {
+    display: block;
+  }
+
+  .nav {
+    padding: 1em 0;
+    font-size: medium;
+    align-items: center;
+    gap: 0;
+  }
 }

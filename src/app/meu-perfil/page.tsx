@@ -2,7 +2,6 @@
 import styles from "./page.module.css";
 import { Title } from "@/components/Title";
 import { DesktopMenu } from "@/components/desktop/Menu";
-import { DesktopNavbar } from "@/components/desktop/Navbar";
 import { Layout } from "@/components/Layout";
 import Box from "@mui/material/Box";
 import { EditableLabel } from "@/components/Input";

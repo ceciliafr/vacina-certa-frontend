@@ -1,4 +1,4 @@
-import { DesktopNavbar } from "@/components/desktop/Navbar";
+import { Navbar } from "@/components/Navbar";
 import styles from "./styles.module.css";
 
 export const RightContent: React.FC<React.PropsWithChildren> = ({
@@ -6,7 +6,7 @@ export const RightContent: React.FC<React.PropsWithChildren> = ({
 }) => {
   return (
     <div className={styles.container}>
-      <DesktopNavbar name={"Cecília Fernandes de Oliveira"} />
+      <Navbar name={"Cecília Fernandes de Oliveira"} />
       <div className={styles.children_content}>{children}</div>
     </div>
   );
