@@ -1,0 +1,55 @@
+.form_control {
+  max-width: 50rem;
+}
+
+.form_field {
+  width: 100%;
+}
+
+.form_fields_container {
+  display: flex;
+  width: 100%;
+  gap: 4rem;
+}
+
+.field_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.field_container p {
+  font-size: medium;
+  color: var(--gray-80);
+}
+
+.date_picker {
+  width: 100%;
+}
+
+.buttons_container {
+  width: 100%;
+  gap: 2rem;
+  display: flex;
+  margin-top: 6rem;
+  justify-content: flex-end;
+}
+
+.cancel_button, .save_button {
+    text-transform: initial;
+    font-size: 16px;
+    border-radius: 2rem;
+    width: 7rem;
+}
+
+.save_button {
+    background-color: var(--blue-70);
+}
+
+@media (max-width: 700px) {
+  .form_fields_container {
+    flex-direction: column;
+    gap: 2rem;
+  }
+}

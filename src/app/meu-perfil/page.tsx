@@ -12,8 +12,7 @@ export default function MyProfile() {
       <RightContent>
         <Title
           title="Área de dados pessoais:"
-          subtitle="Você pode alterar
-              seus dados a qualquer momento"
+          subtitle="Você pode alterar seus dados a qualquer momento"
         />
         <Form />
       </RightContent>

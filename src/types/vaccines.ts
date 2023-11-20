@@ -40,6 +40,7 @@ export type VaccineStatus = "pending" | "completed" | "information"; // não obr
 /**
  * REGISTRAR VACINA
  * id da vacina
+ * data da vacinação
  * id do usuário
  */
 

@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import Image from "next/image";
 
-const Register = () => {
+export default function RegisterUser() {
   const router = useRouter();
 
   return (
@@ -63,5 +63,3 @@ const Register = () => {
     </main>
   );
 };
-
-export default Register;
