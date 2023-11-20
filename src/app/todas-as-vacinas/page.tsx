@@ -1,8 +1,6 @@
 "use client";
-import styles from "./page.module.css";
 import { Title } from "@/components/Title";
 import { DesktopMenu } from "@/components/desktop/Menu";
-import { DesktopNavbar } from "@/components/desktop/Navbar";
 import { Layout } from "@/components/Layout";
 import { RightContent } from "@/components/Layout/RightContent";
 import { Vaccines } from "@/components/desktop/Vaccines";
@@ -13,11 +11,8 @@ export default function AllVaccines() {
     <Layout>
       <DesktopMenu />
       <RightContent>
-        <DesktopNavbar name={"Cecília Fernandes de Oliveira"} />
-        <div className={styles.content}>
-          <Title title="Vacinas que você já tomou:" />
-          <Vaccines vaccines={allVaccinesData} variant="information" />
-        </div>
+        <Title title="Vacinas que você já tomou:" />
+        <Vaccines vaccines={allVaccinesData} variant="information" />
       </RightContent>
     </Layout>
   );
