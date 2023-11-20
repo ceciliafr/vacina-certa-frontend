@@ -1,6 +1,5 @@
 import { useState } from "react";
 import styles from "./styles.module.css";
-import { Title } from "@/components/Title";
 import Box from "@mui/material/Box";
 import Input from "@mui/material/Input";
 import IconButton from "@mui/material/IconButton";
@@ -21,7 +20,7 @@ export const EditableLabel: React.FC<{
   const saveNewValue = () => {};
 
   return (
-    <div>
+    <div className={styles.container}>
       <h4 className={styles.label_title}>{lableName}</h4>
       <Box display="flex" alignItems="center" gap={2}>
         {isEditable ? (

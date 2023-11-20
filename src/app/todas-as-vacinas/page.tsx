@@ -15,10 +15,8 @@ export default function AllVaccines() {
       <RightContent>
         <DesktopNavbar name={"Cecília Fernandes de Oliveira"} />
         <div className={styles.content}>
-          <div className={styles.vaccines_content}>
-            <Title title="Essas são as vacinas que você já tomou:" />
-            <Vaccines vaccines={allVaccinesData} variant="information" />
-          </div>
+          <Title title="Vacinas que você já tomou:" />
+          <Vaccines vaccines={allVaccinesData} variant="information" />
         </div>
       </RightContent>
     </Layout>

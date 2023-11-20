@@ -17,10 +17,8 @@ export default function PendingVaccines() {
       <RightContent>
         <DesktopNavbar name={"Cecília Fernandes de Oliveira"} />
         <div className={styles.content}>
-          <div className={styles.vaccines_content}>
-            <Title title="Essas são as vacinas que você ainda não tomou:" />
-            <Vaccines vaccines={pendingVaccinesData} variant="pending" />
-          </div>
+          <Title title="Vacinas que você ainda não tomou:" />
+          <Vaccines vaccines={pendingVaccinesData} variant="pending" />
         </div>
       </RightContent>
     </Layout>
