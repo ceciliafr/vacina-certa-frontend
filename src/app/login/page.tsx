@@ -44,7 +44,7 @@ const Login = () => {
           <div style={{ display: "flex", margin: "2rem 0" }}>
             <button
               className={styles.deafult_button}
-              onClick={() => router.replace("/")}
+              onClick={() => router.replace("/meu-cartao")}
             >
               Entrar
             </button>

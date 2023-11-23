@@ -8,7 +8,7 @@ const MENU_ITEMS = [
   {
     id: 1,
     title: "Meu Cartão de Vacinas",
-    route: "/meu-cartao",
+    route: "/",
     icon: "/book.png",
   },
   {
