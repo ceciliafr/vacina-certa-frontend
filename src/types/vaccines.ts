@@ -1,28 +1,40 @@
+// export type Vaccine = {
+//   id: number;
+//   dose: string;
+//   description: string;
+//   producer: string; // manufacturer
+//   vaccinationDate: string;
+//   name: string;
+
+//   /**
+//    * nome popular
+//    * nome completo
+//    * idade? (quantos anos tem que tomar a vacina)
+//    * ano? (qual ano tem que tomar)
+//    * required: boolean
+//    */
+// };
+
 export type Vaccine = {
   id: number;
   dose: string;
   description: string;
-  producer: string; // manufacturer
+  manufacturer: string;
   vaccinationDate: string;
-  name: string;
-
-  /**
-   * nome popular
-   * nome completo
-   * idade? (quantos anos tem que tomar a vacina)
-   * ano? (qual ano tem que tomar)
-   * required: boolean
-   */
+  completedName?: string;
+  popularName: string;
+  age?: number;
+  year?: number;
+  required?: boolean;
 };
 
 export type VaccineStatus = "pending" | "completed" | "information"; // não obrigatório (amarelo)
-
 
 /**
  * OBJETO USER - cadastro
  * firstName
  * lastName
- * documentType (select - CPF ou pasport) - 
+ * documentType (select - CPF ou pasport) -
  * document
  * password
  * dateOfBirth
@@ -34,8 +46,7 @@ export type VaccineStatus = "pending" | "completed" | "information"; // não obr
  * OBJETO USER - login
  * tipo documento (select - CPF ou Passaporte)
  * documento e senha
-*/
-
+ */
 
 /**
  * REGISTRAR VACINA
@@ -43,7 +54,6 @@ export type VaccineStatus = "pending" | "completed" | "information"; // não obr
  * data da vacinação
  * id do usuário
  */
-
 
 /**
  * MEU PERFIL

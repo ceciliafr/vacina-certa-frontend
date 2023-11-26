@@ -2,17 +2,17 @@ import Paper from "@mui/material/Paper";
 import styles from "./page.module.css";
 import Box from "@mui/material/Box";
 import { Tag } from "@/components/Tag";
-import { VaccineStatus } from "@/types/vaccines";
+import { Vaccine, VaccineStatus } from "@/types/vaccines";
 
-export const VaccineCard: React.FC<{
-  id: number;
-  name: string;
-  dose: string;
-  description: string;
-  producer: string;
-  vaccinationDate: string;
-  variant: VaccineStatus;
-}> = ({ id, name, dose, description, producer, vaccinationDate, variant }) => {
+export const VaccineCard: React.FC<Vaccine & { variant: VaccineStatus }> = ({
+  id,
+  popularName,
+  dose,
+  description,
+  manufacturer,
+  vaccinationDate,
+  variant,
+}) => {
   const getContainerStyle = (variant: VaccineStatus) => {
     switch (variant) {
       case "pending":
@@ -34,7 +34,7 @@ export const VaccineCard: React.FC<{
           justifyContent="space-between"
           marginBottom={2}
         >
-          <h2 className={styles.title}>{name}</h2>
+          <h2 className={styles.title}>{popularName}</h2>
           <Tag>{dose}</Tag>
         </Box>
 
@@ -48,7 +48,7 @@ export const VaccineCard: React.FC<{
       <p className={styles.producer_container}>
         <span className={styles.description_producer}>Fabricante:</span>
 
-        <span>{` ${producer}`}</span>
+        <span>{` ${manufacturer}`}</span>
       </p>
 
       <h5

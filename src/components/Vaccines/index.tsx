@@ -12,10 +12,10 @@ export const Vaccines: React.FC<{
         <VaccineCard
           key={vaccine.id}
           id={vaccine.id}
-          name={vaccine.name}
+          popularName={vaccine?.popularName}
           dose={vaccine.dose}
           description={vaccine.description}
-          producer={vaccine.producer}
+          manufacturer={vaccine?.manufacturer}
           vaccinationDate={vaccine.vaccinationDate}
           variant={variant}
         />

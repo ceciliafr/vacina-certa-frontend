@@ -1,26 +1,15 @@
+import { takenVaccinesData } from "@/mocks/taken-vaccines";
 import api from "@/service/config";
-
-type Vaccine = {
-  id: number;
-  dose: string;
-  description: string;
-  manufacturer: string;
-  vaccinationDate: string;
-  completedName: string;
-  popularName: string;
-  age: number;
-  year: number;
-  required: boolean;
-};
+import { Vaccine } from "@/types/vaccines";
 
 export const getVaccines = async (): Promise<Vaccine[]> => {
   const { data } = await api.get<Vaccine[]>("/get-vaccines");
   return data;
 };
 
-export const getTakenVaccined = async (): Promise<Vaccine[]> => {
+export const getTakenVaccines = async (): Promise<Vaccine[]> => {
   const { data } = await api.get<Vaccine[]>("/get-taken-vaccines");
-  return data;
+  return takenVaccinesData;
 };
 
 export const registerVaccine = async (): Promise<{ created: boolean }> => {

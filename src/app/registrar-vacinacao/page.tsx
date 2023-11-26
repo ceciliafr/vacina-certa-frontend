@@ -16,9 +16,24 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { availableVaccinesData } from "@/mocks/available_vaccines";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { useMutation } from "@tanstack/react-query";
+import { registerVaccine } from "@/api/vaccines";
 
 export default function RegisterVaccination() {
   const [name, setName] = useState("");
+
+  const { data, mutate } = useMutation({
+    mutationFn: registerVaccine,
+    mutationKey: ["registerVaccine"],
+    onSuccess: (data) => {
+      console.log(data);
+      const message = "success";
+      alert(message);
+    },
+    onError: () => {
+      alert("there was an error");
+    },
+  });
 
   return (
     <Layout>
