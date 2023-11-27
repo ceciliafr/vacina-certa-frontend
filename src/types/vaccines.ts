@@ -45,7 +45,8 @@ export type VaccineStatus = "pending" | "completed" | "information"; // não obr
 /**
  * OBJETO USER - login
  * tipo documento (select - CPF ou Passaporte)
- * documento e senha
+ * documento
+ * senha
  */
 
 /**

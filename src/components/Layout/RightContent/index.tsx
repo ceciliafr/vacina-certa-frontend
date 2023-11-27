@@ -6,7 +6,7 @@ export const RightContent: React.FC<React.PropsWithChildren> = ({
 }) => {
   return (
     <div className={styles.container}>
-      <Navbar name="Cissa" />
+      <Navbar />
       <div className={styles.children_content}>{children}</div>
     </div>
   );

@@ -81,7 +81,6 @@ export default function RegisterVaccination() {
                 <Box className={styles.field_container}>
                   <DemoItem label="Data da vacinação">
                     <DatePicker
-                      label="Data da vacinação"
                       disableFuture
                       format="DD/MM/YYYY"
                       className={styles.date_picker}
