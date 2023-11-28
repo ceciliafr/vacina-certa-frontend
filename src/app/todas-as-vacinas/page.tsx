@@ -18,7 +18,7 @@ export default function AllVaccines() {
     <Layout>
       <DesktopMenu />
       <RightContent>
-        <Title title="Vacinas que você já tomou:" />
+        <Title title="Todas as vacinas" />
         <Vaccines vaccines={allVaccinesData} variant="information" />
       </RightContent>
     </Layout>

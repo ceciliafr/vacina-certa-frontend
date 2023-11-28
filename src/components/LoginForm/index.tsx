@@ -14,7 +14,6 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import { DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { useMutation } from "@tanstack/react-query";
-
 import TextField from "@mui/material/TextField";
 import { Navbar } from "../Navbar";
 import Grid from "@mui/material/Grid";
@@ -118,7 +117,6 @@ export const LoginForm = () => {
               <Button
                 fullWidth
                 variant="contained"
-                className={styles.save_button}
                 onClick={() => router.replace("/")}
               >
                 Login
@@ -127,8 +125,7 @@ export const LoginForm = () => {
               <Button
                 fullWidth
                 variant="outlined"
-                className={styles.save_button}
-                onClick={() => router.replace("/cadastro")}
+                onClick={() => router.push("/cadastro")}
               >
                 Cadastro
               </Button>

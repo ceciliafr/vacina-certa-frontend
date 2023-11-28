@@ -18,6 +18,7 @@ import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { useMutation } from "@tanstack/react-query";
 import { registerVaccine } from "@/api/vaccines";
+import Grid from "@mui/material/Grid";
 
 export default function RegisterVaccination() {
   const [name, setName] = useState("");
@@ -26,7 +27,6 @@ export default function RegisterVaccination() {
     mutationFn: registerVaccine,
     mutationKey: ["registerVaccine"],
     onSuccess: (data) => {
-      console.log(data);
       const message = "success";
       alert(message);
     },
@@ -39,7 +39,7 @@ export default function RegisterVaccination() {
     <Layout>
       <DesktopMenu />
       <RightContent>
-        <Title title="Registrar vacinação:" />
+        <Title title="Registrar vacinação" />
         <FormControl className={styles.form_control}>
           <LocalizationProvider
             dateAdapter={AdapterDayjs}
@@ -80,29 +80,29 @@ export default function RegisterVaccination() {
                 </Box>
                 <Box className={styles.field_container}>
                   <DemoItem label="Data da vacinação">
-                    <DatePicker
-                      disableFuture
-                      format="DD/MM/YYYY"
-                      className={styles.date_picker}
-                    />
+                    <DatePicker disableFuture format="DD/MM/YYYY" />
                   </DemoItem>
                 </Box>
               </Box>
             </DemoContainer>
           </LocalizationProvider>
-
-          <Box className={styles.buttons_container}>
-            <Button
-              variant="outlined"
-              color="error"
-              className={styles.cancel_button}
-            >
-              Cancelar
-            </Button>
-            <Button variant="contained" className={styles.save_button}>
-              Salvar
-            </Button>
-          </Box>
+          <Grid
+            container
+            columns={{ xs: 1, sm: 12, md: 12 }}
+            columnSpacing={{ xs: 1, sm: 1, md: 1 }}
+            className={styles.buttons_container}
+          >
+            <Grid item xs={1} sm={3} md={3}>
+              <Button variant="contained" fullWidth>
+                Salvar
+              </Button>
+            </Grid>
+            <Grid item xs={1} sm={3} md={3}>
+              <Button variant="outlined" color="error" fullWidth>
+                Cancelar
+              </Button>
+            </Grid>
+          </Grid>
         </FormControl>
       </RightContent>
     </Layout>

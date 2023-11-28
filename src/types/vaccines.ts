@@ -60,3 +60,8 @@ export type VaccineStatus = "pending" | "completed" | "information"; // não obr
  * MEU PERFIL
  * o nome pode ser editável
  */
+
+export type DocumentType = {
+  name: string;
+  value: string;
+};

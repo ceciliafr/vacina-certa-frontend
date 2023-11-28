@@ -24,10 +24,6 @@
   color: var(--gray-80);
 }
 
-.date_picker {
-  width: 100%;
-}
-
 .buttons_container {
   width: 100%;
   gap: 2rem;
@@ -36,20 +32,24 @@
   justify-content: flex-end;
 }
 
-.cancel_button, .save_button {
-    text-transform: initial;
-    font-size: 16px;
-    border-radius: 2rem;
-    width: 7rem;
+.buttons_container div > button {
+  height: 3rem;
+  font-size: 16px;
+  border-radius: 40px;
+  text-transform: initial;
 }
 
-.save_button {
-    background-color: var(--blue-70);
+.buttons_container div:first-child > button  {
+  background-color: var(--blue-70);
 }
 
 @media (max-width: 700px) {
   .form_fields_container {
     flex-direction: column;
     gap: 2rem;
+  }
+
+  .buttons_container {
+    margin-top: 2rem;
   }
 }

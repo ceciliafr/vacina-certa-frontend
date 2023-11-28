@@ -34,7 +34,7 @@ export default function PendingVaccines() {
     <Layout>
       <DesktopMenu />
       <RightContent>
-        <Title title="Vacinas que você ainda não tomou:" />
+        <Title title="Vacinas que você ainda não tomou" />
         <Vaccines vaccines={getPendingVaccines()} variant="pending" />
       </RightContent>
     </Layout>
