@@ -28,39 +28,99 @@ import {
   getFirstName,
   getLastNames,
 } from "@/utils";
+import { userRegister } from "@/api/user";
+import Alert, { AlertColor } from "@mui/material/Alert";
+import Collapse from "@mui/material/Collapse";
+import AlertTitle from "@mui/material/AlertTitle";
 
 const DOCUMENT_TYPE: DocumentType[] = [
   { name: "CPF", value: "CPF" },
   { name: "Passaporte", value: "PASSPORT" },
 ];
 
+const defaultValue = {
+  show: false,
+  isError: false,
+  type: undefined,
+  title: "",
+  message: "",
+  strongMessage: "",
+};
+
 export const RegisterUserForm = () => {
   const router = useRouter();
 
-  const [document, setDocument] = useState("");
-  const [documentType, setDocumentType] = useState("");
-  const [name, setName] = useState("");
-  const [nickname, setNickname] = useState("");
-  const [phone, setPhone] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState(null);
-  const [password, setPassword] = useState("");
+  const [document, setDocument] = useState({ value: "", error: "" });
+  const [documentType, setDocumentType] = useState({ value: "", error: "" });
+  const [name, setName] = useState({ value: "", error: "" });
+  const [nickname, setNickname] = useState({ value: "", error: "" });
+  const [phone, setPhone] = useState({ value: "", error: "" });
+  const [dateOfBirth, setDateOfBirth] = useState({ value: null, error: "" });
+  const [password, setPassword] = useState({ value: "", error: "" });
+  const [feedback, setFeedback] = useState<{
+    show: boolean;
+    isError: boolean;
+    type: AlertColor | undefined;
+    title: string;
+    message: string;
+    strongMessage: string;
+  }>(defaultValue);
 
-  const user = {
-    login: document,
-    documentsType: documentType,
-    password,
-    roles: ["USER"],
-    usersViewModel: {
-      firstName: getFirstName(name),
-      nickname,
-      lastName: getLastNames(name),
-      dateOfBirth: dateOfBirth && formatDate(`${dateOfBirth}`),
-      document,
-      documentType,
-      phone,
+  const { mutate } = useMutation({
+    mutationFn: userRegister,
+    mutationKey: ["registerUser"],
+    onSuccess: async () => {
+      setFeedback({
+        show: true,
+        isError: false,
+        type: "success",
+        title: "Parabéns",
+        message: "Conta criada com sucesso!",
+        strongMessage: "",
+      });
+      closeAlert();
     },
+    onError: async () => {
+      setFeedback({
+        show: true,
+        isError: false,
+        type: "error",
+        title: "Ops",
+        message: "Erro ao criar sua conta",
+        strongMessage: "Tente novamente.",
+      });
+      closeAlert();
+    },
+  });
+
+  const closeAlert = () => {
+    setTimeout(() => {
+      setFeedback((prev) => ({
+        ...prev,
+        show: false,
+      }));
+    }, 3000);
   };
-  console.log(user);
+
+  const register = () => {
+    const user = {
+      login: document.value,
+      documentsType: documentType.value,
+      password: password.value,
+      roles: ["USER"],
+      usersViewModel: {
+        firstName: getFirstName(name.value),
+        nickname: nickname.value,
+        lastName: getLastNames(name.value),
+        dateOfBirth: formatDate(`${dateOfBirth.value}`),
+        document: document.value,
+        documentType: documentType.value,
+        phone: phone.value,
+      },
+    };
+
+    mutate(user);
+  };
 
   return (
     <Layout>
@@ -81,8 +141,13 @@ export const RegisterUserForm = () => {
                   <Select
                     labelId="demo-simple-select-autowidth-label"
                     id="demo-simple-select-autowidth"
-                    value={documentType}
-                    onChange={(e) => setDocumentType(e.target.value)}
+                    value={documentType.value}
+                    onChange={(e) =>
+                      setDocumentType((prev) => ({
+                        ...prev,
+                        value: e.target.value,
+                      }))
+                    }
                     fullWidth
                     variant="outlined"
                     defaultValue="Selecione"
@@ -111,12 +176,17 @@ export const RegisterUserForm = () => {
               <Grid item xs={1} sm={5} md={4}>
                 <DemoItem label="Digite seu documento">
                   <MaskedInput
-                    mask={getDocumentMask(documentType)}
-                    value={document}
+                    mask={getDocumentMask(documentType.value)}
+                    value={document.value}
                     disabled={!documentType}
                     placeholder="Digite o documento"
                     alwaysShowMask
-                    onChange={(e) => setDocument(e.target.value)}
+                    onChange={(e) =>
+                      setDocument((prev) => ({
+                        ...prev,
+                        value: e.target.value,
+                      }))
+                    }
                   >
                     <TextField id="outlined-basic" variant="outlined" />
                   </MaskedInput>
@@ -126,22 +196,32 @@ export const RegisterUserForm = () => {
               <Grid item xs={1} sm={8} md={8}>
                 <DemoItem label="Digite seu nome completo">
                   <TextField
-                    value={name}
+                    value={name.value}
                     id="outlined-basic"
                     label="Ex.: John Lennon"
                     variant="outlined"
-                    onChange={(e) => setName(e.target.value)}
+                    onChange={(e) =>
+                      setName((prev) => ({
+                        ...prev,
+                        value: e.target.value,
+                      }))
+                    }
                   />
                 </DemoItem>
               </Grid>
               <Grid item xs={1} sm={8} md={8}>
                 <DemoItem label="Como prefere ser chamado">
                   <TextField
-                    value={nickname}
+                    value={nickname.value}
                     id="outlined-basic"
                     label="Ex.: Jonny"
                     variant="outlined"
-                    onChange={(e) => setNickname(e.target.value)}
+                    onChange={(e) =>
+                      setNickname((prev) => ({
+                        ...prev,
+                        value: e.target.value,
+                      }))
+                    }
                   />
                 </DemoItem>
               </Grid>
@@ -149,9 +229,14 @@ export const RegisterUserForm = () => {
                 <DemoItem label="Telefone">
                   <MaskedInput
                     mask="+99 (99) 99999-9999"
-                    value={phone}
+                    value={phone.value}
                     placeholder="Digite o documento"
-                    onChange={(e) => setPhone(e.target.value)}
+                    onChange={(e) =>
+                      setPhone((prev) => ({
+                        ...prev,
+                        value: e.target.value,
+                      }))
+                    }
                   >
                     <TextField
                       id="outlined-basic"
@@ -171,10 +256,15 @@ export const RegisterUserForm = () => {
                       <Box className={styles.date_picker}>
                         <DemoItem label="Data de nascimento">
                           <DatePicker
-                            value={dateOfBirth}
+                            value={dateOfBirth.value}
                             disableFuture
                             format="DD/MM/YYYY"
-                            onChange={(e) => setDateOfBirth(e)}
+                            onChange={(e) =>
+                              setDateOfBirth((prev) => ({
+                                ...prev,
+                                value: e,
+                              }))
+                            }
                           />
                         </DemoItem>
                       </Box>
@@ -186,22 +276,23 @@ export const RegisterUserForm = () => {
               <Grid item xs={1} sm={8} md={8}>
                 <DemoItem label="Digite sua senha">
                   <TextField
-                    value={password}
+                    value={password.value}
                     id="outlined-basic"
                     label="Ex.: &%6jAYkfe#@908"
                     variant="outlined"
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) =>
+                      setPassword((prev) => ({
+                        ...prev,
+                        value: e.target.value,
+                      }))
+                    }
                   />
                 </DemoItem>
               </Grid>
             </Grid>
 
             <Box className={styles.buttons_container}>
-              <Button
-                fullWidth
-                variant="contained"
-                onClick={() => router.replace("/login")}
-              >
+              <Button fullWidth variant="contained" onClick={register}>
                 Cadastrar
               </Button>
 
@@ -216,6 +307,18 @@ export const RegisterUserForm = () => {
           </FormControl>
         </div>
       </div>
+      <Box className={styles.alert_container}>
+        <Collapse
+          orientation="horizontal"
+          in={feedback.show}
+          className={styles.alert}
+        >
+          <Alert severity={feedback.type}>
+            <AlertTitle>{feedback.title}</AlertTitle>
+            {feedback.message} <strong>{feedback.strongMessage}</strong>
+          </Alert>
+        </Collapse>
+      </Box>
     </Layout>
   );
 };

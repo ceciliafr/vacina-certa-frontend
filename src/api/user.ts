@@ -1,4 +1,6 @@
 import api from "@/service/config";
+import { RegisterUser } from "@/types/user";
+import axios from "axios";
 // import { useContext } from "react";
 
 type LoginResponse = {
@@ -20,7 +22,9 @@ export const userLogin = async (): Promise<LoginResponse> => {
   return data;
 };
 
-export const userRegister = async (): Promise<RegisterResponse> => {
+export const userRegister = async (
+  user: RegisterUser
+): Promise<RegisterResponse> => {
   //   const {
   //     firstName,
   //     lastName,
@@ -31,17 +35,15 @@ export const userRegister = async (): Promise<RegisterResponse> => {
   //     phone,
   //     nickName,
   //   } = useContext(UserContext);
+  console.log("tô aqui ");
+  const { data } = await axios.post<RegisterResponse>(
+    "https://summer-catfish-296915.uc.r.appspot.com/login/register",
+    {
+      user,
+    }
+  );
 
-  const { data } = await api.post<RegisterResponse>("/user/register", {
-    // firstName,
-    // lastName,
-    // documentType,
-    // document,
-    // password,
-    // dateOfBirth,
-    // phone,
-    // nickName,
-  });
+  console.log(data);
   return data;
 };
 

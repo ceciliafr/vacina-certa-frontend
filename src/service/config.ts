@@ -1,9 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const api = axios.create({
-  baseURL: "https://vacina-certa.com/api",
-});
+const api = axios.create();
 
 const AxiosInterceptor = ({ children }: { children: any }) => {
   const [isSet, setIsSet] = useState(false);
