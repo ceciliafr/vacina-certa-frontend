@@ -1,56 +1,34 @@
 import api from "@/service/config";
-import { RegisterUser } from "@/types/user";
-import axios from "axios";
+import { LoginUser, RegisterUser } from "@/types/user";
+import axios, { AxiosResponse } from "axios";
 // import { useContext } from "react";
 
-type LoginResponse = {
-  token: string;
-};
+export const userLogin = async (user: LoginUser): Promise<string> => {
+  const { data } = await axios.post<AxiosResponse<string>>(
+    "https://summer-catfish-296915.uc.r.appspot.com/login",
+    { user }
+  );
 
-type RegisterResponse = {
-  created: boolean;
-};
-
-export const userLogin = async (): Promise<LoginResponse> => {
-  //   const { documentType, document, password } = useContext(UserContext);
-
-  const { data } = await api.post<LoginResponse>("/user/login", {
-    // documentType,
-    // document,
-    // password,
-  });
-  return data;
+  return data.data;
 };
 
 export const userRegister = async (
   user: RegisterUser
-): Promise<RegisterResponse> => {
-  //   const {
-  //     firstName,
-  //     lastName,
-  //     documentType,
-  //     document,
-  //     password,
-  //     dateOfBirth,
-  //     phone,
-  //     nickName,
-  //   } = useContext(UserContext);
-  console.log("tô aqui ");
-  const { data } = await axios.post<RegisterResponse>(
+): Promise<AxiosResponse> => {
+  const { data } = await axios.post<AxiosResponse>(
     "https://summer-catfish-296915.uc.r.appspot.com/login/register",
     {
       user,
     }
   );
 
-  console.log(data);
   return data;
 };
 
 export const updateUser = async (): Promise<{}> => {
   //   const { id } = useContext(UserContext);
 
-  const { data } = await api.post<LoginResponse>("/user/login", {
+  const { data } = await api.post("/user/login", {
     // id,
     // firstName,
     // lastName,

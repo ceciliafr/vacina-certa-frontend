@@ -13,3 +13,9 @@ export type RegisterUser = {
     phone: string;
   };
 };
+
+export type LoginUser = {
+  login: string;
+  documentsType: string;
+  password: string;
+};

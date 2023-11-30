@@ -1,6 +1,4 @@
 "use client";
-import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import styles from "./styles.module.css";
 import "date-fns/locale/pt-BR";
@@ -29,23 +27,10 @@ import {
   getLastNames,
 } from "@/utils";
 import { userRegister } from "@/api/user";
-import Alert, { AlertColor } from "@mui/material/Alert";
+import Alert from "@mui/material/Alert";
 import Collapse from "@mui/material/Collapse";
 import AlertTitle from "@mui/material/AlertTitle";
-
-const DOCUMENT_TYPE: DocumentType[] = [
-  { name: "CPF", value: "CPF" },
-  { name: "Passaporte", value: "PASSPORT" },
-];
-
-const defaultValue = {
-  show: false,
-  isError: false,
-  type: undefined,
-  title: "",
-  message: "",
-  strongMessage: "",
-};
+import { DEFAULT_FEEDBACK, DOCUMENT_TYPE } from "@/constants";
 
 export const RegisterUserForm = () => {
   const router = useRouter();
@@ -57,14 +42,7 @@ export const RegisterUserForm = () => {
   const [phone, setPhone] = useState({ value: "", error: "" });
   const [dateOfBirth, setDateOfBirth] = useState({ value: null, error: "" });
   const [password, setPassword] = useState({ value: "", error: "" });
-  const [feedback, setFeedback] = useState<{
-    show: boolean;
-    isError: boolean;
-    type: AlertColor | undefined;
-    title: string;
-    message: string;
-    strongMessage: string;
-  }>(defaultValue);
+  const [feedback, setFeedback] = useState(DEFAULT_FEEDBACK);
 
   const { mutate } = useMutation({
     mutationFn: userRegister,
@@ -78,7 +56,7 @@ export const RegisterUserForm = () => {
         message: "Conta criada com sucesso!",
         strongMessage: "",
       });
-      closeAlert();
+      closeAlert({ shouldRedirect: true, alertTime: 1000 });
     },
     onError: async () => {
       setFeedback({
@@ -89,17 +67,27 @@ export const RegisterUserForm = () => {
         message: "Erro ao criar sua conta",
         strongMessage: "Tente novamente.",
       });
-      closeAlert();
+      closeAlert({ shouldRedirect: false, alertTime: 2000 });
     },
   });
 
-  const closeAlert = () => {
+  const closeAlert = ({
+    shouldRedirect = false,
+    alertTime,
+  }: {
+    shouldRedirect: boolean;
+    alertTime: number;
+  }) => {
     setTimeout(() => {
       setFeedback((prev) => ({
         ...prev,
         show: false,
       }));
-    }, 3000);
+
+      if (shouldRedirect) {
+        router.replace("/login");
+      }
+    }, alertTime);
   };
 
   const register = () => {

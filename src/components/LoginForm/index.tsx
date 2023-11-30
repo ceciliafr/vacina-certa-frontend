@@ -1,6 +1,4 @@
 "use client";
-import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import styles from "./styles.module.css";
 import "date-fns/locale/pt-BR";
@@ -18,27 +16,80 @@ import TextField from "@mui/material/TextField";
 import { Navbar } from "../Navbar";
 import Grid from "@mui/material/Grid";
 import MaskedInput from "react-input-mask";
-
-//documentsType
-const DOCUMENT_TYPE = [
-  { name: "CPF", value: "CPF" },
-  { name: "Passaporte", value: "PASSPORT" },
-];
+import { DEFAULT_FEEDBACK, DOCUMENT_TYPE } from "@/constants";
+import { userLogin } from "@/api/user";
+import Collapse from "@mui/material/Collapse";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 
 export const LoginForm = () => {
   const router = useRouter();
-  const [document, setDocument] = useState("");
-  const [documentType, setDocumentType] = useState("");
+  const [document, setDocument] = useState({ value: "", error: "" });
+  const [documentType, setDocumentType] = useState({ value: "", error: "" });
+  const [password, setPassword] = useState({ value: "", error: "" });
+  const [feedback, setFeedback] = useState(DEFAULT_FEEDBACK);
 
   const getDocumentMask = () => {
     if (documentType) {
-      if (documentType === "CPF") {
+      if (documentType.value === "CPF") {
         return "999.999.999-99";
       } else {
         return "aaaaaaaaa";
       }
     }
     return "";
+  };
+
+  const { mutate } = useMutation({
+    mutationFn: userLogin,
+    mutationKey: ["userLogin"],
+    onSuccess: async () => {
+      setFeedback((prev) => ({
+        ...prev,
+        show: false,
+      }));
+      closeAlert({ shouldRedirect: true, alertTime: 1000 });
+    },
+    onError: async () => {
+      setFeedback({
+        show: true,
+        isError: false,
+        type: "error",
+        title: "Ops",
+        message: "Erro ao fazer login",
+        strongMessage: "Tente novamente.",
+      });
+      closeAlert({ shouldRedirect: false, alertTime: 2000 });
+    },
+  });
+
+  const closeAlert = ({
+    shouldRedirect = false,
+    alertTime,
+  }: {
+    shouldRedirect: boolean;
+    alertTime: number;
+  }) => {
+    setTimeout(() => {
+      setFeedback((prev) => ({
+        ...prev,
+        show: false,
+      }));
+
+      if (shouldRedirect) {
+        router.replace("/login");
+      }
+    }, alertTime);
+  };
+
+  const register = () => {
+    const user = {
+      login: document.value,
+      documentsType: documentType.value,
+      password: password.value,
+    };
+
+    mutate(user);
   };
 
   return (
@@ -60,8 +111,13 @@ export const LoginForm = () => {
                   <Select
                     labelId="demo-simple-select-autowidth-label"
                     id="demo-simple-select-autowidth"
-                    value={documentType}
-                    onChange={(e) => setDocumentType(e.target.value)}
+                    value={documentType.value}
+                    onChange={(e) =>
+                      setDocumentType((prev) => ({
+                        ...prev,
+                        value: e.target.value,
+                      }))
+                    }
                     fullWidth
                     variant="outlined"
                     defaultValue="Selecione"
@@ -91,11 +147,16 @@ export const LoginForm = () => {
                 <DemoItem label="Digite seu documento">
                   <MaskedInput
                     mask={getDocumentMask()}
-                    value={document}
+                    value={document.value}
                     disabled={!documentType}
                     placeholder="Digite o documento"
                     alwaysShowMask
-                    onChange={(e) => setDocument(e.target.value)}
+                    onChange={(e) =>
+                      setDocument((prev) => ({
+                        ...prev,
+                        value: e.target.value,
+                      }))
+                    }
                   >
                     <TextField id="outlined-basic" variant="outlined" />
                   </MaskedInput>
@@ -105,20 +166,23 @@ export const LoginForm = () => {
               <Grid item xs={1} sm={8} md={8}>
                 <DemoItem label="Digite sua senha">
                   <TextField
+                    value={password.value}
                     id="outlined-basic"
                     label="Digite"
                     variant="outlined"
+                    onChange={(e) =>
+                      setPassword((prev) => ({
+                        ...prev,
+                        value: e.target.value,
+                      }))
+                    }
                   />
                 </DemoItem>
               </Grid>
             </Grid>
 
             <Box className={styles.buttons_container}>
-              <Button
-                fullWidth
-                variant="contained"
-                onClick={() => router.replace("/")}
-              >
+              <Button fullWidth variant="contained" onClick={register}>
                 Login
               </Button>
 
@@ -133,6 +197,19 @@ export const LoginForm = () => {
           </FormControl>
         </div>
       </div>
+
+      <Box className={styles.alert_container}>
+        <Collapse
+          orientation="horizontal"
+          in={feedback.show}
+          className={styles.alert}
+        >
+          <Alert severity={feedback.type}>
+            <AlertTitle>{feedback.title}</AlertTitle>
+            {feedback.message} <strong>{feedback.strongMessage}</strong>
+          </Alert>
+        </Collapse>
+      </Box>
     </Layout>
   );
 };
