@@ -21,6 +21,7 @@ import { userLogin } from "@/api/user";
 import Collapse from "@mui/material/Collapse";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
+import { getDocumentMask } from "@/utils";
 
 export const LoginForm = () => {
   const router = useRouter();
@@ -28,17 +29,6 @@ export const LoginForm = () => {
   const [documentType, setDocumentType] = useState({ value: "", error: "" });
   const [password, setPassword] = useState({ value: "", error: "" });
   const [feedback, setFeedback] = useState(DEFAULT_FEEDBACK);
-
-  const getDocumentMask = () => {
-    if (documentType) {
-      if (documentType.value === "CPF") {
-        return "999.999.999-99";
-      } else {
-        return "aaaaaaaaa";
-      }
-    }
-    return "";
-  };
 
   const { mutate } = useMutation({
     mutationFn: userLogin,
@@ -146,7 +136,7 @@ export const LoginForm = () => {
               <Grid item xs={1} sm={5} md={5}>
                 <DemoItem label="Digite seu documento">
                   <MaskedInput
-                    mask={getDocumentMask()}
+                    mask={getDocumentMask(documentType.value)}
                     value={document.value}
                     disabled={!documentType}
                     placeholder="Digite o documento"
