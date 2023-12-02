@@ -1,4 +1,3 @@
-import Paper from "@mui/material/Paper";
 import styles from "./page.module.css";
 import Box from "@mui/material/Box";
 import { Tag } from "@/components/Tag";
@@ -26,7 +25,7 @@ export const VaccineCard: React.FC<Vaccine & { variant: VaccineStatus }> = ({
   };
 
   return (
-    <Paper key={id} variant="outlined" className={getContainerStyle(variant)}>
+    <Box key={id} className={getContainerStyle(variant)}>
       <Box display="flex" flexDirection="column" marginBottom={3}>
         <Box
           display="flex"
@@ -54,6 +53,6 @@ export const VaccineCard: React.FC<Vaccine & { variant: VaccineStatus }> = ({
       <h5
         className={styles.date}
       >{`Última dose tomada: ${vaccinationDate}`}</h5>
-    </Paper>
+    </Box>
   );
 };

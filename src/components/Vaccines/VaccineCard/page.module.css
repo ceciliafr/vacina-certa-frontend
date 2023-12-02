@@ -1,6 +1,8 @@
 .container,
 .pending_container,
 .completed_container {
+  border-radius: 5px;
+  border: 1px solid var(--gray-10);
   padding: 1rem;
 }
 

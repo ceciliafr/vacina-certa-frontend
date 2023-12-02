@@ -6,7 +6,7 @@ import axios, { AxiosResponse } from "axios";
 export const userLogin = async (user: LoginUser): Promise<string> => {
   const { data } = await axios.post<AxiosResponse<string>>(
     "https://summer-catfish-296915.uc.r.appspot.com/login",
-    { user }
+    user
   );
 
   return data.data;
@@ -17,9 +17,8 @@ export const userRegister = async (
 ): Promise<AxiosResponse> => {
   const { data } = await axios.post<AxiosResponse>(
     "https://summer-catfish-296915.uc.r.appspot.com/login/register",
-    {
-      user,
-    }
+
+    user
   );
 
   return data;

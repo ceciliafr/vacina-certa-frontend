@@ -28,3 +28,7 @@ export const getLastNames = (name: string): string => {
   const namesArray = name.split(" ");
   return namesArray.slice(1).join(" ");
 };
+
+export const removeSpecialCharacters = (characters: string) => {
+  return characters.replace(/[^a-z0-9]/gi, "");
+};

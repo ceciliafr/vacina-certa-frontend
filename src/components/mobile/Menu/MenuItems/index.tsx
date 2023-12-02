@@ -19,15 +19,15 @@ const MENU_ITEMS = [
   },
   {
     id: 3,
-    title: "Registrar Vacinação",
-    route: "/registrar-vacinacao",
-    icon: "/agenda.png",
-  },
-  {
-    id: 4,
     title: "Todas as Vacinas",
     route: "/todas-as-vacinas",
     icon: "/vacina.png",
+  },
+  {
+    id: 4,
+    title: "Registrar Vacinação",
+    route: "/registrar-vacinacao",
+    icon: "/agenda.png",
   },
   {
     id: 5,

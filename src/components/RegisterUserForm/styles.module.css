@@ -67,6 +67,11 @@
   width: 25rem;
 }
 
+.container p {
+  padding: 0;
+  margin: 0;
+}
+
 @media (max-width: 700px) {
   .content {
     width: 90%;

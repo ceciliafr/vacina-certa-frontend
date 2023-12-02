@@ -1,8 +1,8 @@
 "use client";
-import { useRouter } from "next/navigation";
-import styles from "./styles.module.css";
 import "date-fns/locale/pt-BR";
 import { useState } from "react";
+import styles from "./styles.module.css";
+import { useRouter } from "next/navigation";
 import { Title } from "@/components/Title";
 import { Layout } from "@/components/Layout";
 import Box from "@mui/material/Box";
@@ -12,7 +12,6 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { useMutation } from "@tanstack/react-query";
-import { DocumentType } from "@/types/vaccines";
 import TextField from "@mui/material/TextField";
 import { Navbar } from "../Navbar";
 import Grid from "@mui/material/Grid";
@@ -25,24 +24,57 @@ import {
   getDocumentMask,
   getFirstName,
   getLastNames,
+  removeSpecialCharacters,
 } from "@/utils";
 import { userRegister } from "@/api/user";
 import Alert from "@mui/material/Alert";
 import Collapse from "@mui/material/Collapse";
 import AlertTitle from "@mui/material/AlertTitle";
 import { DEFAULT_FEEDBACK, DOCUMENT_TYPE } from "@/constants";
+import { Dayjs } from "dayjs";
+import { RegisterUser } from "@/types/user";
+import FormHelperText from "@mui/material/FormHelperText";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputAdornment from "@mui/material/InputAdornment";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import IconButton from "@mui/material/IconButton";
+
+const defaultValue = { value: "", error: "" };
+const defaultDateValue = { value: null, error: "" };
 
 export const RegisterUserForm = () => {
   const router = useRouter();
 
-  const [document, setDocument] = useState({ value: "", error: "" });
-  const [documentType, setDocumentType] = useState({ value: "", error: "" });
-  const [name, setName] = useState({ value: "", error: "" });
-  const [nickname, setNickname] = useState({ value: "", error: "" });
-  const [phone, setPhone] = useState({ value: "", error: "" });
-  const [dateOfBirth, setDateOfBirth] = useState({ value: null, error: "" });
-  const [password, setPassword] = useState({ value: "", error: "" });
+  const [document, setDocument] = useState(defaultValue);
+  const [documentType, setDocumentType] = useState(defaultValue);
+  const [name, setName] = useState(defaultValue);
+  const [nickname, setNickname] = useState(defaultValue);
+  const [phone, setPhone] = useState(defaultValue);
+  const [password, setPassword] = useState(defaultValue);
+  const [confirmPassword, setConfirmPassword] = useState(defaultValue);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [feedback, setFeedback] = useState(DEFAULT_FEEDBACK);
+  const [dateOfBirth, setDateOfBirth] = useState<{
+    value: Dayjs | null;
+    error: string;
+  }>(defaultDateValue);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleClickShowConfirmPassword = () =>
+    setShowConfirmPassword((show) => !show);
+
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
+
+  const handleMouseDownConfirmPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
 
   const { mutate } = useMutation({
     mutationFn: userRegister,
@@ -90,24 +122,191 @@ export const RegisterUserForm = () => {
     }, alertTime);
   };
 
-  const register = () => {
-    const user = {
-      login: document.value,
-      documentsType: documentType.value,
-      password: password.value,
-      roles: ["USER"],
-      usersViewModel: {
-        firstName: getFirstName(name.value),
-        nickname: nickname.value,
-        lastName: getLastNames(name.value),
-        dateOfBirth: formatDate(`${dateOfBirth.value}`),
-        document: document.value,
-        documentType: documentType.value,
-        phone: phone.value,
-      },
-    };
+  const resetErrorStates = () => {
+    setFeedback((prev) => ({
+      ...prev,
+      error: "",
+    }));
 
-    mutate(user);
+    setDocument((prev) => ({
+      ...prev,
+      error: "",
+    }));
+    setDocumentType((prev) => ({
+      ...prev,
+      error: "",
+    }));
+    setName((prev) => ({
+      ...prev,
+      error: "",
+    }));
+    setNickname((prev) => ({
+      ...prev,
+      error: "",
+    }));
+    setPhone((prev) => ({
+      ...prev,
+      error: "",
+    }));
+    setPassword((prev) => ({
+      ...prev,
+      error: "",
+    }));
+    setConfirmPassword((prev) => ({
+      ...prev,
+      error: "",
+    }));
+    setDateOfBirth((prev) => ({
+      ...prev,
+      error: "",
+    }));
+  };
+
+  const userIsValid = () => {
+    resetErrorStates();
+    let isValid = true;
+
+    if (!documentType.value) {
+      setDocumentType((prev) => ({
+        ...prev,
+        error: "campo obrigatório",
+      }));
+      isValid = false;
+    }
+
+    if (!document.value) {
+      setDocument((prev) => ({
+        ...prev,
+        error: "campo obrigatório",
+      }));
+      isValid = false;
+    }
+
+    if (
+      documentType.value === "CPF" &&
+      document.value &&
+      removeSpecialCharacters(document.value).length != 11
+    ) {
+      setDocument((prev) => ({
+        ...prev,
+        error: "campo incompleto",
+      }));
+      isValid = false;
+    }
+
+    if (
+      documentType.value === "PASSPORT" &&
+      document.value &&
+      removeSpecialCharacters(document.value).length != 9
+    ) {
+      setDocument((prev) => ({
+        ...prev,
+        error: "campo incompleto",
+      }));
+      isValid = false;
+    }
+
+    if (!name.value) {
+      setName((prev) => ({
+        ...prev,
+        error: "campo obrigatório",
+      }));
+      isValid = false;
+    }
+
+    if (name.value && !(name.value.split(" ").length >= 2)) {
+      setName((prev) => ({
+        ...prev,
+        error: "campo incompleto",
+      }));
+      isValid = false;
+    }
+
+    if (!nickname.value) {
+      setNickname((prev) => ({
+        ...prev,
+        error: "campo obrigatório",
+      }));
+      isValid = false;
+    }
+
+    if (!phone.value) {
+      setPhone((prev) => ({
+        ...prev,
+        error: "campo obrigatório",
+      }));
+      isValid = false;
+    }
+
+    if (phone.value && removeSpecialCharacters(phone.value).length != 13) {
+      setPhone((prev) => ({
+        ...prev,
+        error: "campo incompleto",
+      }));
+      isValid = false;
+    }
+
+    if (!dateOfBirth.value) {
+      setDateOfBirth((prev) => ({
+        ...prev,
+        error: "campo obrigatório",
+      }));
+      isValid = false;
+    }
+
+    if (!password.value) {
+      setPassword((prev) => ({
+        ...prev,
+        error: "campo obrigatório",
+      }));
+      isValid = false;
+    }
+
+    if (!confirmPassword.value) {
+      setConfirmPassword((prev) => ({
+        ...prev,
+        error: "campo obrigatório",
+      }));
+      isValid = false;
+    }
+
+    if (
+      password.value &&
+      confirmPassword.value &&
+      password.value !== confirmPassword.value
+    ) {
+      setConfirmPassword((prev) => ({
+        ...prev,
+        error: "as senhas devem ser iguais",
+      }));
+      isValid = false;
+    }
+
+    return isValid;
+  };
+
+  const register = () => {
+    if (userIsValid()) {
+      const user = {
+        login: document.value,
+        documentsType: documentType.value,
+        password: password.value,
+        roles: ["USER"],
+        usersViewModel: {
+          firstName: getFirstName(name.value),
+          nickname: nickname.value,
+          lastName: getLastNames(name.value),
+          dateOfBirth: dateOfBirth.value
+            ? formatDate(`${dateOfBirth.value}`)
+            : "",
+          document: document.value,
+          documentType: documentType.value,
+          phone: phone.value,
+        },
+      } as RegisterUser;
+
+      mutate(user);
+    }
   };
 
   return (
@@ -125,49 +324,55 @@ export const RegisterUserForm = () => {
               columnSpacing={{ xs: 1, sm: 1, md: 2 }}
             >
               <Grid item xs={1} sm={3} md={4}>
-                <DemoItem label="Tipo do documento">
-                  <Select
-                    labelId="demo-simple-select-autowidth-label"
-                    id="demo-simple-select-autowidth"
-                    value={documentType.value}
-                    onChange={(e) =>
-                      setDocumentType((prev) => ({
-                        ...prev,
-                        value: e.target.value,
-                      }))
-                    }
-                    fullWidth
-                    variant="outlined"
-                    defaultValue="Selecione"
-                    displayEmpty
-                    renderValue={(selected) => {
-                      if (selected.length === 0) {
-                        return <em style={{ color: "#656565" }}>Selecione</em>;
+                <FormControl error fullWidth>
+                  <DemoItem label="Tipo do documento">
+                    <Select
+                      error={!!documentType.error}
+                      labelId="demo-simple-select-autowidth-label"
+                      id="demo-simple-select-autowidth"
+                      value={documentType.value}
+                      onChange={(e) =>
+                        setDocumentType((prev) => ({
+                          ...prev,
+                          value: e.target.value,
+                        }))
                       }
-                      return DOCUMENT_TYPE.filter(
-                        (doc) => doc.value === selected
-                      )[0].name;
-                    }}
-                  >
-                    <MenuItem disabled value="Selecione">
-                      <em>Selecione</em>
-                    </MenuItem>
-
-                    {DOCUMENT_TYPE.map((document) => (
-                      <MenuItem key={document.value} value={document.value}>
-                        {document.name}
+                      fullWidth
+                      variant="outlined"
+                      defaultValue="Selecione"
+                      displayEmpty
+                      renderValue={(selected) => {
+                        if (selected.length === 0) {
+                          return (
+                            <em style={{ color: "#656565" }}>Selecione</em>
+                          );
+                        }
+                        return DOCUMENT_TYPE.filter(
+                          (doc) => doc.value === selected
+                        )[0].name;
+                      }}
+                    >
+                      <MenuItem disabled value="Selecione">
+                        <em>Selecione</em>
                       </MenuItem>
-                    ))}
-                  </Select>
-                </DemoItem>
+
+                      {DOCUMENT_TYPE.map((document) => (
+                        <MenuItem key={document.value} value={document.value}>
+                          {document.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <FormHelperText>{documentType.error}</FormHelperText>
+                  </DemoItem>
+                </FormControl>
               </Grid>
               <Grid item xs={1} sm={5} md={4}>
                 <DemoItem label="Digite seu documento">
                   <MaskedInput
                     mask={getDocumentMask(documentType.value)}
                     value={document.value}
-                    disabled={!documentType}
-                    placeholder="Digite o documento"
+                    disabled={!documentType.value}
+                    // placeholder="Digite o documento"
                     alwaysShowMask
                     onChange={(e) =>
                       setDocument((prev) => ({
@@ -176,7 +381,13 @@ export const RegisterUserForm = () => {
                       }))
                     }
                   >
-                    <TextField id="outlined-basic" variant="outlined" />
+                    <TextField
+                      id="outlined-basic"
+                      variant="outlined"
+                      label="Digite o documento"
+                      error={!!document.error}
+                      helperText={document.error}
+                    />
                   </MaskedInput>
                 </DemoItem>
               </Grid>
@@ -184,6 +395,7 @@ export const RegisterUserForm = () => {
               <Grid item xs={1} sm={8} md={8}>
                 <DemoItem label="Digite seu nome completo">
                   <TextField
+                    error={!!name.error}
                     value={name.value}
                     id="outlined-basic"
                     label="Ex.: John Lennon"
@@ -194,12 +406,14 @@ export const RegisterUserForm = () => {
                         value: e.target.value,
                       }))
                     }
+                    helperText={name.error}
                   />
                 </DemoItem>
               </Grid>
               <Grid item xs={1} sm={8} md={8}>
                 <DemoItem label="Como prefere ser chamado">
                   <TextField
+                    error={!!nickname.error}
                     value={nickname.value}
                     id="outlined-basic"
                     label="Ex.: Jonny"
@@ -210,6 +424,7 @@ export const RegisterUserForm = () => {
                         value: e.target.value,
                       }))
                     }
+                    helperText={nickname.error}
                   />
                 </DemoItem>
               </Grid>
@@ -230,6 +445,8 @@ export const RegisterUserForm = () => {
                       id="outlined-basic"
                       variant="outlined"
                       label="Ex.: +55 (31) 12345-6789"
+                      error={!!phone.error}
+                      helperText={phone.error}
                     />
                   </MaskedInput>
                 </DemoItem>
@@ -244,6 +461,7 @@ export const RegisterUserForm = () => {
                       <Box className={styles.date_picker}>
                         <DemoItem label="Data de nascimento">
                           <DatePicker
+                            defaultValue={null}
                             value={dateOfBirth.value}
                             disableFuture
                             format="DD/MM/YYYY"
@@ -253,6 +471,12 @@ export const RegisterUserForm = () => {
                                 value: e,
                               }))
                             }
+                            slotProps={{
+                              textField: {
+                                error: !!dateOfBirth.error,
+                                helperText: dateOfBirth.error,
+                              },
+                            }}
                           />
                         </DemoItem>
                       </Box>
@@ -261,26 +485,90 @@ export const RegisterUserForm = () => {
                 </LocalizationProvider>
               </Grid>
 
-              <Grid item xs={1} sm={8} md={8}>
-                <DemoItem label="Digite sua senha">
-                  <TextField
+              <Grid item xs={4} sm={4} md={4}>
+                <DemoItem label="Crie sua senha">
+                  <OutlinedInput
+                    fullWidth
+                    id="outlined-adornment-password"
+                    type={showPassword ? "text" : "password"}
                     value={password.value}
-                    id="outlined-basic"
-                    label="Ex.: &%6jAYkfe#@908"
-                    variant="outlined"
+                    placeholder="Ex.: &%6jAYkfe#@908"
                     onChange={(e) =>
                       setPassword((prev) => ({
                         ...prev,
                         value: e.target.value,
                       }))
                     }
+                    error={!!password.error}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
                   />
+                  <FormHelperText error={!!password.error} id="password-error">
+                    {password.error}
+                  </FormHelperText>
+                </DemoItem>
+              </Grid>
+
+              <Grid item xs={4} sm={4} md={4}>
+                <DemoItem label="Confirme sua senha">
+                  <OutlinedInput
+                    fullWidth
+                    id="outlined-adornment-password"
+                    type={showConfirmPassword ? "text" : "password"}
+                    value={confirmPassword.value}
+                    disabled={!password.value}
+                    placeholder="Confirmar senha"
+                    onChange={(e) =>
+                      setConfirmPassword((prev) => ({
+                        ...prev,
+                        value: e.target.value,
+                      }))
+                    }
+                    error={!!confirmPassword.error}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowConfirmPassword}
+                          onMouseDown={handleMouseDownConfirmPassword}
+                          edge="end"
+                        >
+                          {showConfirmPassword ? (
+                            <VisibilityOff />
+                          ) : (
+                            <Visibility />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                  <FormHelperText
+                    error={!!confirmPassword.error}
+                    id="confirmPassword-error"
+                  >
+                    {confirmPassword.error}
+                  </FormHelperText>
                 </DemoItem>
               </Grid>
             </Grid>
 
             <Box className={styles.buttons_container}>
-              <Button fullWidth variant="contained" onClick={register}>
+              <Button
+                fullWidth
+                variant="contained"
+                onClick={register}
+                type="submit"
+              >
                 Cadastrar
               </Button>
 

@@ -12,8 +12,31 @@
   max-width: 70%;
 }
 
+.buttons_container {
+  width: 100%;
+  gap: 2rem;
+  display: flex;
+  margin-top: 6rem;
+  justify-content: flex-end;
+}
+
+.buttons_container div > button {
+  height: 3rem;
+  font-size: 16px;
+  border-radius: 40px;
+  text-transform: initial;
+}
+
+.buttons_container div:first-child > button {
+  background-color: var(--blue-70);
+}
+
 @media (min-width: 70px) {
   .user_info_container {
     max-width: 100%;
+  }
+
+  .buttons_container {
+    margin-top: 2rem;
   }
 }
