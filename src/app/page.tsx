@@ -18,7 +18,11 @@ export default function MyCard() {
     <Layout>
       <DesktopMenu />
       <RightContent>
-        <Title title="Vacinas que você já tomou" />
+        <Title
+          title={
+            takenVaccinesData.length ? "Vacinas que você já tomou" : "Ops!"
+          }
+        />
         <Vaccines vaccines={takenVaccinesData} variant="completed" />
       </RightContent>
     </Layout>
