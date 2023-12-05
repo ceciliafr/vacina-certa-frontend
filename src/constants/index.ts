@@ -14,3 +14,5 @@ export const DEFAULT_FEEDBACK = {
   message: "",
   strongMessage: "",
 } as Feedback;
+
+export const HOST = "https://core-dot-summer-catfish-296915.uc.r.appspot.com";

@@ -1,27 +1,21 @@
-import { takenVaccinesData } from "@/mocks/taken-vaccines";
 import api from "@/service/config";
-import { JWT, UserInfo } from "@/types/user";
+import { HOST } from "@/constants";
 import { Vaccine } from "@/types/vaccines";
-import { parseJwt } from "@/utils";
 
-const HOST = "https://core-dot-summer-catfish-296915.uc.r.appspot.com";
-
-const userInfo: UserInfo = parseJwt(JWT);
-
-console.log(userInfo);
-
-export const getVaccines = async () => {
-  const { data } = await api.get<Vaccine[]>(`${HOST}/vaccine`);
-
-  console.log(data);
+export const getVaccines = async (url: string, token: string | null) => {
+  const { data } = await api.get<Vaccine[]>(`${HOST}/vaccine`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
   return data;
 };
 
-export const getTakenVaccines = async (): Promise<Vaccine[]> => {
-  const { data } = await api.get<Vaccine[]>(
-    `${HOST}/user/${userInfo.userId}/vaccines`
-  );
-
+export const getTakenVaccines = async (
+  url: string,
+  token: string | null
+): Promise<Vaccine[]> => {
+  const { data } = await api.get<Vaccine[]>(url, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
   return data;
 };
 

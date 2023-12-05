@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import styles from "./styles.module.css";
 import "date-fns/locale/pt-BR";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Title } from "@/components/Title";
 import { Layout } from "@/components/Layout";
 import Box from "@mui/material/Box";
@@ -22,6 +22,9 @@ import Collapse from "@mui/material/Collapse";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import { getDocumentMask } from "@/utils";
+import { UserContext } from "@/contexts/userContext";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export const LoginForm = () => {
   const router = useRouter();
@@ -29,18 +32,26 @@ export const LoginForm = () => {
   const [documentType, setDocumentType] = useState({ value: "", error: "" });
   const [password, setPassword] = useState({ value: "", error: "" });
   const [feedback, setFeedback] = useState(DEFAULT_FEEDBACK);
+  const { token, setToken } = useContext(UserContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { mutate } = useMutation({
     mutationFn: userLogin,
     mutationKey: ["userLogin"],
-    onSuccess: async () => {
+    onMutate: () => {
+      setIsLoading(true);
+    },
+    onSuccess: async (data) => {
+      setIsLoading(false);
       setFeedback((prev) => ({
         ...prev,
         show: false,
       }));
+      setToken(data);
       closeAlert({ shouldRedirect: true, alertTime: 1000 });
     },
     onError: async () => {
+      setIsLoading(false);
       setFeedback({
         show: true,
         isError: false,
@@ -67,7 +78,7 @@ export const LoginForm = () => {
       }));
 
       if (shouldRedirect) {
-        router.replace("/login");
+        router.replace("/");
       }
     }, alertTime);
   };
@@ -200,6 +211,12 @@ export const LoginForm = () => {
           </Alert>
         </Collapse>
       </Box>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={isLoading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </Layout>
   );
 };

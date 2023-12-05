@@ -4,12 +4,12 @@ import axios, { AxiosResponse } from "axios";
 // import { useContext } from "react";
 
 export const userLogin = async (user: LoginUser): Promise<string> => {
-  const { data } = await axios.post<AxiosResponse<string>>(
+  const { data } = await axios.post<string>(
     "https://summer-catfish-296915.uc.r.appspot.com/login",
     user
   );
 
-  return data.data;
+  return data;
 };
 
 export const userRegister = async (

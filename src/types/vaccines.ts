@@ -15,17 +15,28 @@
 //    */
 // };
 
+// export type Vaccine = {
+//   id: number;
+//   dose: string;
+//   description: string;
+//   manufacturer: string;
+//   vaccinationDate: string;
+//   completedName?: string;
+//   popularName: string;
+//   age?: number;
+//   year?: number;
+//   required?: boolean;
+// };
+
 export type Vaccine = {
-  id: number;
-  dose: string;
-  description: string;
-  manufacturer: string;
-  vaccinationDate: string;
-  completedName?: string;
+  id: string;
   popularName: string;
-  age?: number;
-  year?: number;
-  required?: boolean;
+  fullName: string;
+  manufacturer: string;
+  age: number;
+  year: number;
+  description: string;
+  required: boolean;
 };
 
 export type VaccineStatus = "pending" | "completed" | "information"; // não obrigatório (amarelo)

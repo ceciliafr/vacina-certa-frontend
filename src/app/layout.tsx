@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import Providers from "@/providers/query-client-provider";
+import { UserContextProvider } from "@/contexts/userContext";
 
 const poppins = Poppins({
   weight: ["300", "400", "500", "600", "700"],
@@ -23,7 +24,9 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={poppins.className}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <UserContextProvider>{children}</UserContextProvider>
+        </Providers>
       </body>
     </html>
   );

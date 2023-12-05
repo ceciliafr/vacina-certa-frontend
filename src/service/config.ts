@@ -1,6 +1,7 @@
+"use client";
 import axios from "axios";
-import { JWT } from "@/types/user";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "@/contexts/userContext";
 
 const api = axios.create();
 
@@ -9,13 +10,6 @@ const AxiosInterceptor = ({ children }: { children: any }) => {
 
   useEffect(() => {
     setIsSet(true);
-
-    api.interceptors.request.use(async (req) => {
-      if (req.headers) {
-        req.headers.Authorization = `Bearer ${JWT}`;
-      }
-      return req;
-    });
 
     const resInterceptor = (response: any) => {
       return response;

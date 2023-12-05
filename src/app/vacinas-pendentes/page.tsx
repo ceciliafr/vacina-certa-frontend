@@ -3,39 +3,61 @@ import { Title } from "@/components/Title";
 import { Layout } from "@/components/Layout";
 import { DesktopMenu } from "@/components/desktop/Menu";
 import { RightContent } from "@/components/Layout/RightContent";
-import { allVaccinesData } from "@/mocks/all-vaccines";
-import { takenVaccinesData } from "@/mocks/taken-vaccines";
 import { Vaccines } from "@/components/Vaccines";
 import { getTakenVaccines, getVaccines } from "@/api/vaccines";
 import { useQuery } from "@tanstack/react-query";
+import { useContext, useMemo } from "react";
+import { UserContext } from "@/contexts/userContext";
+import { HOST } from "@/constants";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function PendingVaccines() {
-  const { data: allVaccines } = useQuery({
-    queryFn: getVaccines,
+  const { user, token } = useContext(UserContext);
+
+  const { data: allVaccines, isLoading: isAllVaccinesLoading } = useQuery({
+    queryFn: async () => {
+      return getVaccines(`${HOST}/vaccine`, token);
+    },
     queryKey: ["allVaccines"],
   });
 
-  const { data: takenVaccines } = useQuery({
-    queryFn: getTakenVaccines,
+  const { data: takenVaccines, isLoading: isTakenVaccinesLoading } = useQuery({
+    queryFn: async () =>
+      getTakenVaccines(`${HOST}/user/${user?.userId}/vaccines`, token),
     queryKey: ["takenVaccines"],
   });
 
-  const getPendingVaccines = () => {
-    const setTakenVaccinesData = new Set(
-      takenVaccinesData.map((item) => item["id"])
-    );
+  const pendingVaccines = useMemo(() => {
+    if (takenVaccines && allVaccines) {
+      const setTakenVaccinesData = new Set(
+        takenVaccines.map((item) => item["id"])
+      );
 
-    return allVaccinesData.filter(
-      (item) => !setTakenVaccinesData.has(item["id"])
-    );
-  };
+      return allVaccines.filter(
+        (item) => !setTakenVaccinesData.has(item["id"])
+      );
+    }
+    return [];
+  }, [takenVaccines, allVaccines]);
 
   return (
     <Layout>
       <DesktopMenu />
       <RightContent>
-        <Title title="Vacinas que você ainda não tomou" />
-        <Vaccines vaccines={getPendingVaccines()} variant="pending" />
+        {pendingVaccines?.length ? (
+          <>
+            <Title title="Vacinas que você ainda não tomou" />
+            <Vaccines vaccines={pendingVaccines} variant="pending" />
+          </>
+        ) : (
+          <Backdrop
+            sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={isAllVaccinesLoading || isTakenVaccinesLoading}
+          >
+            <CircularProgress color="inherit" />
+          </Backdrop>
+        )}
       </RightContent>
     </Layout>
   );
