@@ -1,4 +1,5 @@
 import axios from "axios";
+import { JWT } from "@/types/user";
 import { useEffect, useState } from "react";
 
 const api = axios.create();
@@ -10,10 +11,8 @@ const AxiosInterceptor = ({ children }: { children: any }) => {
     setIsSet(true);
 
     api.interceptors.request.use(async (req) => {
-      const token = `${api}/token`;
-
-      if (token && req.headers) {
-        req.headers.Authorization = `Bearer ${token}`;
+      if (req.headers) {
+        req.headers.Authorization = `Bearer ${JWT}`;
       }
       return req;
     });

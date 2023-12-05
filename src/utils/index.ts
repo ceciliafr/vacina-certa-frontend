@@ -32,3 +32,11 @@ export const getLastNames = (name: string): string => {
 export const removeSpecialCharacters = (characters: string) => {
   return characters.replace(/[^a-z0-9]/gi, "");
 };
+
+export const parseJwt = (token: string) => {
+  try {
+    return JSON.parse(atob(token.split(".")[1]));
+  } catch (e) {
+    return null;
+  }
+};

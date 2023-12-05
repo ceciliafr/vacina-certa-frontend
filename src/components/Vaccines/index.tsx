@@ -7,14 +7,14 @@ import styles from "./page.module.css";
 import Image from "next/image";
 
 export const Vaccines: React.FC<{
-  vaccines: Vaccine[];
+  vaccines?: Vaccine[];
   variant: VaccineStatus;
 }> = ({ vaccines, variant }) => {
   const router = useRouter();
 
   return (
     <>
-      {vaccines.length ? (
+      {vaccines?.length ? (
         <Box display="flex" flexDirection="column" gap={4}>
           {vaccines.map((vaccine) => (
             <VaccineCard
@@ -39,6 +39,7 @@ export const Vaccines: React.FC<{
           <Grid item xs={1} sm={2.5} md={2.5}>
             <div className={styles.image_container}>
               <Image
+                priority
                 src="/no_vaccine.png"
                 fill
                 style={{
