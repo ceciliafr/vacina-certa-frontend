@@ -10,23 +10,44 @@ import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import OutlinedInput from "@mui/material/OutlinedInput";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import MaskedInput from "react-input-mask";
 import Button from "@mui/material/Button";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getUser } from "@/api/user";
+import { DEFAULT_FEEDBACK, HOST } from "@/constants";
+import { useRouter } from "next/navigation";
+import { UserContext } from "@/contexts/userContext";
+
+// UserResponseFromMyProfile;
+
+// id: "ff8080818c372d60018c372e25fd0000";
+// firstName: "Cissa";
+// lastName: "Fernandes";
+// dateOfBirth: "2023-12-02 00:00:00";
+// document: "123.243.434-34";
+// documentType: "CPF";
+// createdAt: "2023-12-04 23:33:40";
+// updatedAt: "2023-12-04 23:33:40";
+// phone: "+23 (49) 79347-6837";
+// nickname: "Cissa";
+
+const defaultValue = { value: "", error: "" };
+const defaultDateValue = { value: null, error: "" };
 
 export const Form: React.FC = () => {
-  const [password, setPassword] = useState("123458798574");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const router = useRouter();
+
+  const [feedback, setFeedback] = useState(DEFAULT_FEEDBACK);
+  const [password, setPassword] = useState(defaultValue);
+  const [confirmPassword, setConfirmPassword] = useState(defaultValue);
   const [showPassword, setShowPassword] = useState(false);
-  const [nickname, setNickname] = useState({ value: "Jonny", error: "" });
-  const [phone, setPhone] = useState({
-    value: "+87 (39) 74973-4989",
-    error: "",
-  });
-  const [name, setName] = useState({
-    value: "John Lennon",
-    error: "",
-  });
+  const [nickname, setNickname] = useState({ value: "", error: "" });
+  const [phone, setPhone] = useState(defaultValue);
+  const [name, setName] = useState(defaultValue);
+
+  const { token, user } = useContext(UserContext);
+  const url = `${HOST}/vaccine`;
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -34,6 +55,35 @@ export const Form: React.FC = () => {
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     event.preventDefault();
+  };
+
+  const { data } = useQuery({
+    queryFn: async () => getUser(`${HOST}/user/${user.userId}/vaccines`, token),
+    queryKey: ["getUserData"],
+  });
+
+  useEffect(() => {
+
+    
+  }, [data])}
+
+  const closeAlert = ({
+    shouldRedirect = false,
+    alertTime,
+  }: {
+    shouldRedirect: boolean;
+    alertTime: number;
+  }) => {
+    setTimeout(() => {
+      setFeedback((prev) => ({
+        ...prev,
+        show: false,
+      }));
+
+      if (shouldRedirect) {
+        router.replace("/login");
+      }
+    }, alertTime);
   };
 
   return (
@@ -189,5 +239,5 @@ export const Form: React.FC = () => {
         </div>
       </Box>
     </Box>
-  );
+  )
 };

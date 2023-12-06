@@ -2,6 +2,7 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "@/contexts/userContext";
+import { HTTP_STATUS } from "@/constants";
 
 const api = axios.create();
 
@@ -16,6 +17,17 @@ const AxiosInterceptor = ({ children }: { children: any }) => {
     };
 
     const errInterceptor = (error: any) => {
+      const status = error.response?.status || error.status;
+      if (
+        status === HTTP_STATUS.INTERNAL_ERROR ||
+        status === HTTP_STATUS.UNAUTHORIZED ||
+        status === HTTP_STATUS.BAD_REQUEST ||
+        status === HTTP_STATUS.NOT_FOUND
+      ) {
+        window.location.pathname = "/login";
+        return;
+      }
+
       return Promise.reject(error);
     };
 

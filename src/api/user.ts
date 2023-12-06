@@ -34,3 +34,16 @@ export const updateUser = async (): Promise<{}> => {
   });
   return data;
 };
+
+export const getUser = async (
+  url: string,
+  token: string | null
+): Promise<{}> => {
+  const { data } = await axios.post<AxiosResponse>(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return data;
+};

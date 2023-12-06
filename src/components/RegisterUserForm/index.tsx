@@ -372,7 +372,6 @@ export const RegisterUserForm = () => {
                     mask={getDocumentMask(documentType.value)}
                     value={document.value}
                     disabled={!documentType.value}
-                    // placeholder="Digite o documento"
                     alwaysShowMask
                     onChange={(e) =>
                       setDocument((prev) => ({

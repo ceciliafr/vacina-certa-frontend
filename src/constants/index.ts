@@ -15,4 +15,14 @@ export const DEFAULT_FEEDBACK = {
   strongMessage: "",
 } as Feedback;
 
+export const HTTP_STATUS = {
+  BAD_REQUEST: 400,
+  UNAUTHORIZED: 403,
+  NOT_FOUND: 404,
+  UNPROCESSABLE_ENTITY: 422,
+  INTERNAL_ERROR: 500,
+  EXTERNAL_DEPENDENCY_ERROR: 512,
+};
+
 export const HOST = "https://core-dot-summer-catfish-296915.uc.r.appspot.com";
+

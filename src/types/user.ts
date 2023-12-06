@@ -20,8 +20,21 @@ export type LoginUser = {
   password: string;
 };
 
-export type UserInfo = {
+export type UserResponseFromLogin = {
   exp: number;
   sub: string;
   userId: string;
+};
+
+export type UserResponseFromMyProfile = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
+  document: string;
+  documentType: string;
+  createdAt: string;
+  updatedAt: string;
+  phone: string;
+  nickname: string;
 };
