@@ -1,13 +1,15 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import Button from "@mui/material/Button";
 import styles from "./styles.module.css";
 import { Menu } from "@/components/mobile/Menu";
+import { UserContext } from "@/contexts/userContext";
 
 export const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user } = useContext(UserContext);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -25,7 +27,7 @@ export const Navbar: React.FC = () => {
         <div className={styles.user_info_container}>
           <span className={styles.welcome_message}>Olá,</span>
           <span className={styles.user_name}>
-            {true ? "John!" : "Que bom que você veio!"}
+            {user.userId ? "John!" : "Que bom que você veio!"}
           </span>
         </div>
 

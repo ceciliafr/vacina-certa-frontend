@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const getDocumentMask = (documentType: string): string => {
   if (documentType) {
     if (documentType === "CPF") {
@@ -17,6 +19,10 @@ export const formatDate = (date: string): string => {
   const day = originalDate.getUTCDate().toString().padStart(2, "0");
 
   return `${year}-${month}-${day}T00:00:00.000Z`;
+};
+
+export const formatDateToPtBr = (date: string): string => {
+  return moment(date).format("DD/MM/YYYY");
 };
 
 export const getFirstName = (name: string): string => {

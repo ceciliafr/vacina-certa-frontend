@@ -26,7 +26,7 @@ export type UserResponseFromLogin = {
   userId: string;
 };
 
-export type UserResponseFromMyProfile = {
+export type UserProfile = {
   id: string;
   firstName: string;
   lastName: string;

@@ -1,5 +1,5 @@
 import api from "@/service/config";
-import { LoginUser, RegisterUser } from "@/types/user";
+import { LoginUser, RegisterUser, UserProfile } from "@/types/user";
 import axios, { AxiosResponse } from "axios";
 // import { useContext } from "react";
 
@@ -23,14 +23,13 @@ export const userRegister = async (
   return data;
 };
 
-export const updateUser = async (): Promise<{}> => {
-  //   const { id } = useContext(UserContext);
-
-  const { data } = await api.post("/user/login", {
-    // id,
-    // firstName,
-    // lastName,
-    // phone,
+export const updateUser = async (
+  url: string,
+  user: {},
+  token: string | null
+): Promise<{}> => {
+  const { data } = await api.post(url, user, {
+    headers: { Authorization: `Bearer ${token}` },
   });
   return data;
 };
@@ -38,11 +37,9 @@ export const updateUser = async (): Promise<{}> => {
 export const getUser = async (
   url: string,
   token: string | null
-): Promise<{}> => {
-  const { data } = await axios.post<AxiosResponse>(url, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+): Promise<UserProfile> => {
+  const { data } = await axios.get<UserProfile>(url, {
+    headers: { Authorization: `Bearer ${token}` },
   });
 
   return data;

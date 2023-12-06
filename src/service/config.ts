@@ -18,6 +18,7 @@ const AxiosInterceptor = ({ children }: { children: any }) => {
 
     const errInterceptor = (error: any) => {
       const status = error.response?.status || error.status;
+
       if (
         status === HTTP_STATUS.INTERNAL_ERROR ||
         status === HTTP_STATUS.UNAUTHORIZED ||
