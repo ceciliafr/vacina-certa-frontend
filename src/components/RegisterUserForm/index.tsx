@@ -93,7 +93,7 @@ export const RegisterUserForm = () => {
     onError: async () => {
       setFeedback({
         show: true,
-        isError: false,
+        isError: true,
         type: "error",
         title: "Ops",
         message: "Erro ao criar sua conta",

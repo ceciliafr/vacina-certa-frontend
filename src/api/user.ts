@@ -17,7 +17,6 @@ export const userRegister = async (
 ): Promise<AxiosResponse> => {
   const { data } = await axios.post<AxiosResponse>(
     "https://summer-catfish-296915.uc.r.appspot.com/login/register",
-
     user
   );
 

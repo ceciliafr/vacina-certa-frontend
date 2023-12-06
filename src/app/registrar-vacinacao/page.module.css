@@ -24,6 +24,10 @@
   color: var(--gray-80);
 }
 
+.error_text {
+  margin-top: 3px !important;
+}
+
 .buttons_container {
   width: 100%;
   gap: 2rem;
@@ -39,8 +43,22 @@
   text-transform: initial;
 }
 
-.buttons_container div:first-child > button  {
+.buttons_container div:first-child > button {
   background-color: var(--blue-70);
+}
+
+.alert_container {
+  position: fixed;
+  z-index: 1;
+  top: calc(100% - 100px);
+  left: calc(100% - 26rem);
+  width: 100%;
+}
+
+.alert > div,
+.alert > div > div {
+  height: 100%;
+  width: 25rem;
 }
 
 @media (max-width: 700px) {
@@ -51,5 +69,15 @@
 
   .buttons_container {
     margin-top: 2rem;
+  }
+
+  .alert_container {
+    top: calc(100% - 75.61px);
+    left: 0;
+  }
+
+  .alert > div,
+  .alert > div > div {
+    width: 100%;
   }
 }

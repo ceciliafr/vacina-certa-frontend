@@ -32,7 +32,7 @@ export const LoginForm = () => {
   const [documentType, setDocumentType] = useState({ value: "", error: "" });
   const [password, setPassword] = useState({ value: "", error: "" });
   const [feedback, setFeedback] = useState(DEFAULT_FEEDBACK);
-  const { token, setToken } = useContext(UserContext);
+  const { setToken } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
 
   const { mutate } = useMutation({
