@@ -62,10 +62,7 @@ export const Form: React.FC = () => {
     queryKey: ["getUserData"],
   });
 
-  useEffect(() => {
-
-    
-  }, [data])}
+  useEffect(() => {}, [data]);
 
   const closeAlert = ({
     shouldRedirect = false,
