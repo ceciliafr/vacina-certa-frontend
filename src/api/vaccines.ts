@@ -1,6 +1,6 @@
 import api from "@/service/config";
 import { HOST } from "@/constants";
-import { Vaccine } from "@/types/vaccines";
+import { Vaccine, VaccineResponse } from "@/types/vaccines";
 import { AxiosResponse } from "axios";
 
 export const getVaccines = async (url: string, token: string | null) => {
@@ -13,8 +13,8 @@ export const getVaccines = async (url: string, token: string | null) => {
 export const getTakenVaccines = async (
   url: string,
   token: string | null
-): Promise<Vaccine[]> => {
-  const { data } = await api.get<Vaccine[]>(url, {
+): Promise<VaccineResponse[]> => {
+  const { data } = await api.get<VaccineResponse[]>(url, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return data;

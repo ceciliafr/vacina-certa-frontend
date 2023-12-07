@@ -3,7 +3,6 @@ import { Title } from "@/components/Title";
 import { DesktopMenu } from "@/components/desktop/Menu";
 import { Layout } from "@/components/Layout";
 import { RightContent } from "@/components/Layout/RightContent";
-import { Vaccines } from "@/components/Vaccines";
 import { useQuery } from "@tanstack/react-query";
 import { HOST } from "@/constants";
 import { useContext } from "react";
@@ -11,12 +10,12 @@ import { UserContext } from "@/contexts/userContext";
 import { getTakenVaccines } from "@/api/vaccines";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
-
 import Box from "@mui/material/Box";
 import { Button, Grid } from "@mui/material";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import Image from "next/image";
+import { VaccineCard } from "@/components/VaccineCard";
 
 export default function MyCard() {
   const router = useRouter();
@@ -28,35 +27,6 @@ export default function MyCard() {
     queryFn: async () => getTakenVaccines(url, token),
     queryKey: ["takenVaccines"],
   });
-
-  // [
-  //   {
-  //     id: "ff8080818c3c3b32018c3c3c85610006",
-  //     vaccineViewModel: {
-  //       id: "ff8080818c256abf018c256accc50000",
-  //       popularName: "Vacina BCG",
-  //       fullName: "Bacilo de Calmette e Guérin",
-  //       manufacturer: "Fundação Ataulpho de Paiva",
-  //       age: 0,
-  //       year: 0,
-  //       description: "Vacina que visa proteger contra tuberculose.",
-  //       required: true,
-  //     },
-  //   },
-  //   {
-  //     id: "ff8080818c3c3b32018c3c3c85620007",
-  //     vaccineViewModel: {
-  //       id: "ff8080818c256abf018c256aef950001",
-  //       popularName: "Vacina BCG 2222",
-  //       fullName: "Bacilo de Calmette e Guérin",
-  //       manufacturer: "Fundação Ataulpho de Paiva",
-  //       age: 0,
-  //       year: 0,
-  //       description: "Vacina que visa proteger contra tuberculose.",
-  //       required: true,
-  //     },
-  //   },
-  // ];
 
   return (
     <Layout>
@@ -73,7 +43,22 @@ export default function MyCard() {
           {data?.length ? (
             <>
               <Title title="Vacinas que você já tomou" />
-              <Vaccines vaccines={data} variant="completed" />
+              <Box display="flex" flexDirection="column" gap={4}>
+                {data.map((vaccine) => (
+                  <VaccineCard
+                    key={vaccine.vaccineViewModel.id}
+                    id={vaccine.vaccineViewModel.id}
+                    popularName={vaccine.vaccineViewModel.popularName}
+                    description={vaccine.vaccineViewModel.description}
+                    manufacturer={vaccine.vaccineViewModel.manufacturer}
+                    fullName={vaccine.vaccineViewModel.fullName}
+                    age={vaccine.vaccineViewModel.age}
+                    year={vaccine.vaccineViewModel.year}
+                    required={vaccine.vaccineViewModel.required}
+                    variant="completed"
+                  />
+                ))}
+              </Box>
             </>
           ) : (
             <>

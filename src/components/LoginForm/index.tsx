@@ -68,7 +68,6 @@ export const LoginForm = () => {
       setIsLoading(false);
       setFeedback({
         show: true,
-        isError: false,
         type: "error",
         title: "Ops",
         message: "Erro ao fazer login",

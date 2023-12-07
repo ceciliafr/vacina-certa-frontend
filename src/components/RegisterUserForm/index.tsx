@@ -30,7 +30,12 @@ import { userRegister } from "@/api/user";
 import Alert from "@mui/material/Alert";
 import Collapse from "@mui/material/Collapse";
 import AlertTitle from "@mui/material/AlertTitle";
-import { DEFAULT_FEEDBACK, DOCUMENT_TYPE } from "@/constants";
+import {
+  DEAFULT_FIELD_VALUE,
+  DEFAULT_DATE_VALUE,
+  DEFAULT_FEEDBACK,
+  DOCUMENT_TYPE,
+} from "@/constants";
 import { Dayjs } from "dayjs";
 import { RegisterUser } from "@/types/user";
 import FormHelperText from "@mui/material/FormHelperText";
@@ -39,26 +44,23 @@ import InputAdornment from "@mui/material/InputAdornment";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 
-const defaultValue = { value: "", error: "" };
-const defaultDateValue = { value: null, error: "" };
-
 export const RegisterUserForm = () => {
   const router = useRouter();
 
-  const [document, setDocument] = useState(defaultValue);
-  const [documentType, setDocumentType] = useState(defaultValue);
-  const [name, setName] = useState(defaultValue);
-  const [nickname, setNickname] = useState(defaultValue);
-  const [phone, setPhone] = useState(defaultValue);
-  const [password, setPassword] = useState(defaultValue);
-  const [confirmPassword, setConfirmPassword] = useState(defaultValue);
+  const [document, setDocument] = useState(DEAFULT_FIELD_VALUE);
+  const [documentType, setDocumentType] = useState(DEAFULT_FIELD_VALUE);
+  const [name, setName] = useState(DEAFULT_FIELD_VALUE);
+  const [nickname, setNickname] = useState(DEAFULT_FIELD_VALUE);
+  const [phone, setPhone] = useState(DEAFULT_FIELD_VALUE);
+  const [password, setPassword] = useState(DEAFULT_FIELD_VALUE);
+  const [confirmPassword, setConfirmPassword] = useState(DEAFULT_FIELD_VALUE);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [feedback, setFeedback] = useState(DEFAULT_FEEDBACK);
   const [dateOfBirth, setDateOfBirth] = useState<{
     value: Dayjs | null;
     error: string;
-  }>(defaultDateValue);
+  }>(DEFAULT_DATE_VALUE);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleClickShowConfirmPassword = () =>
@@ -82,7 +84,6 @@ export const RegisterUserForm = () => {
     onSuccess: async () => {
       setFeedback({
         show: true,
-        isError: false,
         type: "success",
         title: "Parabéns",
         message: "Conta criada com sucesso!",
@@ -93,7 +94,6 @@ export const RegisterUserForm = () => {
     onError: async () => {
       setFeedback({
         show: true,
-        isError: true,
         type: "error",
         title: "Ops",
         message: "Erro ao criar sua conta",
@@ -432,7 +432,7 @@ export const RegisterUserForm = () => {
                   <MaskedInput
                     mask="+99 (99) 99999-9999"
                     value={phone.value}
-                    placeholder="Digite o documento"
+                    placeholder="Digite o seu telefone"
                     onChange={(e) =>
                       setPhone((prev) => ({
                         ...prev,

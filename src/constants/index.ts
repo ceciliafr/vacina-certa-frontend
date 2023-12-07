@@ -8,12 +8,15 @@ export const DOCUMENT_TYPE: DocumentType[] = [
 
 export const DEFAULT_FEEDBACK = {
   show: false,
-  isError: false,
   type: undefined,
   title: "",
   message: "",
   strongMessage: "",
 } as Feedback;
+
+export const DEAFULT_FIELD_VALUE = { value: "", error: "" };
+export const DEFAULT_DATE_VALUE = { value: null, error: "" };
+
 
 export const HTTP_STATUS = {
   BAD_REQUEST: 400,

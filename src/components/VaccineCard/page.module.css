@@ -4,18 +4,19 @@
   border-radius: 5px;
   border: 1px solid var(--gray-10);
   padding: 1rem;
+  box-shadow: 5px 4px 13px 0px rgb(0 0 0 / 18%);
 }
 
 .container {
-  border-left: 3px solid var(--gray-40);
+  border-left: 4px solid var(--gray-40);
 }
 
 .pending_container {
-  border-left: 3px solid var(--red-70);
+  border-left: 4px solid var(--red-70);
 }
 
 .completed_container {
-  border-left: 3px solid var(--green-90);
+  border-left: 4px solid var(--green-90);
 }
 
 .title {
@@ -33,10 +34,16 @@
 
 .producer_container {
   color: var(--gray-80);
+  line-height: 32px;
 }
 
 .description_producer {
   font-weight: 500;
+  /* text-decoration: underline; */
+}
+
+.description_value {
+  color: var(--gray-40)
 }
 
 .date {

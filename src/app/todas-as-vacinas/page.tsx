@@ -3,7 +3,6 @@ import { Title } from "@/components/Title";
 import { DesktopMenu } from "@/components/desktop/Menu";
 import { Layout } from "@/components/Layout";
 import { RightContent } from "@/components/Layout/RightContent";
-import { Vaccines } from "@/components/Vaccines";
 import { getVaccines } from "@/api/vaccines";
 import { useQuery } from "@tanstack/react-query";
 import { HOST } from "@/constants";
@@ -11,6 +10,8 @@ import { useContext } from "react";
 import { UserContext } from "@/contexts/userContext";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
+import { VaccineCard } from "@/components/VaccineCard";
 
 export default function AllVaccines() {
   const { token } = useContext(UserContext);
@@ -30,7 +31,22 @@ export default function AllVaccines() {
         {data?.length ? (
           <>
             <Title title="Todas as vacinas" />
-            <Vaccines vaccines={data} variant="information" />
+            <Box display="flex" flexDirection="column" gap={4}>
+              {data.map((vaccine) => (
+                <VaccineCard
+                  key={vaccine.id}
+                  id={vaccine.id}
+                  popularName={vaccine.popularName}
+                  description={vaccine.description}
+                  manufacturer={vaccine.manufacturer}
+                  fullName={vaccine.fullName}
+                  age={vaccine.age}
+                  year={vaccine.year}
+                  required={vaccine.required}
+                  variant="information"
+                />
+              ))}
+            </Box>
           </>
         ) : (
           <Backdrop

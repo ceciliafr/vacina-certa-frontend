@@ -9,7 +9,6 @@
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  max-width: 70%;
 }
 
 .buttons_container {
@@ -31,12 +30,36 @@
   background-color: var(--blue-70);
 }
 
-@media (min-width: 70px) {
+.alert_container {
+  position: fixed;
+  z-index: 1;
+  top: calc(100% - 100px);
+  left: calc(100% - 26rem);
+  width: 100%;
+}
+
+.alert > div,
+.alert > div > div {
+  height: 100%;
+  width: 25rem;
+}
+
+@media (max-width: 700px) {
   .user_info_container {
     max-width: 100%;
   }
 
   .buttons_container {
     margin-top: 2rem;
+  }
+
+  .alert_container {
+    top: calc(100% - 75.61px);
+    left: 0;
+  }
+
+  .alert > div,
+  .alert > div > div {
+    width: 100%;
   }
 }

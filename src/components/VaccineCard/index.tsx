@@ -6,10 +6,12 @@ import { Vaccine, VaccineStatus } from "@/types/vaccines";
 export const VaccineCard: React.FC<Vaccine & { variant: VaccineStatus }> = ({
   id,
   popularName,
-  dose,
-  description,
+  fullName,
   manufacturer,
-  vaccinationDate,
+  age,
+  year,
+  description,
+  required,
   variant,
 }) => {
   const getContainerStyle = (variant: VaccineStatus) => {
@@ -34,25 +36,43 @@ export const VaccineCard: React.FC<Vaccine & { variant: VaccineStatus }> = ({
           marginBottom={2}
         >
           <h2 className={styles.title}>{popularName}</h2>
-          <Tag>{dose}</Tag>
+          <Tag>REFORÇO</Tag>
         </Box>
 
         <hr className={styles.hr} />
       </Box>
 
+      <p className={styles.producer_container}>
+        <span className={styles.description_producer}>Nome completo:</span>
+
+        <span className={styles.description_value}>{` ${fullName}`}</span>
+      </p>
+
       <p>
-        <span className={styles.description}>{description}</span>
+        <span className={styles.description_producer}>Descrição:</span>
+
+        <span className={styles.description_value}>{` ${description}`}</span>
       </p>
 
       <p className={styles.producer_container}>
         <span className={styles.description_producer}>Fabricante:</span>
 
-        <span>{` ${manufacturer}`}</span>
+        <span className={styles.description_value}>{` ${manufacturer}`}</span>
       </p>
 
-      <h5
-        className={styles.date}
-      >{`Última dose tomada: ${vaccinationDate}`}</h5>
+      {!!age && (
+        <p className={styles.producer_container}>
+          <span className={styles.description_producer}>Idade para tomar:</span>
+
+          <span className={styles.description_value}>{` ${age}`}</span>
+        </p>
+      )}
+
+      <p className={styles.producer_container}>
+        <span className={styles.description_producer}>Última dose tomada:</span>
+
+        <span className={styles.description_value}>{` ${"10/11/2022"}`}</span>
+      </p>
     </Box>
   );
 };

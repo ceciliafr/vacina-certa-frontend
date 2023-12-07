@@ -28,6 +28,17 @@
 //   required?: boolean;
 // };
 
+// export type Vaccine = {
+//   id: string;
+//   popularName: string;
+//   fullName: string;
+//   manufacturer: string;
+//   age: number;
+//   year: number;
+//   description: string;
+//   required: boolean;
+// };
+
 export type Vaccine = {
   id: string;
   popularName: string;
@@ -37,6 +48,11 @@ export type Vaccine = {
   year: number;
   description: string;
   required: boolean;
+};
+
+export type VaccineResponse = {
+  id: string;
+  vaccineViewModel: Vaccine;
 };
 
 export type VaccineStatus = "pending" | "completed" | "information"; // não obrigatório (amarelo)

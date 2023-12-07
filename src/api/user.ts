@@ -25,12 +25,13 @@ export const userRegister = async (
 
 export const updateUser = async (
   url: string,
-  user: {},
+  user: Omit<UserProfile, "id">,
   token: string | null
-): Promise<{}> => {
-  const { data } = await api.post(url, user, {
+): Promise<AxiosResponse> => {
+  const { data } = await api.put<AxiosResponse>(url, user, {
     headers: { Authorization: `Bearer ${token}` },
   });
+
   return data;
 };
 

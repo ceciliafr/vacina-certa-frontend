@@ -19,7 +19,12 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { getVaccines, registerVaccine } from "@/api/vaccines";
 import Grid from "@mui/material/Grid";
 import { UserContext } from "@/contexts/userContext";
-import { DEFAULT_FEEDBACK, HOST } from "@/constants";
+import {
+  DEAFULT_FIELD_VALUE,
+  DEFAULT_DATE_VALUE,
+  DEFAULT_FEEDBACK,
+  HOST,
+} from "@/constants";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Dayjs } from "dayjs";
@@ -29,17 +34,14 @@ import Collapse from "@mui/material/Collapse";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 
-const defaultValue = { value: "", error: "" };
-const defaultDateValue = { value: null, error: "" };
-
 export default function RegisterVaccination() {
   const [feedback, setFeedback] = useState(DEFAULT_FEEDBACK);
   const [isLoading, setIsLoading] = useState(false);
-  const [name, setName] = useState(defaultValue);
+  const [name, setName] = useState(DEAFULT_FIELD_VALUE);
   const [vaccineAppliedAt, setVaccineAppliedAt] = useState<{
     value: Dayjs | null;
     error: string;
-  }>(defaultDateValue);
+  }>(DEFAULT_DATE_VALUE);
 
   const { token, user } = useContext(UserContext);
   const url = `${HOST}/vaccine`;
@@ -75,7 +77,6 @@ export default function RegisterVaccination() {
       setIsLoading(false);
       setFeedback({
         show: true,
-        isError: false,
         type: "success",
         title: "Parabéns",
         message: "Vacinação registrada com sucesso!",
@@ -88,7 +89,6 @@ export default function RegisterVaccination() {
       setIsLoading(false);
       setFeedback({
         show: true,
-        isError: false,
         type: "error",
         title: "Ops",
         message: "Erro ao registrar sua vacinação",
@@ -120,8 +120,8 @@ export default function RegisterVaccination() {
   };
 
   const resetAllStates = () => {
-    setName(defaultValue);
-    setVaccineAppliedAt(defaultDateValue);
+    setName(DEAFULT_FIELD_VALUE);
+    setVaccineAppliedAt(DEFAULT_DATE_VALUE);
   };
 
   const vaccineIsValid = () => {
