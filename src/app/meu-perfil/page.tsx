@@ -13,12 +13,7 @@ import MaskedInput from "react-input-mask";
 import Button from "@mui/material/Button";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getUser, updateUser } from "@/api/user";
-import {
-  DEAFULT_FIELD_VALUE,
-  DEFAULT_DATE_VALUE,
-  DEFAULT_FEEDBACK,
-  HOST,
-} from "@/constants";
+import { DEAFULT_FIELD_VALUE, DEFAULT_FEEDBACK, HOST } from "@/constants";
 import { useRouter } from "next/navigation";
 import { UserContext } from "@/contexts/userContext";
 import {
@@ -37,6 +32,10 @@ import Link from "@mui/material/Link";
 export default function MyProfile() {
   const router = useRouter();
   const { token, user } = useContext(UserContext);
+
+  useEffect(() => {
+    if (!token) router.replace("/login");
+  }, [token, router]);
 
   const [feedback, setFeedback] = useState(DEFAULT_FEEDBACK);
   const [nickname, setNickname] = useState(DEAFULT_FIELD_VALUE);
@@ -347,9 +346,17 @@ export default function MyProfile() {
                     justifyContent="flex-end"
                     alignItems="flex-end"
                   >
-                    <Link href="/atualizar-senha" variant="body2">
+                    <Button
+                      variant="text"
+                      onClick={() => router.push("/atualizar-senha")}
+                      style={{
+                        textTransform: "initial",
+                        textDecoration: "underline",
+                        padding: 0,
+                      }}
+                    >
                       Alterar senha
-                    </Link>
+                    </Button>
                   </Box>
                 </Grid>
               </Grid>

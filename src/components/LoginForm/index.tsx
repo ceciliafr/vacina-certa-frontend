@@ -56,7 +56,6 @@ export const LoginForm = () => {
       setIsLoading(true);
     },
     onSuccess: async (data) => {
-      setIsLoading(false);
       setFeedback((prev) => ({
         ...prev,
         show: false,

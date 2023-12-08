@@ -1,6 +1,6 @@
 "use client";
 import "date-fns/locale/pt-BR";
-import { useContext, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import styles from "./page.module.css";
 import { Title } from "@/components/Title";
 import { Layout } from "@/components/Layout";
@@ -33,8 +33,17 @@ import FormHelperText from "@mui/material/FormHelperText";
 import Collapse from "@mui/material/Collapse";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
+import { useRouter } from "next/navigation";
 
 export default function RegisterVaccination() {
+  const router = useRouter();
+
+  const { token, user } = useContext(UserContext);
+
+  useEffect(() => {
+    if (!token) router.replace("/login");
+  }, [token, router]);
+
   const [feedback, setFeedback] = useState(DEFAULT_FEEDBACK);
   const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState(DEAFULT_FIELD_VALUE);
@@ -43,7 +52,6 @@ export default function RegisterVaccination() {
     error: string;
   }>(DEFAULT_DATE_VALUE);
 
-  const { token, user } = useContext(UserContext);
   const url = `${HOST}/vaccine`;
 
   const { data: allVaccines, isLoading: isLoadingAllVaccines } = useQuery({

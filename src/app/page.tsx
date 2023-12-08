@@ -5,7 +5,7 @@ import { Layout } from "@/components/Layout";
 import { RightContent } from "@/components/Layout/RightContent";
 import { useQuery } from "@tanstack/react-query";
 import { HOST } from "@/constants";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { UserContext } from "@/contexts/userContext";
 import { getTakenVaccines } from "@/api/vaccines";
 import Backdrop from "@mui/material/Backdrop";
@@ -27,6 +27,10 @@ export default function MyCard() {
     queryFn: async () => getTakenVaccines(url, token),
     queryKey: ["takenVaccines"],
   });
+
+  useEffect(() => {
+    if (!token) router.replace("/login");
+  }, [token, router]);
 
   return (
     <Layout>

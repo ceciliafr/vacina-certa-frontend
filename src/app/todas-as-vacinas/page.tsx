@@ -6,15 +6,23 @@ import { RightContent } from "@/components/Layout/RightContent";
 import { getVaccines } from "@/api/vaccines";
 import { useQuery } from "@tanstack/react-query";
 import { HOST } from "@/constants";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { UserContext } from "@/contexts/userContext";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import { VaccineCard } from "@/components/VaccineCard";
+import { useRouter } from "next/navigation";
 
 export default function AllVaccines() {
+  const router = useRouter();
+
   const { token } = useContext(UserContext);
+
+  useEffect(() => {
+    if (!token) router.replace("/login");
+  }, [token, router]);
+
   const url = `${HOST}/vaccine`;
 
   const { data, isLoading } = useQuery({

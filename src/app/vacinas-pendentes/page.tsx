@@ -5,7 +5,7 @@ import { DesktopMenu } from "@/components/desktop/Menu";
 import { RightContent } from "@/components/Layout/RightContent";
 import { getTakenVaccines, getVaccines } from "@/api/vaccines";
 import { useQuery } from "@tanstack/react-query";
-import { useContext, useMemo } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import { UserContext } from "@/contexts/userContext";
 import { HOST } from "@/constants";
 import Backdrop from "@mui/material/Backdrop";
@@ -22,6 +22,10 @@ export default function PendingVaccines() {
   const router = useRouter();
 
   const { user, token } = useContext(UserContext);
+
+  useEffect(() => {
+    if (!token) router.replace("/login");
+  }, [token, router]);
 
   const { data: allVaccines, isLoading: isAllVaccinesLoading } = useQuery({
     queryFn: async () => {

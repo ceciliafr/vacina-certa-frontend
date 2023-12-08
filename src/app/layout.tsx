@@ -23,6 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
+      <link rel="icon" href="/vacina.png" sizes="any" />;
       <body className={poppins.className}>
         <Providers>
           <UserContextProvider>{children}</UserContextProvider>
