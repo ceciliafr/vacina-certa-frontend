@@ -1,0 +1,15 @@
+.main {
+  display: flex;
+  min-width: 100vw;
+  height: 100vh;
+  position: relative;
+
+}
+
+@media (max-width: 700px) {
+  .main {
+    flex-direction: column;
+    min-height: 100vh;
+    gap: 2rem;
+  }
+}

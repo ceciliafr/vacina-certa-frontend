@@ -1,24 +1,47 @@
 "use client";
-import { useState } from "react";
+import Image from "next/image";
+import { useContext, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import Button from "@mui/material/Button";
 import styles from "./styles.module.css";
-import { Menu } from "../Menu";
+import { Menu } from "@/components/mobile/Menu";
+import { UserContext } from "@/contexts/userContext";
 
-export const Navbar = () => {
+export const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user } = useContext(UserContext);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
   return (
-    <nav className={styles.nav}>
-      <Button variant="text" onClick={toggleMenu}>
-        <MenuIcon sx={{ color: "#1351B4" }} />
-      </Button>
+    <div className={styles.container}>
+      <div className={styles.menu}>
+        <Button variant="text" onClick={toggleMenu} style={{ padding: 0 }}>
+          <MenuIcon sx={{ color: "#1351B4" }} />
+        </Button>
+        <Menu toggleMenu={toggleMenu} open={isMenuOpen} />
+      </div>
+      <nav className={styles.nav}>
+        <div className={styles.user_info_container}>
+          <span className={styles.welcome_message}>Olá,</span>
+          <span className={styles.user_name}>
+            {user.userId ? "John!" : "Que bom que você veio!"}
+          </span>
+        </div>
 
-      <Menu isOpen={isMenuOpen} toggleMenu={toggleMenu} />
-    </nav>
+        <div className={styles.logo_container}>
+          <Image
+            src="/logo.svg"
+            fill
+            style={{
+              objectFit: "contain",
+            }}
+            alt="vacina_certa_logo"
+          />
+        </div>
+      </nav>
+    </div>
   );
 };

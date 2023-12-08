@@ -1,0 +1,13 @@
+.container {
+ margin-bottom: 2rem;
+}
+
+.title {
+   color: var(--blue-90);
+   font-weight: 600;
+}
+
+.subtitle { 
+   color: var(--gray-40);
+   font-weight: 400;
+}

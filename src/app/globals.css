@@ -2,9 +2,12 @@
   --max-width: 1100px;
   --border-radius: 12px;
   --blue-01: #93bbe357;
+  --blue-10: #4d91d457;
   --blue-20: #0e6eb7;
   --blue-70: #1351b4;
+  --blue-90: #013771;
   --gray-01: #fcfcfc;
+  --gray-02: #0000004d;
   --gray-10: #e4e4e4;
   --gray-20: #cccccc;
   --gray-40: #888888;
@@ -12,9 +15,13 @@
   --pure-00: #ffffff;
   --pure-100: #000000;
   --yellow-80: #ffa800;
+  --green-01: #00800047;
   --green-10: #a4d7c0;
   --green-20: #7bb299;
   --green-80: #54ab34;
+  --green-90: #008000;
+  --red-01: #ff00004a;
+  --red-70: #cd373a;
 }
 
 * {

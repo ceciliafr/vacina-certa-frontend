@@ -1,0 +1,15 @@
+
+.container {
+   display: flex;
+   padding: 0 10px;
+   justify-content: center;
+   align-items: center;
+   background-color: var(--blue-70);
+   border-radius: 0.5rem;
+   height: 2rem;
+}
+
+.tag {
+   color: var(--pure-00);
+   font-weight: 600;
+}

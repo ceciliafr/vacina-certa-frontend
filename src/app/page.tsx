@@ -1,94 +1,113 @@
 "use client";
-import styles from "./page.module.css";
-import { Navbar } from "@/components/Navbar";
-import Paper from "@mui/material/Paper";
+import { Title } from "@/components/Title";
+import { DesktopMenu } from "@/components/desktop/Menu";
+import { Layout } from "@/components/Layout";
+import { RightContent } from "@/components/Layout/RightContent";
+import { useQuery } from "@tanstack/react-query";
+import { HOST } from "@/constants";
+import { useContext, useEffect } from "react";
+import { UserContext } from "@/contexts/userContext";
+import { getTakenVaccines } from "@/api/vaccines";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
+import { Button, Grid } from "@mui/material";
 import { useRouter } from "next/navigation";
+import styles from "./page.module.css";
 import Image from "next/image";
-import Link from "next/link";
+import { VaccineCard } from "@/components/VaccineCard";
 
-export default function Home() {
+export default function MyCard() {
   const router = useRouter();
 
-  const menuItems = [
-    {
-      id: "1",
-      title: "Meu Cartão de Vacinas",
-      route: "/meu-cartao",
-      icon: "/book.png",
-    },
-    {
-      id: "2",
-      title: "Vacinas Pendentes",
-      route: "/vacinas-pendentes",
-      icon: "/notification.png",
-    },
-    {
-      id: "3",
-      title: "Registrar Vacinação",
-      route: "/registrar-vacinacao",
-      icon: "/agenda.png",
-    },
-    {
-      id: "4",
-      title: "Todas as Vacinas",
-      route: "/todas-as-vacinas",
-      icon: "/vacina.png",
-    },
-    {
-      id: "5",
-      title: "Meu Perfil",
-      route: "/meu-perfil",
-      icon: "/user.png",
-    },
-  ];
+  const { user, token } = useContext(UserContext);
+  const url = `${HOST}/user/${user?.userId}/vaccines`;
+
+  const { data, isLoading } = useQuery({
+    queryFn: async () => getTakenVaccines(url, token),
+    queryKey: ["takenVaccines"],
+  });
+
+  useEffect(() => {
+    if (!token) router.replace("/login");
+  }, [token, router]);
 
   return (
-    <main className={styles.main}>
-      <div>
-        <div
-          style={{
-            padding: "1rem 0 0",
-            display: "flex",
-            justifyContent: "center",
-            background: "#a4d7c0",
-          }}
+    <Layout>
+      <DesktopMenu />
+      {isLoading ? (
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={isLoading}
         >
-          <Image
-            src="/medical_care.svg"
-            alt="medical_care_icon"
-            width={450}
-            height={150}
-            priority
-          />
-        </div>
-        <div>
-          {/* <Navbar /> */}
-          <h1 className={styles.title}>Olá, Fulano</h1>
-          <Box className={styles.menu_container}>
-            {menuItems.map((item) => (
-              <Paper
-                key={item.id}
-                elevation={1}
-                onClick={() => router.push(item.route)}
-                className={styles.menu_item}
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      ) : (
+        <RightContent>
+          {data?.length ? (
+            <>
+              <Title title="Vacinas que você já tomou" />
+              <Box display="flex" flexDirection="column" gap={4}>
+                {data.map((vaccine) => (
+                  <VaccineCard
+                    key={vaccine.vaccineViewModel.id}
+                    id={vaccine.vaccineViewModel.id}
+                    popularName={vaccine.vaccineViewModel.popularName}
+                    description={vaccine.vaccineViewModel.description}
+                    manufacturer={vaccine.vaccineViewModel.manufacturer}
+                    fullName={vaccine.vaccineViewModel.fullName}
+                    age={vaccine.vaccineViewModel.age}
+                    year={vaccine.vaccineViewModel.year}
+                    required={vaccine.vaccineViewModel.required}
+                    variant="completed"
+                  />
+                ))}
+              </Box>
+            </>
+          ) : (
+            <>
+              <Title title="Ops!" />
+              <Grid
+                container
+                columns={{ xs: 1, sm: 8, md: 8 }}
+                columnSpacing={{ xs: 1, sm: 1, md: 1 }}
+                className={styles.empty_page_container}
               >
-                <Image
-                  src={item.icon}
-                  alt={item.icon}
-                  width={40}
-                  height={40}
-                  priority
-                />
-                <p className={styles.icon_text}>{item.title}</p>
-              </Paper>
-            ))}
-          </Box>
-        </div>
-      </div>
-      <Link href="/login" onClick={() => alert("loggout")}>
-        <div className={styles.loggout_container}>Sair</div>
-      </Link>
-    </main>
+                <Grid item xs={1} sm={2.5} md={2.5}>
+                  <div className={styles.image_container}>
+                    <Image
+                      priority
+                      src="/no_vaccine.png"
+                      fill
+                      style={{
+                        objectFit: "contain",
+                      }}
+                      alt="empty_vaccine_image"
+                    />
+                  </div>
+                </Grid>
+                <Grid item xs={1} sm={3} md={3}>
+                  <Box className={styles.empty_text_container}>
+                    <h3 className={styles.text}>
+                      Parece que você não tem nenhuma vacina registada ainda,
+                      que tal cadastrar uma agora?
+                    </h3>
+
+                    <Button
+                      className={styles.button}
+                      variant="contained"
+                      fullWidth
+                      onClick={() => router.push("/registrar-vacinacao")}
+                    >
+                      <span>Faça seu primeiro cadastro</span>
+                    </Button>
+                  </Box>
+                </Grid>
+              </Grid>
+            </>
+          )}
+        </RightContent>
+      )}
+    </Layout>
   );
 }

@@ -1,4 +1,62 @@
+.container {
+  display: flex;
+  padding: 1rem 2rem;
+  width: 100%;
+  gap: 0.5rem;
+  font-size: larger;
+  align-items: center;
+  background-color: var(--blue-10);
+}
+
+.menu {
+  display: none;
+}
+
 .nav {
-    display: flex;
-    width: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo_container {
+  position: relative;
+  width: 8rem;
+  height: 5rem;
+}
+
+.user_info_container {
+  display: flex;
+  flex-direction: column;
+}
+
+.welcome_message {
+  font-weight: 300;
+  color: var(--gray-40);
+}
+
+.user_name {
+  color: var(--gray-80);
+  font-weight: 700;
+}
+
+@media (max-width: 700px) {
+  .container {
+    padding: 1em 0;
+    font-size: medium;
+    gap: 0;
+  }
+
+  .menu {
+    display: block;
+  }
+
+  .nav {
+    padding-right: 1rem;
+  }
+
+  .logo_container {
+    width: 6rem;
+    height: 4rem;
+  }
 }
