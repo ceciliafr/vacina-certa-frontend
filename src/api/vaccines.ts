@@ -53,6 +53,5 @@ export const registerVaccine = async (
     },
   });
 
-  console.log(data);
   return data;
 };

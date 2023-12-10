@@ -27,14 +27,22 @@ export default function PendingVaccines() {
     if (!token) router.replace("/login");
   }, [token, router]);
 
-  const { data: allVaccines, isLoading: isAllVaccinesLoading } = useQuery({
+  const {
+    data: allVaccines,
+    isLoading: isAllVaccinesLoading,
+    isFetching: isAllVaccinesFetching,
+  } = useQuery({
     queryFn: async () => {
       return getVaccines(`${HOST}/vaccine`, token);
     },
     queryKey: ["allVaccines"],
   });
 
-  const { data: takenVaccines, isLoading: isTakenVaccinesLoading } = useQuery({
+  const {
+    data: takenVaccines,
+    isLoading: isTakenVaccinesLoading,
+    isFetching: isTakenVaccinesFetching,
+  } = useQuery({
     queryFn: async () =>
       getTakenVaccines(`${HOST}/user/${user?.userId}/vaccines`, token),
     queryKey: ["takenVaccines"],
@@ -52,6 +60,12 @@ export default function PendingVaccines() {
     }
     return [];
   }, [takenVaccines, allVaccines]);
+
+  const showLoading =
+    isAllVaccinesLoading ||
+    isTakenVaccinesLoading ||
+    isTakenVaccinesFetching ||
+    isAllVaccinesFetching;
 
   return (
     <Layout>
@@ -79,13 +93,13 @@ export default function PendingVaccines() {
           </>
         ) : (
           <>
-            {isAllVaccinesLoading || isTakenVaccinesLoading ? (
+            {showLoading ? (
               <Backdrop
                 sx={{
                   color: "#fff",
                   zIndex: (theme) => theme.zIndex.drawer + 1,
                 }}
-                open={isAllVaccinesLoading || isTakenVaccinesLoading}
+                open={showLoading}
               >
                 <CircularProgress color="inherit" />
               </Backdrop>
@@ -116,7 +130,7 @@ export default function PendingVaccines() {
                       <h3 className={styles.text}>
                         Quando novas vacinas ficarem pendentes elas ficarão
                         nesta página, você pode voltar sempre que quiser para
-                        verificar
+                        verificar.
                       </h3>
 
                       <Button

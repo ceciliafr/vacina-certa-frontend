@@ -5,5 +5,5 @@ export type Feedback = {
   type: AlertColor | undefined;
   title: string;
   message: string;
-  strongMessage: string;
+  strongMessage: React.ReactNode;
 };

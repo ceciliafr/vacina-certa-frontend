@@ -35,6 +35,21 @@ export const updateUser = async (
   return data;
 };
 
+export const updatePassword = async (
+  url: string,
+  password: {
+    actualPassword: string;
+    newPassword: string;
+  },
+  token: string | null
+): Promise<AxiosResponse> => {
+  const { data } = await api.put<AxiosResponse>(url, password, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  return data;
+};
+
 export const getUser = async (
   url: string,
   token: string | null

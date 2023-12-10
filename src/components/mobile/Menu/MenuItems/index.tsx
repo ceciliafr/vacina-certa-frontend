@@ -65,7 +65,7 @@ export const MenuItems: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
       </List>
 
       <List>
-        <Link href="/login" onClick={() => !!onClick && onClick()}>
+        <Link href="/login" onClick={() => localStorage.clear()}>
           <ListItem className={styles.item}>Sair</ListItem>
         </Link>
       </List>

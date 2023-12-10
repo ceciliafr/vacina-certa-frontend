@@ -11,6 +11,12 @@
   gap: 2rem;
 }
 
+.user_info_container p {
+  font-size: medium;
+  padding: 0;
+  margin: 0;
+}
+
 .buttons_container {
   width: 100%;
   gap: 2rem;
@@ -34,7 +40,7 @@
   position: fixed;
   z-index: 1;
   top: calc(100% - 100px);
-  left: calc(100% - 26rem);
+  left: calc(100% - 25rem);
   width: 100%;
 }
 

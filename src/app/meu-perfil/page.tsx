@@ -27,7 +27,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Collapse from "@mui/material/Collapse";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
-import Link from "@mui/material/Link";
 
 export default function MyProfile() {
   const router = useRouter();
@@ -72,7 +71,7 @@ export default function MyProfile() {
     onMutate: () => {
       setIsLoading(true);
     },
-    onSuccess: async (data) => {
+    onSuccess: async () => {
       setIsLoading(false);
       setFeedback({
         show: true,
@@ -83,19 +82,20 @@ export default function MyProfile() {
       });
       closeAlert({ alertTime: 2000 });
     },
-    onError: async () => {
+    onError: async (data) => {
       setIsLoading(false);
       setFeedback({
         show: true,
 
         type: "error",
         title: "Ops",
-        message: "Erro ao fazer login",
+        message: "Erro ao fazer login.",
         strongMessage: "Tente novamente.",
       });
       closeAlert({ alertTime: 2000 });
     },
   });
+
   useEffect(() => {
     if (data) {
       setName((prev) => ({
@@ -165,7 +165,7 @@ export default function MyProfile() {
     if (!name.value) {
       setName((prev) => ({
         ...prev,
-        error: "campo obrigatório",
+        error: "Campo obrigatório",
       }));
       isValid = false;
     }
@@ -173,7 +173,7 @@ export default function MyProfile() {
     if (name.value && !(name.value.split(" ").length >= 2)) {
       setName((prev) => ({
         ...prev,
-        error: "campo incompleto",
+        error: "Campo incompleto",
       }));
       isValid = false;
     }
@@ -181,7 +181,7 @@ export default function MyProfile() {
     if (!nickname.value) {
       setNickname((prev) => ({
         ...prev,
-        error: "campo obrigatório",
+        error: "Campo obrigatório",
       }));
       isValid = false;
     }
@@ -189,7 +189,7 @@ export default function MyProfile() {
     if (!phone.value) {
       setPhone((prev) => ({
         ...prev,
-        error: "campo obrigatório",
+        error: "Campo obrigatório",
       }));
       isValid = false;
     }
@@ -197,7 +197,7 @@ export default function MyProfile() {
     if (phone.value && removeSpecialCharacters(phone.value).length != 13) {
       setPhone((prev) => ({
         ...prev,
-        error: "campo incompleto",
+        error: "Campo incompleto",
       }));
       isValid = false;
     }
@@ -220,6 +220,7 @@ export default function MyProfile() {
         message: "Suas alterações foram desfeitas",
         strongMessage: "",
       });
+      closeAlert({ alertTime: 2000 });
 
       setName((prev) => ({
         ...prev,

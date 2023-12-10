@@ -88,19 +88,23 @@ export default function RegisterVaccination() {
         type: "success",
         title: "Parabéns",
         message: "Vacinação registrada com sucesso!",
-        strongMessage: "",
+        strongMessage: (
+          <p>
+            <a href="/">Ir para cartão de vacina</a>
+          </p>
+        ),
       });
-      closeAlert({ alertTime: 2000 });
+      closeAlert({ alertTime: 3500 });
       resetAllStates();
     },
     onError: () => {
       setIsLoading(false);
       setFeedback({
         show: true,
-        type: "error",
-        title: "Ops",
-        message: "Erro ao registrar sua vacinação",
-        strongMessage: "Tente novamente.",
+        type: "warning",
+        title: "Atenção",
+        message: "Vacina já cadastrada.",
+        strongMessage: "",
       });
       closeAlert({ alertTime: 2000 });
     },
@@ -132,6 +136,21 @@ export default function RegisterVaccination() {
     setVaccineAppliedAt(DEFAULT_DATE_VALUE);
   };
 
+  const cancel = () => {
+    const hasValue = name.value || vaccineAppliedAt.value;
+    setFeedback({
+      show: true,
+      type: hasValue ? "info" : "warning",
+      title: hasValue ? "Pronto" : "Atenção",
+      message: hasValue
+        ? "Suas alterações foram desfeitas."
+        : "Nada a ser desfeito.",
+      strongMessage: hasValue ? "" : "Cadastre uma vacinação.",
+    });
+    closeAlert({ alertTime: 2000 });
+    resetAllStates();
+  };
+
   const vaccineIsValid = () => {
     resetErrorStates();
     let isValid = true;
@@ -139,7 +158,7 @@ export default function RegisterVaccination() {
     if (!name.value) {
       setName((prev) => ({
         ...prev,
-        error: "campo obrigatório",
+        error: "Campo obrigatório",
       }));
       isValid = false;
     }
@@ -147,7 +166,7 @@ export default function RegisterVaccination() {
     if (!vaccineAppliedAt.value) {
       setVaccineAppliedAt((prev) => ({
         ...prev,
-        error: "campo obrigatório",
+        error: "Campo obrigatório",
       }));
       isValid = false;
     }
@@ -259,7 +278,7 @@ export default function RegisterVaccination() {
                 variant="outlined"
                 color="error"
                 fullWidth
-                onClick={resetAllStates}
+                onClick={cancel}
               >
                 Cancelar
               </Button>

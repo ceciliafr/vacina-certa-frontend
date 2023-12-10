@@ -57,7 +57,7 @@
   position: fixed;
   z-index: 1;
   top: calc(100% - 100px);
-  left: calc(100% - 26rem);
+  left: calc(100% - 25rem);
   width: 100%;
 }
 
