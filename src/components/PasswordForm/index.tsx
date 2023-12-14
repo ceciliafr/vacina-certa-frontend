@@ -20,10 +20,10 @@ import { useMutation } from "@tanstack/react-query";
 import { updatePassword } from "@/api/user";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
-import Collapse from "@mui/material/Collapse";
 import AlertTitle from "@mui/material/AlertTitle";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import { Fade } from "@mui/material";
 
 export const UpdatePasswordForm = () => {
   const router = useRouter();
@@ -59,8 +59,10 @@ export const UpdatePasswordForm = () => {
         ...prev,
         show: false,
       }));
-      resetUserProfile();
-      shouldRedirect && router.replace("/login");
+      if (shouldRedirect) {
+        resetUserProfile();
+        router.replace("/login");
+      }
     }, alertTime);
   };
 
@@ -70,7 +72,7 @@ export const UpdatePasswordForm = () => {
   };
 
   const { mutate } = useMutation({
-    mutationFn: async () => updatePassword(user.userId, password),
+    mutationFn: async () => updatePassword(user?.userId, password),
     mutationKey: ["userLogin"],
     onMutate: () => {
       setIsLoading(true);
@@ -82,9 +84,9 @@ export const UpdatePasswordForm = () => {
         type: "success",
         title: "Parabéns",
         message: "Usuário atualizado com sucesso!",
-        strongMessage: "Você será redirecionado para o login.",
+        strongMessage: <p>Você será redirecionado para o login.</p>,
       });
-      closeAlert({ shouldRedirect: true, alertTime: 2000 });
+      closeAlert({ shouldRedirect: true, alertTime: 2500 });
       localStorage.clear();
     },
     onError: async () => {
@@ -192,7 +194,7 @@ export const UpdatePasswordForm = () => {
 
           <Grid
             container
-            rowSpacing={{ xs: 2, sm: 2, md: 3 }}
+            rowSpacing={{ xs: 3, sm: 2, md: 3 }}
             columns={{ xs: 2, sm: 8, md: 8 }}
             columnSpacing={{ xs: 1, sm: 3, md: 12 }}
             className={styles.form_control}
@@ -338,16 +340,12 @@ export const UpdatePasswordForm = () => {
         </RightContent>
 
         <Box className={styles.alert_container}>
-          <Collapse
-            orientation="horizontal"
-            in={feedback.show}
-            className={styles.alert}
-          >
+          <Fade in={feedback.show}>
             <Alert severity={feedback.type}>
               <AlertTitle>{feedback.title}</AlertTitle>
               {feedback.message} <strong>{feedback.strongMessage}</strong>
             </Alert>
-          </Collapse>
+          </Fade>
         </Box>
 
         <Backdrop

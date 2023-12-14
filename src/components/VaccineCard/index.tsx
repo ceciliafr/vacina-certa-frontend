@@ -72,15 +72,13 @@ export const VaccineCard: React.FC<Vaccine & { variant: VaccineStatus }> = ({
         </p>
       )}
 
-      {
+      {!!year && (
         <p className={styles.producer_container}>
           <span className={styles.description_producer}>Ano para tomar:</span>
 
-          <span className={styles.description_value}>
-            {year ? ` ${year}` : ` ${date.getFullYear()}`}
-          </span>
+          <span className={styles.description_value}>{` ${year}`}</span>
         </p>
-      }
+      )}
 
       {variant != "information" && appliedAt && (
         <p className={styles.producer_container}>

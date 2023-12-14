@@ -27,10 +27,11 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import { Fade } from "@mui/material";
+import { UserProfile } from "@/types/user";
 
 export default function MyProfile() {
   const router = useRouter();
-  const { token, user } = useContext(UserContext);
+  const { token, user, setUserProfile } = useContext(UserContext);
 
   useEffect(() => {
     if (!token) router.replace("/login");
@@ -47,10 +48,16 @@ export default function MyProfile() {
   const [documentType, setDocumentType] = useState(DEAFULT_FIELD_VALUE);
   const [dateOfBirth, setDateOfBirth] = useState(DEAFULT_FIELD_VALUE);
 
+  const [userData, setUserData] = useState({} as UserProfile);
+
   const { data, isLoading: isLoadingUserData } = useQuery({
-    queryFn: async () => getUser(`${HOST}/user/${user.userId}`, token),
+    queryFn: async () => getUser(`${HOST}/user/${user?.userId}`, token),
     queryKey: ["getUserData"],
   });
+
+  useEffect(() => {
+    if (data) setUserData(data);
+  }, [data]);
 
   const updatedUser = {
     firstName: getFirstName(name.value),
@@ -66,12 +73,14 @@ export default function MyProfile() {
 
   const { mutate } = useMutation({
     mutationFn: async () =>
-      updateUser(`${HOST}/user/${user.userId}`, updatedUser, token),
+      updateUser(`${HOST}/user/${user?.userId}`, updatedUser, token),
     mutationKey: ["userLogin"],
     onMutate: () => {
       setIsLoading(true);
     },
-    onSuccess: async () => {
+    onSuccess: async (data) => {
+      setUserData(data);
+      setUserProfile(data);
       setIsLoading(false);
       setFeedback({
         show: true,
@@ -96,37 +105,37 @@ export default function MyProfile() {
   });
 
   useEffect(() => {
-    if (data) {
+    if (userData.id) {
       setName((prev) => ({
         ...prev,
-        value: `${data.firstName} ${data.lastName}`,
+        value: `${userData.firstName} ${userData.lastName}`,
       }));
       setPhone((prev) => ({
         ...prev,
-        value: data.phone,
+        value: userData.phone,
       }));
       setNickname((prev) => ({
         ...prev,
-        value: data.nickname,
+        value: userData.nickname,
       }));
       setCreatedAt((prev) => ({
         ...prev,
-        value: data.createdAt,
+        value: userData.createdAt,
       }));
       setDocument((prev) => ({
         ...prev,
-        value: data.document,
+        value: userData.document,
       }));
       setDocumentType((prev) => ({
         ...prev,
-        value: data.documentType,
+        value: userData.documentType,
       }));
       setDateOfBirth((prev) => ({
         ...prev,
-        value: data.dateOfBirth,
+        value: userData.dateOfBirth,
       }));
     }
-  }, [data]);
+  }, [userData]);
 
   const closeAlert = ({ alertTime }: { alertTime: number }) => {
     setTimeout(() => {
@@ -211,29 +220,29 @@ export default function MyProfile() {
   };
 
   const resetValues = () => {
-    if (data) {
+    if (userData) {
       setFeedback({
         show: true,
         type: "info",
         title: "Pronto",
-        message: "Suas alterações foram desfeitas",
+        message: "Os dados foram redefinidos.",
         strongMessage: "",
       });
       closeAlert({ alertTime: 2000 });
 
       setName((prev) => ({
         ...prev,
-        value: `${data.firstName} ${data.lastName}`,
+        value: `${userData.firstName} ${userData.lastName}`,
         error: "",
       }));
       setPhone((prev) => ({
         ...prev,
-        value: data.phone,
+        value: userData.phone,
         error: "",
       }));
       setNickname((prev) => ({
         ...prev,
-        value: data.nickname,
+        value: userData.nickname,
         error: "",
       }));
     }
@@ -266,19 +275,20 @@ export default function MyProfile() {
                   <span>
                     <strong>CPF: </strong>
                   </span>
-                  <span>{!!data && data.document}</span>
+                  <span>{!!userData && userData.document}</span>
                   <br />
                   <span>
                     <strong>Data de nascimento: </strong>
                   </span>
                   <span>
-                    {!!data && formatDateToPtBr(data.dateOfBirth.split(" ")[0])}
+                    {!!userData &&
+                      formatDateToPtBr(userData?.dateOfBirth?.split(" ")[0])}
                   </span>
                 </div>
 
                 <Grid
                   container
-                  rowSpacing={{ xs: 0, sm: 2, md: 3 }}
+                  rowSpacing={{ xs: 3, sm: 2, md: 3 }}
                   columns={{ xs: 2, sm: 8, md: 8 }}
                   columnSpacing={{ xs: 1, sm: 3, md: 12 }}
                 >

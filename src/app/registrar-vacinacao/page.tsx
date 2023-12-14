@@ -77,7 +77,9 @@ export default function RegisterVaccination() {
 
   const { mutate } = useMutation({
     mutationFn: async () =>
-      registerVaccine(`${HOST}/user/${user.userId}/vaccines`, token, [vaccine]),
+      registerVaccine(`${HOST}/user/${user?.userId}/vaccines`, token, [
+        vaccine,
+      ]),
     mutationKey: ["registerVaccine"],
     onMutate: () => {
       setIsLoading(true);

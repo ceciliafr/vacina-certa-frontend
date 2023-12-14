@@ -10,8 +10,8 @@ export type User = {
 };
 
 export type UserContextProps = {
-  user: User;
-  userProfile: UserProfile;
+  user: User | null;
+  userProfile: UserProfile | null;
   token: string | null;
   setUser: (user: User) => void;
   setToken: (token: string) => void;
@@ -49,10 +49,10 @@ export const UserContext = createContext<UserContextProps>(initialState);
 export const UserContextProvider: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const [user, setUser] = useState<User>(
+  const [user, setUser] = useState<User | null>(
     JSON.parse(localStorage.getItem("user") || "{}")
   );
-  const [userProfile, setUserProfile] = useState<UserProfile>(
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(
     JSON.parse(localStorage.getItem("userProfile") || "{}")
   );
   const [token, setToken] = useState<string | null>(
@@ -71,11 +71,16 @@ export const UserContextProvider: React.FC<React.PropsWithChildren> = ({
     }
   }, [token]);
 
+  useEffect(() => {
+    if (userProfile)
+      localStorage.setItem("userProfile", JSON.stringify(userProfile));
+  }, [userProfile]);
+
   const resetUserProfile = () => {
     localStorage.clear();
     setToken(null);
-    setUser({} as User);
-    setUserProfile({} as UserProfile);
+    setUser(null);
+    setUserProfile(null);
   };
 
   return (

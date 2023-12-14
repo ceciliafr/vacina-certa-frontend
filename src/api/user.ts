@@ -2,7 +2,6 @@ import { AUTH_HOST } from "@/constants";
 import api from "@/service/config";
 import { LoginUser, RegisterUser, UserProfile } from "@/types/user";
 import axios, { AxiosResponse } from "axios";
-// import { useContext } from "react";
 
 export const userLogin = async (user: LoginUser): Promise<string> => {
   const { data } = await axios.post<string>(`${AUTH_HOST}/login`, user);
@@ -25,8 +24,8 @@ export const updateUser = async (
   url: string,
   user: Omit<UserProfile, "id">,
   token: string | null
-): Promise<AxiosResponse> => {
-  const { data } = await api.put<AxiosResponse>(url, user, {
+): Promise<UserProfile> => {
+  const { data } = await api.put<UserProfile>(url, user, {
     headers: { Authorization: `Bearer ${token}` },
   });
 
@@ -34,7 +33,7 @@ export const updateUser = async (
 };
 
 export const updatePassword = async (
-  userId: string | null,
+  userId: string | null | undefined,
   password: {
     actualPassword: string;
     newPassword: string;

@@ -13,6 +13,6 @@
 
 @media (max-width: 700px) {
   .children_content {
-    padding: 1rem;
+    padding: 1rem 1rem 3rem 1rem;
   }
 }

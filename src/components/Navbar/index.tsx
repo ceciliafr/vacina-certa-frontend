@@ -27,7 +27,7 @@ export const Navbar: React.FC = () => {
         <div className={styles.user_info_container}>
           <span className={styles.welcome_message}>Olá,</span>
           <span className={styles.user_name}>
-            {userProfile.nickname ?? "Que bom que você veio!"}
+            {userProfile?.nickname ?? "Que bom que você veio!"}
           </span>
         </div>
 

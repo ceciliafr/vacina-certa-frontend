@@ -30,12 +30,14 @@ export default function MyCard() {
   const url = `${HOST}/user/${user?.userId}/vaccines`;
 
   const { data: userProfile } = useQuery({
-    queryFn: async () => getUser(`${HOST}/user/${user.userId}`, token),
+    queryFn: async () => getUser(`${HOST}/user/${user?.userId}`, token),
     queryKey: ["getUserData"],
   });
 
   useEffect(() => {
-    if (userProfile) setUserProfile(userProfile);
+    if (userProfile) {
+      setUserProfile(userProfile);
+    }
   }, [userProfile, setUserProfile]);
 
   const { data, isLoading, isFetching } = useQuery({
