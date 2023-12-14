@@ -1,7 +1,3 @@
-.form_control {
-  max-width: 50rem;
-}
-
 .form_field {
   width: 100%;
 }
@@ -56,12 +52,6 @@
   width: 100%;
 }
 
-.alert > div,
-.alert > div > div {
-  height: 100%;
-  width: 25rem;
-}
-
 @media (max-width: 700px) {
   .form_fields_container {
     flex-direction: column;
@@ -73,12 +63,11 @@
   }
 
   .alert_container {
-    top: calc(100% - 75.61px);
+    top: calc(100% - 100px);
     left: 0;
   }
 
-  .alert > div,
-  .alert > div > div {
-    width: 100%;
+  .alert {
+    height: 100px;
   }
 }

@@ -92,4 +92,10 @@
   .alert > div > div {
     width: 100%;
   }
+
+  .alert > div > div > div {
+    height: 100px;
+    display: flex;
+    align-items: center;
+  }
 }

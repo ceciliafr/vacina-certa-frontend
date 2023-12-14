@@ -1,6 +1,9 @@
 .container,
 .pending_container,
 .completed_container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   border-radius: 5px;
   border: 1px solid var(--gray-10);
   padding: 1rem;
@@ -34,12 +37,10 @@
 
 .producer_container {
   color: var(--gray-80);
-  line-height: 32px;
 }
 
 .description_producer {
   font-weight: 500;
-  /* text-decoration: underline; */
 }
 
 .description_value {

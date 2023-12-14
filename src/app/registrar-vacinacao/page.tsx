@@ -1,5 +1,5 @@
 "use client";
-import "date-fns/locale/pt-BR";
+import "dayjs/locale/pt-br";
 import { useContext, useEffect, useMemo, useState } from "react";
 import styles from "./page.module.css";
 import { Title } from "@/components/Title";
@@ -30,10 +30,11 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { Dayjs } from "dayjs";
 import { formatDate } from "@/utils";
 import FormHelperText from "@mui/material/FormHelperText";
-import Collapse from "@mui/material/Collapse";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import { useRouter } from "next/navigation";
+import moment from "moment";
+import { Fade } from "@mui/material";
 
 export default function RegisterVaccination() {
   const router = useRouter();
@@ -90,7 +91,9 @@ export default function RegisterVaccination() {
         message: "Vacinação registrada com sucesso!",
         strongMessage: (
           <p>
-            <a href="/">Ir para cartão de vacina</a>
+            <a style={{ textDecoration: "underline" }} href="/">
+              Ir para cartão de vacina
+            </a>
           </p>
         ),
       });
@@ -171,141 +174,161 @@ export default function RegisterVaccination() {
       isValid = false;
     }
 
+    if (vaccineAppliedAt.value) {
+      const today = moment();
+      const vaccineApplied =
+        vaccineAppliedAt.value && moment(`${vaccineAppliedAt.value}`);
+
+      if (today.diff(vaccineApplied, "days") < 0) {
+        setVaccineAppliedAt((prev) => ({
+          ...prev,
+          error: "Não pode ser uma data futura",
+        }));
+
+        isValid = false;
+      }
+    }
+
     return isValid;
   };
 
   const registerVaccination = () => {
-    if (vaccineIsValid() && selectedVaccine?.id && vaccineAppliedAt.value) {
+    if (vaccineIsValid()) {
       mutate();
     }
   };
 
   return (
-    <Layout>
-      <DesktopMenu />
-      <RightContent>
-        <Title title="Registrar vacinação" />
-        <FormControl className={styles.form_control}>
-          <LocalizationProvider
-            dateAdapter={AdapterDayjs}
-            adapterLocale={"pt-br"}
-          >
-            <DemoContainer components={["DatePicker"]}>
-              <Box className={styles.form_fields_container}>
-                <FormControl className={styles.field_container} error fullWidth>
-                  <DemoItem label="Nome da vacina">
-                    <Select
-                      error={!!name.error}
-                      labelId="demo-simple-select-autowidth-label"
-                      id="demo-simple-select-autowidth"
-                      value={name.value}
-                      onChange={(e) => {
-                        setName((prev) => ({
-                          ...prev,
-                          value: e.target.value,
-                        }));
-                      }}
-                      fullWidth
-                      variant="outlined"
-                      defaultValue="Selecione"
-                      displayEmpty
-                      renderValue={(selected) => {
-                        if (selected.length === 0) {
-                          return (
-                            <em style={{ color: "#656565" }}>Selecione</em>
-                          );
-                        }
+    token && (
+      <Layout>
+        <DesktopMenu />
+        <RightContent>
+          <Title title="Registrar vacinação" />
+          <FormControl>
+            <LocalizationProvider
+              dateAdapter={AdapterDayjs}
+              adapterLocale={"pt-br"}
+            >
+              <DemoContainer components={["DatePicker"]}>
+                <Box className={styles.form_fields_container}>
+                  <FormControl
+                    className={styles.field_container}
+                    error
+                    fullWidth
+                  >
+                    <DemoItem label="Nome da vacina">
+                      <Select
+                        error={!!name.error}
+                        labelId="demo-simple-select-autowidth-label"
+                        id="demo-simple-select-autowidth"
+                        value={name.value}
+                        onChange={(e) => {
+                          setName((prev) => ({
+                            ...prev,
+                            value: e.target.value,
+                          }));
+                        }}
+                        fullWidth
+                        variant="outlined"
+                        defaultValue="Selecione"
+                        displayEmpty
+                        renderValue={(selected) => {
+                          if (selected.length === 0) {
+                            return (
+                              <em style={{ color: "#656565" }}>Selecione</em>
+                            );
+                          }
 
-                        return selected;
-                      }}
-                    >
-                      <MenuItem disabled value="Selecione">
-                        <em>Selecione</em>
-                      </MenuItem>
-                      {allVaccines?.map((vaccine) => (
-                        <MenuItem key={vaccine.id} value={vaccine.popularName}>
-                          {vaccine.popularName}
+                          return selected;
+                        }}
+                      >
+                        <MenuItem disabled value="Selecione">
+                          <em>Selecione</em>
                         </MenuItem>
-                      ))}
-                    </Select>
-                    <FormHelperText className={styles.error_text}>
-                      {name.error}
-                    </FormHelperText>
-                  </DemoItem>
-                </FormControl>
-                <Box className={styles.field_container}>
-                  <DemoItem label="Data da vacinação">
-                    <DatePicker
-                      defaultValue={null}
-                      value={vaccineAppliedAt.value}
-                      disableFuture
-                      format="DD/MM/YYYY"
-                      onChange={(e) =>
-                        setVaccineAppliedAt((prev) => ({
-                          ...prev,
-                          value: e,
-                        }))
-                      }
-                      slotProps={{
-                        textField: {
-                          error: !!vaccineAppliedAt.error,
-                          helperText: vaccineAppliedAt.error,
-                        },
-                      }}
-                    />
-                  </DemoItem>
+                        {allVaccines?.map((vaccine) => (
+                          <MenuItem
+                            key={vaccine.id}
+                            value={vaccine.popularName}
+                          >
+                            {vaccine.popularName}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                      <FormHelperText className={styles.error_text}>
+                        {name.error}
+                      </FormHelperText>
+                    </DemoItem>
+                  </FormControl>
+                  <Box className={styles.field_container}>
+                    <DemoItem label="Data da vacinação">
+                      <DatePicker
+                        defaultValue={null}
+                        value={vaccineAppliedAt.value}
+                        disableFuture
+                        format="DD/MM/YYYY"
+                        onChange={(e) =>
+                          setVaccineAppliedAt((prev) => ({
+                            ...prev,
+                            value: e,
+                          }))
+                        }
+                        slotProps={{
+                          textField: {
+                            error: !!vaccineAppliedAt.error,
+                            helperText: vaccineAppliedAt.error,
+                          },
+                        }}
+                      />
+                    </DemoItem>
+                  </Box>
                 </Box>
-              </Box>
-            </DemoContainer>
-          </LocalizationProvider>
-          <Grid
-            container
-            columns={{ xs: 1, sm: 12, md: 12 }}
-            columnSpacing={{ xs: 1, sm: 1, md: 1 }}
-            className={styles.buttons_container}
-          >
-            <Grid item xs={1} sm={3} md={3}>
-              <Button
-                variant="contained"
-                fullWidth
-                onClick={registerVaccination}
-              >
-                Salvar
-              </Button>
+              </DemoContainer>
+            </LocalizationProvider>
+            <Grid
+              container
+              columns={{ xs: 1, sm: 12, md: 12 }}
+              columnSpacing={{ xs: 1, sm: 1, md: 1 }}
+              className={styles.buttons_container}
+            >
+              <Grid item xs={1} sm={3} md={3}>
+                <Button
+                  variant="contained"
+                  fullWidth
+                  onClick={registerVaccination}
+                >
+                  Salvar
+                </Button>
+              </Grid>
+              <Grid item xs={1} sm={3} md={3}>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  fullWidth
+                  onClick={cancel}
+                >
+                  Cancelar
+                </Button>
+              </Grid>
             </Grid>
-            <Grid item xs={1} sm={3} md={3}>
-              <Button
-                variant="outlined"
-                color="error"
-                fullWidth
-                onClick={cancel}
-              >
-                Cancelar
-              </Button>
-            </Grid>
-          </Grid>
-        </FormControl>
-      </RightContent>
+          </FormControl>
+        </RightContent>
 
-      <Box className={styles.alert_container}>
-        <Collapse
-          orientation="horizontal"
-          in={feedback.show}
-          className={styles.alert}
+        <Box className={styles.alert_container}>
+          <Fade in={feedback.show} className={styles.alert}>
+            <Alert severity={feedback.type}>
+              <AlertTitle>{feedback.title}</AlertTitle>
+              {feedback.message} <strong>{feedback.strongMessage}</strong>
+            </Alert>
+          </Fade>
+        </Box>
+
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={isLoading || isLoadingAllVaccines}
         >
-          <Alert severity={feedback.type}>
-            <AlertTitle>{feedback.title}</AlertTitle>
-            {feedback.message} <strong>{feedback.strongMessage}</strong>
-          </Alert>
-        </Collapse>
-      </Box>
-
-      <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={isLoading || isLoadingAllVaccines}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
-    </Layout>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      </Layout>
+    )
   );
 }

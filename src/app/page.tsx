@@ -16,17 +16,27 @@ import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import Image from "next/image";
 import { VaccineCard } from "@/components/VaccineCard";
+import { getUser } from "@/api/user";
 
 export default function MyCard() {
   const router = useRouter();
 
-  const { user, token } = useContext(UserContext);
+  const { user, token, setUserProfile } = useContext(UserContext);
 
   useEffect(() => {
     if (!token) router.replace("/login");
   }, [token, router]);
 
   const url = `${HOST}/user/${user?.userId}/vaccines`;
+
+  const { data: userProfile } = useQuery({
+    queryFn: async () => getUser(`${HOST}/user/${user.userId}`, token),
+    queryKey: ["getUserData"],
+  });
+
+  useEffect(() => {
+    if (userProfile) setUserProfile(userProfile);
+  }, [userProfile, setUserProfile]);
 
   const { data, isLoading, isFetching } = useQuery({
     queryFn: async () => getTakenVaccines(url, token),
@@ -46,6 +56,8 @@ export default function MyCard() {
             <Box display="flex" flexDirection="column" gap={4}>
               {data.map((vaccine) => (
                 <VaccineCard
+                  dosage={vaccine.vaccineViewModel.dosage}
+                  appliedAt={vaccine.appliedAt}
                   key={vaccine.vaccineViewModel.id}
                   id={vaccine.vaccineViewModel.id}
                   popularName={vaccine.vaccineViewModel.popularName}
@@ -97,7 +109,7 @@ export default function MyCard() {
                         fullWidth
                         onClick={() => router.push("/registrar-vacinacao")}
                       >
-                        <span>Faça seu primeiro cadastro</span>
+                        <span>Cadastre agora</span>
                       </Button>
                     </Box>
                   </Grid>

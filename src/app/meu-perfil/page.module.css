@@ -44,12 +44,6 @@
   width: 100%;
 }
 
-.alert > div,
-.alert > div > div {
-  height: 100%;
-  width: 25rem;
-}
-
 @media (max-width: 700px) {
   .user_info_container {
     max-width: 100%;
@@ -62,10 +56,5 @@
   .alert_container {
     top: calc(100% - 75.61px);
     left: 0;
-  }
-
-  .alert > div,
-  .alert > div > div {
-    width: 100%;
   }
 }

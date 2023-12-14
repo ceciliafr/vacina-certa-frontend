@@ -24,9 +24,9 @@ import {
 } from "@/utils";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
-import Collapse from "@mui/material/Collapse";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
+import { Fade } from "@mui/material";
 
 export default function MyProfile() {
   const router = useRouter();
@@ -82,11 +82,10 @@ export default function MyProfile() {
       });
       closeAlert({ alertTime: 2000 });
     },
-    onError: async (data) => {
+    onError: async () => {
       setIsLoading(false);
       setFeedback({
         show: true,
-
         type: "error",
         title: "Ops",
         message: "Erro ao fazer login.",
@@ -241,177 +240,180 @@ export default function MyProfile() {
   };
 
   return (
-    <Layout>
-      <DesktopMenu />
-      <RightContent>
-        <Title
-          title="Área de dados pessoais:"
-          subtitle="Você pode alterar seus dados a qualquer momento"
-        />
+    token && (
+      <Layout>
+        <DesktopMenu />
+        <RightContent>
+          <Title
+            title="Área de dados pessoais:"
+            subtitle="Você pode alterar seus dados a qualquer momento"
+          />
 
-        <Box
-          gap="5rem"
-          width="100%"
-          display="flex"
-          justifyContent="space-between"
-        >
-          <Box display="flex" flexDirection="column" height="100%" width="100%">
-            <div className={styles.user_info_container}>
-              <div>
-                <span>
-                  <strong>CPF: </strong>
-                </span>
-                <span>{!!data && data.document}</span>
-                <br />
-                <span>
-                  <strong>Data de nascimento: </strong>
-                </span>
-                <span>
-                  {!!data && formatDateToPtBr(data.dateOfBirth.split(" ")[0])}
-                </span>
-              </div>
+          <Box
+            gap="5rem"
+            width="100%"
+            display="flex"
+            justifyContent="space-between"
+          >
+            <Box
+              display="flex"
+              flexDirection="column"
+              height="100%"
+              width="100%"
+            >
+              <div className={styles.user_info_container}>
+                <div>
+                  <span>
+                    <strong>CPF: </strong>
+                  </span>
+                  <span>{!!data && data.document}</span>
+                  <br />
+                  <span>
+                    <strong>Data de nascimento: </strong>
+                  </span>
+                  <span>
+                    {!!data && formatDateToPtBr(data.dateOfBirth.split(" ")[0])}
+                  </span>
+                </div>
 
-              <Grid
-                container
-                rowSpacing={{ xs: 0, sm: 2, md: 3 }}
-                columns={{ xs: 2, sm: 8, md: 8 }}
-                columnSpacing={{ xs: 1, sm: 3, md: 12 }}
-              >
-                <Grid item xs={4} sm={4} md={4}>
-                  <DemoItem label="Digite seu nome completo">
-                    <TextField
-                      fullWidth
-                      error={!!name.error}
-                      value={name.value}
-                      id="outlined-basic"
-                      variant="outlined"
-                      placeholder="Digite seu nome completo"
-                      onChange={(e) =>
-                        setName((prev) => ({
-                          ...prev,
-                          value: e.target.value,
-                        }))
-                      }
-                      helperText={name.error}
-                    />
-                  </DemoItem>
-                </Grid>
-
-                <Grid item xs={4} sm={4} md={4}>
-                  <DemoItem label="Digite o seu telefone">
-                    <MaskedInput
-                      mask="+99 (99) 99999-9999"
-                      value={phone.value}
-                      placeholder="+55 (31) 12345-6789"
-                      onChange={(e) =>
-                        setPhone((prev) => ({
-                          ...prev,
-                          value: e.target.value,
-                        }))
-                      }
-                    >
+                <Grid
+                  container
+                  rowSpacing={{ xs: 0, sm: 2, md: 3 }}
+                  columns={{ xs: 2, sm: 8, md: 8 }}
+                  columnSpacing={{ xs: 1, sm: 3, md: 12 }}
+                >
+                  <Grid item xs={4} sm={4} md={4}>
+                    <DemoItem label="Digite seu nome completo">
                       <TextField
+                        fullWidth
+                        error={!!name.error}
+                        value={name.value}
                         id="outlined-basic"
                         variant="outlined"
-                        error={!!phone.error}
-                        helperText={phone.error}
+                        placeholder="Digite seu nome completo"
+                        onChange={(e) =>
+                          setName((prev) => ({
+                            ...prev,
+                            value: e.target.value,
+                          }))
+                        }
+                        helperText={name.error}
                       />
-                    </MaskedInput>
-                  </DemoItem>
-                </Grid>
+                    </DemoItem>
+                  </Grid>
 
-                <Grid item xs={4} sm={4} md={4}>
-                  <DemoItem label="Como prefere ser chamado">
-                    <TextField
-                      fullWidth
-                      error={!!nickname.error}
-                      value={nickname.value}
-                      id="outlined-basic"
-                      variant="outlined"
-                      placeholder="Preencha com o seu apelido"
-                      onChange={(e) =>
-                        setNickname((prev) => ({
-                          ...prev,
-                          value: e.target.value,
-                        }))
-                      }
-                      helperText={nickname.error}
-                    />
-                  </DemoItem>
-                </Grid>
+                  <Grid item xs={4} sm={4} md={4}>
+                    <DemoItem label="Digite o seu telefone">
+                      <MaskedInput
+                        mask="+99 (99) 99999-9999"
+                        value={phone.value}
+                        placeholder="+55 (31) 12345-6789"
+                        onChange={(e) =>
+                          setPhone((prev) => ({
+                            ...prev,
+                            value: e.target.value,
+                          }))
+                        }
+                      >
+                        <TextField
+                          id="outlined-basic"
+                          variant="outlined"
+                          error={!!phone.error}
+                          helperText={phone.error}
+                        />
+                      </MaskedInput>
+                    </DemoItem>
+                  </Grid>
 
-                <Grid item xs={4} sm={4} md={4}>
-                  <Box
-                    height="100%"
-                    display="flex"
-                    justifyContent="flex-end"
-                    alignItems="flex-end"
-                  >
-                    <Button
-                      variant="text"
-                      onClick={() => router.push("/atualizar-senha")}
-                      style={{
-                        textTransform: "initial",
-                        textDecoration: "underline",
-                        padding: 0,
-                      }}
+                  <Grid item xs={4} sm={4} md={4}>
+                    <DemoItem label="Como prefere ser chamado">
+                      <TextField
+                        fullWidth
+                        error={!!nickname.error}
+                        value={nickname.value}
+                        id="outlined-basic"
+                        variant="outlined"
+                        placeholder="Preencha com o seu apelido"
+                        onChange={(e) =>
+                          setNickname((prev) => ({
+                            ...prev,
+                            value: e.target.value,
+                          }))
+                        }
+                        helperText={nickname.error}
+                      />
+                    </DemoItem>
+                  </Grid>
+
+                  <Grid item xs={4} sm={4} md={4}>
+                    <Box
+                      height="100%"
+                      display="flex"
+                      justifyContent="flex-end"
+                      alignItems="flex-end"
                     >
-                      Alterar senha
+                      <Button
+                        variant="text"
+                        onClick={() => router.push("/atualizar-senha")}
+                        style={{
+                          textTransform: "initial",
+                          textDecoration: "underline",
+                          padding: 0,
+                        }}
+                      >
+                        Alterar senha
+                      </Button>
+                    </Box>
+                  </Grid>
+                </Grid>
+
+                <Grid
+                  container
+                  columns={{ xs: 1, sm: 12, md: 12 }}
+                  columnSpacing={{ xs: 1, sm: 1, md: 1 }}
+                  className={styles.buttons_container}
+                >
+                  <Grid item xs={1} sm={3} md={3}>
+                    <Button
+                      variant="contained"
+                      fullWidth
+                      onClick={registerUpdatedUser}
+                    >
+                      Salvar
                     </Button>
-                  </Box>
+                  </Grid>
+                  <Grid item xs={1} sm={3} md={3}>
+                    <Button
+                      variant="outlined"
+                      color="error"
+                      fullWidth
+                      onClick={resetValues}
+                    >
+                      Cancelar
+                    </Button>
+                  </Grid>
                 </Grid>
-              </Grid>
-
-              <Grid
-                container
-                columns={{ xs: 1, sm: 12, md: 12 }}
-                columnSpacing={{ xs: 1, sm: 1, md: 1 }}
-                className={styles.buttons_container}
-              >
-                <Grid item xs={1} sm={3} md={3}>
-                  <Button
-                    variant="contained"
-                    fullWidth
-                    onClick={registerUpdatedUser}
-                  >
-                    Salvar
-                  </Button>
-                </Grid>
-                <Grid item xs={1} sm={3} md={3}>
-                  <Button
-                    variant="outlined"
-                    color="error"
-                    fullWidth
-                    onClick={resetValues}
-                  >
-                    Cancelar
-                  </Button>
-                </Grid>
-              </Grid>
-            </div>
+              </div>
+            </Box>
           </Box>
+        </RightContent>
+
+        <Box className={styles.alert_container}>
+          <Fade in={feedback.show}>
+            <Alert severity={feedback.type}>
+              <AlertTitle>{feedback.title}</AlertTitle>
+              {feedback.message} <strong>{feedback.strongMessage}</strong>
+            </Alert>
+          </Fade>
         </Box>
-      </RightContent>
 
-      <Box className={styles.alert_container}>
-        <Collapse
-          orientation="horizontal"
-          in={feedback.show}
-          className={styles.alert}
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={isLoading || isLoadingUserData}
         >
-          <Alert severity={feedback.type}>
-            <AlertTitle>{feedback.title}</AlertTitle>
-            {feedback.message} <strong>{feedback.strongMessage}</strong>
-          </Alert>
-        </Collapse>
-      </Box>
-
-      <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={isLoading || isLoadingUserData}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
-    </Layout>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      </Layout>
+    )
   );
 }

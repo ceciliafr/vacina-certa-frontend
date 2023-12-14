@@ -33,38 +33,41 @@ export default function AllVaccines() {
   });
 
   return (
-    <Layout>
-      <DesktopMenu />
-      <RightContent>
-        {data?.length ? (
-          <>
-            <Title title="Todas as vacinas" />
-            <Box display="flex" flexDirection="column" gap={4}>
-              {data.map((vaccine) => (
-                <VaccineCard
-                  key={vaccine.id}
-                  id={vaccine.id}
-                  popularName={vaccine.popularName}
-                  description={vaccine.description}
-                  manufacturer={vaccine.manufacturer}
-                  fullName={vaccine.fullName}
-                  age={vaccine.age}
-                  year={vaccine.year}
-                  required={vaccine.required}
-                  variant="information"
-                />
-              ))}
-            </Box>
-          </>
-        ) : (
-          <Backdrop
-            sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-            open={isLoading}
-          >
-            <CircularProgress color="inherit" />
-          </Backdrop>
-        )}
-      </RightContent>
-    </Layout>
+    token && (
+      <Layout>
+        <DesktopMenu />
+        <RightContent>
+          {data?.length ? (
+            <>
+              <Title title="Todas as vacinas" />
+              <Box display="flex" flexDirection="column" gap={4}>
+                {data.map((vaccine) => (
+                  <VaccineCard
+                    dosage={vaccine.dosage}
+                    key={vaccine.id}
+                    id={vaccine.id}
+                    popularName={vaccine.popularName}
+                    description={vaccine.description}
+                    manufacturer={vaccine.manufacturer}
+                    fullName={vaccine.fullName}
+                    age={vaccine.age}
+                    year={vaccine.year}
+                    required={vaccine.required}
+                    variant="information"
+                  />
+                ))}
+              </Box>
+            </>
+          ) : (
+            <Backdrop
+              sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+              open={isLoading}
+            >
+              <CircularProgress color="inherit" />
+            </Backdrop>
+          )}
+        </RightContent>
+      </Layout>
+    )
   );
 }

@@ -1,5 +1,5 @@
 "use client";
-import "date-fns/locale/pt-BR";
+import "dayjs/locale/pt-br";
 import { useState } from "react";
 import styles from "./styles.module.css";
 import { useRouter } from "next/navigation";
@@ -29,7 +29,6 @@ import {
 } from "@/utils";
 import { userRegister } from "@/api/user";
 import Alert from "@mui/material/Alert";
-import Collapse from "@mui/material/Collapse";
 import AlertTitle from "@mui/material/AlertTitle";
 import {
   DEAFULT_FIELD_VALUE,
@@ -46,6 +45,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import { Fade } from "@mui/material";
 
 export const RegisterUserForm = () => {
   const router = useRouter();
@@ -588,16 +588,12 @@ export const RegisterUserForm = () => {
         </div>
       </div>
       <Box className={styles.alert_container}>
-        <Collapse
-          orientation="horizontal"
-          in={feedback.show}
-          className={styles.alert}
-        >
+        <Fade in={feedback.show}>
           <Alert severity={feedback.type}>
             <AlertTitle>{feedback.title}</AlertTitle>
             {feedback.message} <strong>{feedback.strongMessage}</strong>
           </Alert>
-        </Collapse>
+        </Fade>
       </Box>
 
       <Backdrop

@@ -18,7 +18,6 @@ import Grid from "@mui/material/Grid";
 import MaskedInput from "react-input-mask";
 import { DEFAULT_FEEDBACK, DOCUMENT_TYPE } from "@/constants";
 import { userLogin } from "@/api/user";
-import Collapse from "@mui/material/Collapse";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import {
@@ -34,6 +33,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import FormHelperText from "@mui/material/FormHelperText";
+import { Fade } from "@mui/material";
 
 export const LoginForm = () => {
   const router = useRouter();
@@ -323,16 +323,12 @@ export const LoginForm = () => {
       </div>
 
       <Box className={styles.alert_container}>
-        <Collapse
-          orientation="horizontal"
-          in={feedback.show}
-          className={styles.alert}
-        >
+        <Fade in={feedback.show}>
           <Alert severity={feedback.type}>
             <AlertTitle>{feedback.title}</AlertTitle>
             {feedback.message} <strong>{feedback.strongMessage}</strong>
           </Alert>
-        </Collapse>
+        </Fade>
       </Box>
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}

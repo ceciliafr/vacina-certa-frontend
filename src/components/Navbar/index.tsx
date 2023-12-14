@@ -9,7 +9,7 @@ import { UserContext } from "@/contexts/userContext";
 
 export const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user } = useContext(UserContext);
+  const { userProfile } = useContext(UserContext);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -27,7 +27,7 @@ export const Navbar: React.FC = () => {
         <div className={styles.user_info_container}>
           <span className={styles.welcome_message}>Olá,</span>
           <span className={styles.user_name}>
-            {user.userId ? "John!" : "Que bom que você veio!"}
+            {userProfile.nickname ?? "Que bom que você veio!"}
           </span>
         </div>
 

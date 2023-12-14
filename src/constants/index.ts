@@ -29,3 +29,5 @@ export const HTTP_STATUS = {
 
 export const HOST = "https://core-dot-summer-catfish-296915.uc.r.appspot.com";
 
+export const AUTH_HOST = "https://summer-catfish-296915.uc.r.appspot.com";
+ 

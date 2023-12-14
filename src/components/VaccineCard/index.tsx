@@ -5,6 +5,8 @@ import { Vaccine, VaccineStatus } from "@/types/vaccines";
 
 export const VaccineCard: React.FC<Vaccine & { variant: VaccineStatus }> = ({
   id,
+  appliedAt,
+  dosage,
   popularName,
   fullName,
   manufacturer,
@@ -26,9 +28,11 @@ export const VaccineCard: React.FC<Vaccine & { variant: VaccineStatus }> = ({
     }
   };
 
+  const date = new Date();
+
   return (
     <Box key={id} className={getContainerStyle(variant)}>
-      <Box display="flex" flexDirection="column" marginBottom={3}>
+      <Box display="flex" flexDirection="column">
         <Box
           display="flex"
           alignItems="center"
@@ -36,7 +40,7 @@ export const VaccineCard: React.FC<Vaccine & { variant: VaccineStatus }> = ({
           marginBottom={2}
         >
           <h2 className={styles.title}>{popularName}</h2>
-          <Tag>REFORÇO</Tag>
+          {!!dosage && <Tag>{dosage}</Tag>}
         </Box>
 
         <hr className={styles.hr} />
@@ -64,15 +68,32 @@ export const VaccineCard: React.FC<Vaccine & { variant: VaccineStatus }> = ({
         <p className={styles.producer_container}>
           <span className={styles.description_producer}>Idade para tomar:</span>
 
-          <span className={styles.description_value}>{` ${age}`}</span>
+          <span className={styles.description_value}>{` ${age} anos`}</span>
         </p>
       )}
 
-      <p className={styles.producer_container}>
-        <span className={styles.description_producer}>Última dose tomada:</span>
+      {
+        <p className={styles.producer_container}>
+          <span className={styles.description_producer}>Ano para tomar:</span>
 
-        <span className={styles.description_value}>{` ${"10/11/2022"}`}</span>
-      </p>
+          <span className={styles.description_value}>
+            {year ? ` ${year}` : ` ${date.getFullYear()}`}
+          </span>
+        </p>
+      }
+
+      {variant != "information" && appliedAt && (
+        <p className={styles.producer_container}>
+          <span className={styles.description_producer}>
+            Última dose tomada:
+          </span>
+
+          <span className={styles.description_value}>{` ${appliedAt.replaceAll(
+            "-",
+            "/"
+          )}`}</span>
+        </p>
+      )}
     </Box>
   );
 };
