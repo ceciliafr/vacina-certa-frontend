@@ -148,12 +148,12 @@ export default function RegisterVaccination() {
   });
 
   const closeAlert = ({ alertTime }: { alertTime: number }) => {
+     setIsLoading(false);
     setTimeout(() => {
       setFeedback((prev) => ({
         ...prev,
         show: false,
       }));
-      setIsLoading(false);
     }, alertTime);
   };
 
