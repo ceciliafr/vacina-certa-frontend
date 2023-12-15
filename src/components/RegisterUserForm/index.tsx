@@ -1,5 +1,5 @@
 "use client";
-import "date-fns/locale/pt-BR";
+import "dayjs/locale/pt-br";
 import { useState } from "react";
 import styles from "./styles.module.css";
 import { useRouter } from "next/navigation";
@@ -21,6 +21,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import {
   formatDate,
+  getDocumentLabel,
   getDocumentMask,
   getFirstName,
   getLastNames,
@@ -28,7 +29,6 @@ import {
 } from "@/utils";
 import { userRegister } from "@/api/user";
 import Alert from "@mui/material/Alert";
-import Collapse from "@mui/material/Collapse";
 import AlertTitle from "@mui/material/AlertTitle";
 import {
   DEAFULT_FIELD_VALUE,
@@ -43,10 +43,14 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import InputAdornment from "@mui/material/InputAdornment";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
+import { Fade } from "@mui/material";
 
 export const RegisterUserForm = () => {
   const router = useRouter();
 
+  const [isLoading, setIsLoading] = useState(false);
   const [document, setDocument] = useState(DEAFULT_FIELD_VALUE);
   const [documentType, setDocumentType] = useState(DEAFULT_FIELD_VALUE);
   const [name, setName] = useState(DEAFULT_FIELD_VALUE);
@@ -66,22 +70,18 @@ export const RegisterUserForm = () => {
   const handleClickShowConfirmPassword = () =>
     setShowConfirmPassword((show) => !show);
 
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-  };
-
-  const handleMouseDownConfirmPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
+  const handleMouseDown = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
 
   const { mutate } = useMutation({
     mutationFn: userRegister,
     mutationKey: ["registerUser"],
+    onMutate: () => {
+      setIsLoading(true);
+    },
     onSuccess: async () => {
+      setIsLoading(false);
       setFeedback({
         show: true,
         type: "success",
@@ -92,11 +92,12 @@ export const RegisterUserForm = () => {
       closeAlert({ shouldRedirect: true, alertTime: 1000 });
     },
     onError: async () => {
+      setIsLoading(false);
       setFeedback({
         show: true,
         type: "error",
         title: "Ops",
-        message: "Erro ao criar sua conta",
+        message: "Erro ao criar sua conta.",
         strongMessage: "Tente novamente.",
       });
       closeAlert({ shouldRedirect: false, alertTime: 2000 });
@@ -169,39 +170,39 @@ export const RegisterUserForm = () => {
     if (!documentType.value) {
       setDocumentType((prev) => ({
         ...prev,
-        error: "campo obrigatório",
+        error: "Campo obrigatório",
       }));
       isValid = false;
     }
 
-    if (!document.value) {
+    if (!removeSpecialCharacters(document.value)) {
       setDocument((prev) => ({
         ...prev,
-        error: "campo obrigatório",
+        error: "Campo obrigatório",
       }));
       isValid = false;
     }
 
     if (
       documentType.value === "CPF" &&
-      document.value &&
+      removeSpecialCharacters(document.value) &&
       removeSpecialCharacters(document.value).length != 11
     ) {
       setDocument((prev) => ({
         ...prev,
-        error: "campo incompleto",
+        error: "Campo incompleto",
       }));
       isValid = false;
     }
 
     if (
       documentType.value === "PASSPORT" &&
-      document.value &&
-      removeSpecialCharacters(document.value).length != 9
+      removeSpecialCharacters(document.value) &&
+      removeSpecialCharacters(document.value).length != 8
     ) {
       setDocument((prev) => ({
         ...prev,
-        error: "campo incompleto",
+        error: "Campo incompleto",
       }));
       isValid = false;
     }
@@ -209,7 +210,7 @@ export const RegisterUserForm = () => {
     if (!name.value) {
       setName((prev) => ({
         ...prev,
-        error: "campo obrigatório",
+        error: "Campo obrigatório",
       }));
       isValid = false;
     }
@@ -217,7 +218,7 @@ export const RegisterUserForm = () => {
     if (name.value && !(name.value.split(" ").length >= 2)) {
       setName((prev) => ({
         ...prev,
-        error: "campo incompleto",
+        error: "Campo incompleto",
       }));
       isValid = false;
     }
@@ -225,7 +226,7 @@ export const RegisterUserForm = () => {
     if (!nickname.value) {
       setNickname((prev) => ({
         ...prev,
-        error: "campo obrigatório",
+        error: "Campo obrigatório",
       }));
       isValid = false;
     }
@@ -233,7 +234,7 @@ export const RegisterUserForm = () => {
     if (!phone.value) {
       setPhone((prev) => ({
         ...prev,
-        error: "campo obrigatório",
+        error: "Campo obrigatório",
       }));
       isValid = false;
     }
@@ -241,7 +242,7 @@ export const RegisterUserForm = () => {
     if (phone.value && removeSpecialCharacters(phone.value).length != 13) {
       setPhone((prev) => ({
         ...prev,
-        error: "campo incompleto",
+        error: "Campo incompleto",
       }));
       isValid = false;
     }
@@ -249,7 +250,7 @@ export const RegisterUserForm = () => {
     if (!dateOfBirth.value) {
       setDateOfBirth((prev) => ({
         ...prev,
-        error: "campo obrigatório",
+        error: "Campo obrigatório",
       }));
       isValid = false;
     }
@@ -257,7 +258,7 @@ export const RegisterUserForm = () => {
     if (!password.value) {
       setPassword((prev) => ({
         ...prev,
-        error: "campo obrigatório",
+        error: "Campo obrigatório",
       }));
       isValid = false;
     }
@@ -265,7 +266,7 @@ export const RegisterUserForm = () => {
     if (!confirmPassword.value) {
       setConfirmPassword((prev) => ({
         ...prev,
-        error: "campo obrigatório",
+        error: "Campo obrigatório",
       }));
       isValid = false;
     }
@@ -277,7 +278,7 @@ export const RegisterUserForm = () => {
     ) {
       setConfirmPassword((prev) => ({
         ...prev,
-        error: "as senhas devem ser iguais",
+        error: "As senhas devem ser iguais",
       }));
       isValid = false;
     }
@@ -366,6 +367,7 @@ export const RegisterUserForm = () => {
                   </DemoItem>
                 </FormControl>
               </Grid>
+
               <Grid item xs={1} sm={5} md={4}>
                 <DemoItem label="Digite seu documento">
                   <MaskedInput
@@ -376,14 +378,14 @@ export const RegisterUserForm = () => {
                     onChange={(e) =>
                       setDocument((prev) => ({
                         ...prev,
-                        value: e.target.value,
+                        value: e.target.value.toUpperCase(),
                       }))
                     }
                   >
                     <TextField
                       id="outlined-basic"
                       variant="outlined"
-                      label="Digite o documento"
+                      label={getDocumentLabel(documentType.value)}
                       error={!!document.error}
                       helperText={document.error}
                     />
@@ -409,6 +411,7 @@ export const RegisterUserForm = () => {
                   />
                 </DemoItem>
               </Grid>
+
               <Grid item xs={1} sm={8} md={8}>
                 <DemoItem label="Como prefere ser chamado">
                   <TextField
@@ -427,6 +430,7 @@ export const RegisterUserForm = () => {
                   />
                 </DemoItem>
               </Grid>
+
               <Grid item xs={1} sm={4} md={4}>
                 <DemoItem label="Telefone">
                   <MaskedInput
@@ -450,6 +454,7 @@ export const RegisterUserForm = () => {
                   </MaskedInput>
                 </DemoItem>
               </Grid>
+
               <Grid item xs={1} sm={4} md={4}>
                 <LocalizationProvider
                   dateAdapter={AdapterDayjs}
@@ -504,7 +509,7 @@ export const RegisterUserForm = () => {
                         <IconButton
                           aria-label="toggle password visibility"
                           onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
+                          onMouseDown={handleMouseDown}
                           edge="end"
                         >
                           {showPassword ? <VisibilityOff /> : <Visibility />}
@@ -539,7 +544,7 @@ export const RegisterUserForm = () => {
                         <IconButton
                           aria-label="toggle password visibility"
                           onClick={handleClickShowConfirmPassword}
-                          onMouseDown={handleMouseDownConfirmPassword}
+                          onMouseDown={handleMouseDown}
                           edge="end"
                         >
                           {showConfirmPassword ? (
@@ -583,17 +588,20 @@ export const RegisterUserForm = () => {
         </div>
       </div>
       <Box className={styles.alert_container}>
-        <Collapse
-          orientation="horizontal"
-          in={feedback.show}
-          className={styles.alert}
-        >
+        <Fade in={feedback.show}>
           <Alert severity={feedback.type}>
             <AlertTitle>{feedback.title}</AlertTitle>
             {feedback.message} <strong>{feedback.strongMessage}</strong>
           </Alert>
-        </Collapse>
+        </Fade>
       </Box>
+
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={isLoading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </Layout>
   );
 };

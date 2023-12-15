@@ -1,8 +1,10 @@
+import { UserContext } from "@/contexts/userContext";
 import styles from "./styles.module.css";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useContext } from "react";
 
 const MENU_ITEMS = [
   {
@@ -37,7 +39,9 @@ const MENU_ITEMS = [
   },
 ];
 
-export const MenuItems: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
+export const MenuItems: React.FC = () => {
+  const { resetUserProfile } = useContext(UserContext);
+
   const pathname = usePathname();
 
   const isActiveRouter = (href: string) => {
@@ -65,7 +69,7 @@ export const MenuItems: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
       </List>
 
       <List>
-        <Link href="/login" onClick={() => !!onClick && onClick()}>
+        <Link href="/login" onClick={resetUserProfile}>
           <ListItem className={styles.item}>Sair</ListItem>
         </Link>
       </List>

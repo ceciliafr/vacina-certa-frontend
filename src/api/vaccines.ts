@@ -7,7 +7,7 @@ export const getVaccines = async (url: string, token: string | null) => {
   const { data } = await api.get<Vaccine[]>(`${HOST}/vaccine`, {
     headers: { Authorization: `Bearer ${token}` },
   });
-  return data;
+  return data || [];
 };
 
 export const getTakenVaccines = async (
@@ -17,7 +17,7 @@ export const getTakenVaccines = async (
   const { data } = await api.get<VaccineResponse[]>(url, {
     headers: { Authorization: `Bearer ${token}` },
   });
-  return data;
+  return data || [];
 };
 
 [
@@ -53,6 +53,5 @@ export const registerVaccine = async (
     },
   });
 
-  console.log(data);
   return data;
 };

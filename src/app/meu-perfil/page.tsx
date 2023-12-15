@@ -24,14 +24,14 @@ import {
 } from "@/utils";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
-import Collapse from "@mui/material/Collapse";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
-import Link from "@mui/material/Link";
+import { Fade } from "@mui/material";
+import { UserProfile } from "@/types/user";
 
 export default function MyProfile() {
   const router = useRouter();
-  const { token, user } = useContext(UserContext);
+  const { token, user, setUserProfile } = useContext(UserContext);
 
   useEffect(() => {
     if (!token) router.replace("/login");
@@ -48,10 +48,16 @@ export default function MyProfile() {
   const [documentType, setDocumentType] = useState(DEAFULT_FIELD_VALUE);
   const [dateOfBirth, setDateOfBirth] = useState(DEAFULT_FIELD_VALUE);
 
+  const [userData, setUserData] = useState({} as UserProfile);
+
   const { data, isLoading: isLoadingUserData } = useQuery({
-    queryFn: async () => getUser(`${HOST}/user/${user.userId}`, token),
+    queryFn: async () => getUser(`${HOST}/user/${user?.userId}`, token),
     queryKey: ["getUserData"],
   });
+
+  useEffect(() => {
+    if (data) setUserData(data);
+  }, [data]);
 
   const updatedUser = {
     firstName: getFirstName(name.value),
@@ -67,12 +73,14 @@ export default function MyProfile() {
 
   const { mutate } = useMutation({
     mutationFn: async () =>
-      updateUser(`${HOST}/user/${user.userId}`, updatedUser, token),
+      updateUser(`${HOST}/user/${user?.userId}`, updatedUser, token),
     mutationKey: ["userLogin"],
     onMutate: () => {
       setIsLoading(true);
     },
     onSuccess: async (data) => {
+      setUserData(data);
+      setUserProfile(data);
       setIsLoading(false);
       setFeedback({
         show: true,
@@ -87,47 +95,47 @@ export default function MyProfile() {
       setIsLoading(false);
       setFeedback({
         show: true,
-
         type: "error",
         title: "Ops",
-        message: "Erro ao fazer login",
+        message: "Erro ao fazer login.",
         strongMessage: "Tente novamente.",
       });
       closeAlert({ alertTime: 2000 });
     },
   });
+
   useEffect(() => {
-    if (data) {
+    if (userData.id) {
       setName((prev) => ({
         ...prev,
-        value: `${data.firstName} ${data.lastName}`,
+        value: `${userData.firstName} ${userData.lastName}`,
       }));
       setPhone((prev) => ({
         ...prev,
-        value: data.phone,
+        value: userData.phone,
       }));
       setNickname((prev) => ({
         ...prev,
-        value: data.nickname,
+        value: userData.nickname,
       }));
       setCreatedAt((prev) => ({
         ...prev,
-        value: data.createdAt,
+        value: userData.createdAt,
       }));
       setDocument((prev) => ({
         ...prev,
-        value: data.document,
+        value: userData.document,
       }));
       setDocumentType((prev) => ({
         ...prev,
-        value: data.documentType,
+        value: userData.documentType,
       }));
       setDateOfBirth((prev) => ({
         ...prev,
-        value: data.dateOfBirth,
+        value: userData.dateOfBirth,
       }));
     }
-  }, [data]);
+  }, [userData]);
 
   const closeAlert = ({ alertTime }: { alertTime: number }) => {
     setTimeout(() => {
@@ -165,7 +173,7 @@ export default function MyProfile() {
     if (!name.value) {
       setName((prev) => ({
         ...prev,
-        error: "campo obrigatório",
+        error: "Campo obrigatório",
       }));
       isValid = false;
     }
@@ -173,7 +181,7 @@ export default function MyProfile() {
     if (name.value && !(name.value.split(" ").length >= 2)) {
       setName((prev) => ({
         ...prev,
-        error: "campo incompleto",
+        error: "Campo incompleto",
       }));
       isValid = false;
     }
@@ -181,7 +189,7 @@ export default function MyProfile() {
     if (!nickname.value) {
       setNickname((prev) => ({
         ...prev,
-        error: "campo obrigatório",
+        error: "Campo obrigatório",
       }));
       isValid = false;
     }
@@ -189,7 +197,7 @@ export default function MyProfile() {
     if (!phone.value) {
       setPhone((prev) => ({
         ...prev,
-        error: "campo obrigatório",
+        error: "Campo obrigatório",
       }));
       isValid = false;
     }
@@ -197,7 +205,7 @@ export default function MyProfile() {
     if (phone.value && removeSpecialCharacters(phone.value).length != 13) {
       setPhone((prev) => ({
         ...prev,
-        error: "campo incompleto",
+        error: "Campo incompleto",
       }));
       isValid = false;
     }
@@ -212,205 +220,210 @@ export default function MyProfile() {
   };
 
   const resetValues = () => {
-    if (data) {
+    if (userData) {
       setFeedback({
         show: true,
         type: "info",
         title: "Pronto",
-        message: "Suas alterações foram desfeitas",
+        message: "Os dados foram redefinidos.",
         strongMessage: "",
       });
+      closeAlert({ alertTime: 2000 });
 
       setName((prev) => ({
         ...prev,
-        value: `${data.firstName} ${data.lastName}`,
+        value: `${userData.firstName} ${userData.lastName}`,
         error: "",
       }));
       setPhone((prev) => ({
         ...prev,
-        value: data.phone,
+        value: userData.phone,
         error: "",
       }));
       setNickname((prev) => ({
         ...prev,
-        value: data.nickname,
+        value: userData.nickname,
         error: "",
       }));
     }
   };
 
   return (
-    <Layout>
-      <DesktopMenu />
-      <RightContent>
-        <Title
-          title="Área de dados pessoais:"
-          subtitle="Você pode alterar seus dados a qualquer momento"
-        />
+    token && (
+      <Layout>
+        <DesktopMenu />
+        <RightContent>
+          <Title
+            title="Área de dados pessoais:"
+            subtitle="Você pode alterar seus dados a qualquer momento"
+          />
 
-        <Box
-          gap="5rem"
-          width="100%"
-          display="flex"
-          justifyContent="space-between"
-        >
-          <Box display="flex" flexDirection="column" height="100%" width="100%">
-            <div className={styles.user_info_container}>
-              <div>
-                <span>
-                  <strong>CPF: </strong>
-                </span>
-                <span>{!!data && data.document}</span>
-                <br />
-                <span>
-                  <strong>Data de nascimento: </strong>
-                </span>
-                <span>
-                  {!!data && formatDateToPtBr(data.dateOfBirth.split(" ")[0])}
-                </span>
-              </div>
+          <Box
+            gap="5rem"
+            width="100%"
+            display="flex"
+            justifyContent="space-between"
+          >
+            <Box
+              display="flex"
+              flexDirection="column"
+              height="100%"
+              width="100%"
+            >
+              <div className={styles.user_info_container}>
+                <div>
+                  <span>
+                    <strong>CPF: </strong>
+                  </span>
+                  <span>{!!userData && userData.document}</span>
+                  <br />
+                  <span>
+                    <strong>Data de nascimento: </strong>
+                  </span>
+                  <span>
+                    {!!userData &&
+                      formatDateToPtBr(userData?.dateOfBirth?.split(" ")[0])}
+                  </span>
+                </div>
 
-              <Grid
-                container
-                rowSpacing={{ xs: 0, sm: 2, md: 3 }}
-                columns={{ xs: 2, sm: 8, md: 8 }}
-                columnSpacing={{ xs: 1, sm: 3, md: 12 }}
-              >
-                <Grid item xs={4} sm={4} md={4}>
-                  <DemoItem label="Digite seu nome completo">
-                    <TextField
-                      fullWidth
-                      error={!!name.error}
-                      value={name.value}
-                      id="outlined-basic"
-                      variant="outlined"
-                      placeholder="Digite seu nome completo"
-                      onChange={(e) =>
-                        setName((prev) => ({
-                          ...prev,
-                          value: e.target.value,
-                        }))
-                      }
-                      helperText={name.error}
-                    />
-                  </DemoItem>
-                </Grid>
-
-                <Grid item xs={4} sm={4} md={4}>
-                  <DemoItem label="Digite o seu telefone">
-                    <MaskedInput
-                      mask="+99 (99) 99999-9999"
-                      value={phone.value}
-                      placeholder="+55 (31) 12345-6789"
-                      onChange={(e) =>
-                        setPhone((prev) => ({
-                          ...prev,
-                          value: e.target.value,
-                        }))
-                      }
-                    >
+                <Grid
+                  container
+                  rowSpacing={{ xs: 3, sm: 2, md: 3 }}
+                  columns={{ xs: 2, sm: 8, md: 8 }}
+                  columnSpacing={{ xs: 1, sm: 3, md: 12 }}
+                >
+                  <Grid item xs={4} sm={4} md={4}>
+                    <DemoItem label="Digite seu nome completo">
                       <TextField
+                        fullWidth
+                        error={!!name.error}
+                        value={name.value}
                         id="outlined-basic"
                         variant="outlined"
-                        error={!!phone.error}
-                        helperText={phone.error}
+                        placeholder="Digite seu nome completo"
+                        onChange={(e) =>
+                          setName((prev) => ({
+                            ...prev,
+                            value: e.target.value,
+                          }))
+                        }
+                        helperText={name.error}
                       />
-                    </MaskedInput>
-                  </DemoItem>
-                </Grid>
+                    </DemoItem>
+                  </Grid>
 
-                <Grid item xs={4} sm={4} md={4}>
-                  <DemoItem label="Como prefere ser chamado">
-                    <TextField
-                      fullWidth
-                      error={!!nickname.error}
-                      value={nickname.value}
-                      id="outlined-basic"
-                      variant="outlined"
-                      placeholder="Preencha com o seu apelido"
-                      onChange={(e) =>
-                        setNickname((prev) => ({
-                          ...prev,
-                          value: e.target.value,
-                        }))
-                      }
-                      helperText={nickname.error}
-                    />
-                  </DemoItem>
-                </Grid>
+                  <Grid item xs={4} sm={4} md={4}>
+                    <DemoItem label="Digite o seu telefone">
+                      <MaskedInput
+                        mask="+99 (99) 99999-9999"
+                        value={phone.value}
+                        placeholder="+55 (31) 12345-6789"
+                        onChange={(e) =>
+                          setPhone((prev) => ({
+                            ...prev,
+                            value: e.target.value,
+                          }))
+                        }
+                      >
+                        <TextField
+                          id="outlined-basic"
+                          variant="outlined"
+                          error={!!phone.error}
+                          helperText={phone.error}
+                        />
+                      </MaskedInput>
+                    </DemoItem>
+                  </Grid>
 
-                <Grid item xs={4} sm={4} md={4}>
-                  <Box
-                    height="100%"
-                    display="flex"
-                    justifyContent="flex-end"
-                    alignItems="flex-end"
-                  >
-                    <Button
-                      variant="text"
-                      onClick={() => router.push("/atualizar-senha")}
-                      style={{
-                        textTransform: "initial",
-                        textDecoration: "underline",
-                        padding: 0,
-                      }}
+                  <Grid item xs={4} sm={4} md={4}>
+                    <DemoItem label="Como prefere ser chamado">
+                      <TextField
+                        fullWidth
+                        error={!!nickname.error}
+                        value={nickname.value}
+                        id="outlined-basic"
+                        variant="outlined"
+                        placeholder="Preencha com o seu apelido"
+                        onChange={(e) =>
+                          setNickname((prev) => ({
+                            ...prev,
+                            value: e.target.value,
+                          }))
+                        }
+                        helperText={nickname.error}
+                      />
+                    </DemoItem>
+                  </Grid>
+
+                  <Grid item xs={4} sm={4} md={4}>
+                    <Box
+                      height="100%"
+                      display="flex"
+                      justifyContent="flex-end"
+                      alignItems="flex-end"
                     >
-                      Alterar senha
+                      <Button
+                        variant="text"
+                        onClick={() => router.push("/atualizar-senha")}
+                        style={{
+                          textTransform: "initial",
+                          textDecoration: "underline",
+                          padding: 0,
+                        }}
+                      >
+                        Alterar senha
+                      </Button>
+                    </Box>
+                  </Grid>
+                </Grid>
+
+                <Grid
+                  container
+                  columns={{ xs: 1, sm: 12, md: 12 }}
+                  columnSpacing={{ xs: 1, sm: 1, md: 1 }}
+                  className={styles.buttons_container}
+                >
+                  <Grid item xs={1} sm={3} md={3}>
+                    <Button
+                      variant="contained"
+                      fullWidth
+                      onClick={registerUpdatedUser}
+                    >
+                      Salvar
                     </Button>
-                  </Box>
+                  </Grid>
+                  <Grid item xs={1} sm={3} md={3}>
+                    <Button
+                      variant="outlined"
+                      color="error"
+                      fullWidth
+                      onClick={resetValues}
+                    >
+                      Cancelar
+                    </Button>
+                  </Grid>
                 </Grid>
-              </Grid>
-
-              <Grid
-                container
-                columns={{ xs: 1, sm: 12, md: 12 }}
-                columnSpacing={{ xs: 1, sm: 1, md: 1 }}
-                className={styles.buttons_container}
-              >
-                <Grid item xs={1} sm={3} md={3}>
-                  <Button
-                    variant="contained"
-                    fullWidth
-                    onClick={registerUpdatedUser}
-                  >
-                    Salvar
-                  </Button>
-                </Grid>
-                <Grid item xs={1} sm={3} md={3}>
-                  <Button
-                    variant="outlined"
-                    color="error"
-                    fullWidth
-                    onClick={resetValues}
-                  >
-                    Cancelar
-                  </Button>
-                </Grid>
-              </Grid>
-            </div>
+              </div>
+            </Box>
           </Box>
+        </RightContent>
+
+        <Box className={styles.alert_container}>
+          <Fade in={feedback.show}>
+            <Alert severity={feedback.type}>
+              <AlertTitle>{feedback.title}</AlertTitle>
+              {feedback.message} <strong>{feedback.strongMessage}</strong>
+            </Alert>
+          </Fade>
         </Box>
-      </RightContent>
 
-      <Box className={styles.alert_container}>
-        <Collapse
-          orientation="horizontal"
-          in={feedback.show}
-          className={styles.alert}
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={isLoading || isLoadingUserData}
         >
-          <Alert severity={feedback.type}>
-            <AlertTitle>{feedback.title}</AlertTitle>
-            {feedback.message} <strong>{feedback.strongMessage}</strong>
-          </Alert>
-        </Collapse>
-      </Box>
-
-      <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={isLoading || isLoadingUserData}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
-    </Layout>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      </Layout>
+    )
   );
 }

@@ -5,10 +5,21 @@ export const getDocumentMask = (documentType: string): string => {
     if (documentType === "CPF") {
       return "999.999.999-99";
     } else {
-      return "aaaaaaaaa";
+      return "aa999999";
     }
   }
   return "";
+};
+
+export const getDocumentLabel = (documentType: string): string => {
+  if (documentType) {
+    if (documentType === "CPF") {
+      return "Ex.: 123.456.789-00";
+    } else {
+      return "Ex.: AB123456";
+    }
+  }
+  return "Digite seu documento";
 };
 
 export const formatDate = (date: string): string => {

@@ -18,10 +18,13 @@ import Grid from "@mui/material/Grid";
 import MaskedInput from "react-input-mask";
 import { DEFAULT_FEEDBACK, DOCUMENT_TYPE } from "@/constants";
 import { userLogin } from "@/api/user";
-import Collapse from "@mui/material/Collapse";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
-import { getDocumentMask } from "@/utils";
+import {
+  getDocumentLabel,
+  getDocumentMask,
+  removeSpecialCharacters,
+} from "@/utils";
 import { UserContext } from "@/contexts/userContext";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -30,6 +33,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import FormHelperText from "@mui/material/FormHelperText";
+import { Fade } from "@mui/material";
 
 export const LoginForm = () => {
   const router = useRouter();
@@ -43,9 +47,7 @@ export const LoginForm = () => {
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
+  const handleMouseDown = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
 
@@ -56,11 +58,14 @@ export const LoginForm = () => {
       setIsLoading(true);
     },
     onSuccess: async (data) => {
-      setFeedback((prev) => ({
-        ...prev,
-        show: false,
-      }));
       setToken(data);
+      setFeedback({
+        show: true,
+        type: "success",
+        title: "Parabéns",
+        message: "Login efetuado com sucesso!",
+        strongMessage: "",
+      });
       closeAlert({ shouldRedirect: true, alertTime: 1000 });
     },
     onError: async () => {
@@ -69,7 +74,7 @@ export const LoginForm = () => {
         show: true,
         type: "error",
         title: "Ops",
-        message: "Erro ao fazer login",
+        message: "Erro ao fazer login.",
         strongMessage: "Tente novamente.",
       });
       closeAlert({ shouldRedirect: false, alertTime: 2000 });
@@ -123,15 +128,39 @@ export const LoginForm = () => {
     if (!documentType.value) {
       setDocumentType((prev) => ({
         ...prev,
-        error: "campo obrigatório",
+        error: "Campo obrigatório",
       }));
       isValid = false;
     }
 
-    if (!document.value) {
+    if (!removeSpecialCharacters(document.value)) {
       setDocument((prev) => ({
         ...prev,
-        error: "campo obrigatório",
+        error: "Campo obrigatório",
+      }));
+      isValid = false;
+    }
+
+    if (
+      documentType.value === "CPF" &&
+      removeSpecialCharacters(document.value) &&
+      removeSpecialCharacters(document.value).length != 11
+    ) {
+      setDocument((prev) => ({
+        ...prev,
+        error: "Campo incompleto",
+      }));
+      isValid = false;
+    }
+
+    if (
+      documentType.value === "PASSPORT" &&
+      removeSpecialCharacters(document.value) &&
+      removeSpecialCharacters(document.value).length != 8
+    ) {
+      setDocument((prev) => ({
+        ...prev,
+        error: "Campo incompleto",
       }));
       isValid = false;
     }
@@ -139,7 +168,7 @@ export const LoginForm = () => {
     if (!password.value) {
       setPassword((prev) => ({
         ...prev,
-        error: "campo obrigatório",
+        error: "Campo obrigatório",
       }));
       isValid = false;
     }
@@ -169,7 +198,7 @@ export const LoginForm = () => {
           <FormControl className={styles.form_control}>
             <Grid
               container
-              rowSpacing={{ xs: 0, sm: 2, md: 3 }}
+              rowSpacing={{ xs: 4, sm: 2, md: 3 }}
               columns={{ xs: 1, sm: 8, md: 8 }}
               columnSpacing={{ xs: 1, sm: 1, md: 2 }}
             >
@@ -226,14 +255,14 @@ export const LoginForm = () => {
                     onChange={(e) =>
                       setDocument((prev) => ({
                         ...prev,
-                        value: e.target.value,
+                        value: e.target.value.toUpperCase(),
                       }))
                     }
                   >
                     <TextField
                       id="outlined-basic"
                       variant="outlined"
-                      label="Digite o documento"
+                      label={getDocumentLabel(documentType.value)}
                       error={!!document.error}
                       helperText={document.error}
                     />
@@ -261,7 +290,7 @@ export const LoginForm = () => {
                         <IconButton
                           aria-label="toggle password visibility"
                           onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
+                          onMouseDown={handleMouseDown}
                           edge="end"
                         >
                           {showPassword ? <VisibilityOff /> : <Visibility />}
@@ -294,16 +323,12 @@ export const LoginForm = () => {
       </div>
 
       <Box className={styles.alert_container}>
-        <Collapse
-          orientation="horizontal"
-          in={feedback.show}
-          className={styles.alert}
-        >
+        <Fade in={feedback.show}>
           <Alert severity={feedback.type}>
             <AlertTitle>{feedback.title}</AlertTitle>
             {feedback.message} <strong>{feedback.strongMessage}</strong>
           </Alert>
-        </Collapse>
+        </Fade>
       </Box>
       <Backdrop
         sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}

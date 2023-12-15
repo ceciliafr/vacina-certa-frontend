@@ -6,10 +6,11 @@ import Button from "@mui/material/Button";
 import styles from "./styles.module.css";
 import { Menu } from "@/components/mobile/Menu";
 import { UserContext } from "@/contexts/userContext";
+import Link from "next/link";
 
 export const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user } = useContext(UserContext);
+  const { userProfile } = useContext(UserContext);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -27,19 +28,21 @@ export const Navbar: React.FC = () => {
         <div className={styles.user_info_container}>
           <span className={styles.welcome_message}>Olá,</span>
           <span className={styles.user_name}>
-            {user.userId ? "John!" : "Que bom que você veio!"}
+            {userProfile?.nickname ?? "Que bom que você veio!"}
           </span>
         </div>
 
         <div className={styles.logo_container}>
-          <Image
-            src="/logo.svg"
-            fill
-            style={{
-              objectFit: "contain",
-            }}
-            alt="vacina_certa_logo"
-          />
+          <Link href="/">
+            <Image
+              src="/logo.svg"
+              fill
+              style={{
+                objectFit: "contain",
+              }}
+              alt="vacina_certa_logo"
+            />
+          </Link>
         </div>
       </nav>
     </div>

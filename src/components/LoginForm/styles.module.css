@@ -15,6 +15,8 @@
 
 .form_control p {
   font-size: medium;
+  margin: 0 !important;
+  padding: 0;
 }
 
 .buttons_container {
@@ -45,14 +47,8 @@
   position: fixed;
   z-index: 1;
   top: calc(100% - 100px);
-  left: calc(100% - 26rem);
+  left: calc(100% - 25rem);
   width: 100%;
-}
-
-.alert > div,
-.alert > div > div {
-  height: 100%;
-  width: 25rem;
 }
 
 @media (max-width: 700px) {
@@ -69,10 +65,5 @@
   .alert_container {
     top: calc(100% - 75.61px);
     left: 0;
-  }
-
-  .alert > div,
-  .alert > div > div {
-    width: 100%;
   }
 }

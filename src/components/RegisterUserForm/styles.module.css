@@ -57,7 +57,7 @@
   position: fixed;
   z-index: 1;
   top: calc(100% - 100px);
-  left: calc(100% - 26rem);
+  left: calc(100% - 25rem);
   width: 100%;
 }
 
@@ -91,5 +91,11 @@
   .alert > div,
   .alert > div > div {
     width: 100%;
+  }
+
+  .alert > div > div > div {
+    height: 100px;
+    display: flex;
+    align-items: center;
   }
 }

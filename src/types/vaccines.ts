@@ -40,7 +40,9 @@
 // };
 
 export type Vaccine = {
+  appliedAt?: string;
   id: string;
+  dosage: string;
   popularName: string;
   fullName: string;
   manufacturer: string;
@@ -52,6 +54,7 @@ export type Vaccine = {
 
 export type VaccineResponse = {
   id: string;
+  appliedAt?: string;
   vaccineViewModel: Vaccine;
 };
 

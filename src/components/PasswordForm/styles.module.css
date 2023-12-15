@@ -1,0 +1,43 @@
+.form_control p {
+  font-size: medium;
+  padding: 0;
+  margin: 0 !important;
+}
+
+.buttons_container {
+  width: 100%;
+  gap: 2rem;
+  display: flex;
+  margin-top: 6rem;
+  justify-content: flex-end;
+}
+
+.buttons_container div > button {
+  height: 3rem;
+  font-size: 16px;
+  border-radius: 40px;
+  text-transform: initial;
+}
+
+.buttons_container div:first-child > button {
+  background-color: var(--blue-70);
+}
+
+.alert_container {
+  position: fixed;
+  z-index: 1;
+  top: calc(100% - 100px);
+  left: calc(100% - 25rem);
+  width: 100%;
+}
+
+@media (max-width: 700px) {
+  .buttons_container {
+    margin-top: 2rem;
+  }
+
+  .alert_container {
+    top: calc(100% - 95px);
+    left: 0;
+  }
+}

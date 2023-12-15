@@ -1,15 +1,25 @@
-
 .container {
-   display: flex;
-   padding: 0 10px;
-   justify-content: center;
-   align-items: center;
-   background-color: var(--blue-70);
-   border-radius: 0.5rem;
-   height: 2rem;
+  display: flex;
+  padding: 0 10px;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--blue-70);
+  border-radius: 0.5rem;
+  height: 2rem;
+  text-transform: uppercase;
+  min-width: 120px;
+  flex-wrap: nowrap;
 }
 
 .tag {
-   color: var(--pure-00);
-   font-weight: 600;
+  color: var(--pure-00);
+  font-weight: 600;
+  text-align: center;
+}
+
+@media (max-width: 700px) {
+  .container {
+    padding: 1.5rem 1rem;
+    min-width: 80px;
+  }
 }

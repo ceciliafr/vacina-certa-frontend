@@ -21,9 +21,7 @@ const AxiosInterceptor = ({ children }: { children: any }) => {
 
       if (
         status === HTTP_STATUS.INTERNAL_ERROR ||
-        status === HTTP_STATUS.UNAUTHORIZED ||
-        status === HTTP_STATUS.BAD_REQUEST ||
-        status === HTTP_STATUS.NOT_FOUND
+        status === HTTP_STATUS.UNAUTHORIZED
       ) {
         window.location.pathname = "/login";
         return;
