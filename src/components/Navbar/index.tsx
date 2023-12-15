@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import styles from "./styles.module.css";
 import { Menu } from "@/components/mobile/Menu";
 import { UserContext } from "@/contexts/userContext";
+import Link from "next/link";
 
 export const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -32,14 +33,16 @@ export const Navbar: React.FC = () => {
         </div>
 
         <div className={styles.logo_container}>
-          <Image
-            src="/logo.svg"
-            fill
-            style={{
-              objectFit: "contain",
-            }}
-            alt="vacina_certa_logo"
-          />
+          <Link href="/">
+            <Image
+              src="/logo.svg"
+              fill
+              style={{
+                objectFit: "contain",
+              }}
+              alt="vacina_certa_logo"
+            />
+          </Link>
         </div>
       </nav>
     </div>

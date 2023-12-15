@@ -16,7 +16,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getVaccines, registerVaccine } from "@/api/vaccines";
+import { getTakenVaccines, getVaccines, registerVaccine } from "@/api/vaccines";
 import Grid from "@mui/material/Grid";
 import { UserContext } from "@/contexts/userContext";
 import {
@@ -35,6 +35,7 @@ import AlertTitle from "@mui/material/AlertTitle";
 import { useRouter } from "next/navigation";
 import moment from "moment";
 import { Fade } from "@mui/material";
+import { Vaccine, VaccineResponse } from "@/types/vaccines";
 
 export default function RegisterVaccination() {
   const router = useRouter();
@@ -45,6 +46,7 @@ export default function RegisterVaccination() {
     if (!token) router.replace("/login");
   }, [token, router]);
 
+  const [refetchApi, setRefetchApi] = useState(false);
   const [feedback, setFeedback] = useState(DEFAULT_FEEDBACK);
   const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState(DEAFULT_FIELD_VALUE);
@@ -53,18 +55,49 @@ export default function RegisterVaccination() {
     error: string;
   }>(DEFAULT_DATE_VALUE);
 
-  const url = `${HOST}/vaccine`;
+  const [allVaccines, setAllVaccines] = useState<Vaccine[]>([]);
+  const [takenVaccines, setTakenVaccines] = useState<VaccineResponse[]>([]);
 
-  const { data: allVaccines, isLoading: isLoadingAllVaccines } = useQuery({
+  const { data: allVaccinesData, isLoading: isLoadingAllVaccines } = useQuery({
     queryFn: async () => {
-      return getVaccines(url, token);
+      return getVaccines(`${HOST}/vaccine`, token);
     },
-    queryKey: ["allVaccines"],
+    queryKey: ["allVaccines", refetchApi],
   });
 
+  useEffect(() => {
+    allVaccinesData && setAllVaccines(allVaccinesData);
+  }, [allVaccinesData]);
+
+  const { data: takenVaccinesData, isLoading: isTakenVaccinesLoading } =
+    useQuery({
+      queryFn: async () =>
+        getTakenVaccines(`${HOST}/user/${user?.userId}/vaccines`, token),
+      queryKey: ["takenVaccines", refetchApi],
+    });
+
+  useEffect(() => {
+    takenVaccinesData && setTakenVaccines(takenVaccinesData);
+  }, [takenVaccinesData]);
+
+  const pendingVaccines = useMemo(() => {
+    if (takenVaccines && allVaccines) {
+      const setTakenVaccinesData = new Set(
+        takenVaccines.map((item) => item.vaccineViewModel["id"])
+      );
+
+      return allVaccines.filter(
+        (item) => !setTakenVaccinesData.has(item["id"])
+      );
+    }
+    return [];
+  }, [takenVaccines, allVaccines]);
+
   const selectedVaccine = useMemo(() => {
-    return allVaccines?.find((vaccine) => vaccine.popularName === name.value);
-  }, [allVaccines, name.value]);
+    return pendingVaccines?.find(
+      (vaccine) => vaccine.popularName === name.value
+    );
+  }, [pendingVaccines, name.value]);
 
   const vaccine = {
     vaccineDTO: {
@@ -85,7 +118,7 @@ export default function RegisterVaccination() {
       setIsLoading(true);
     },
     onSuccess: () => {
-      setIsLoading(false);
+      setRefetchApi((value) => !value);
       setFeedback({
         show: true,
         type: "success",
@@ -103,7 +136,6 @@ export default function RegisterVaccination() {
       resetAllStates();
     },
     onError: () => {
-      setIsLoading(false);
       setFeedback({
         show: true,
         type: "warning",
@@ -121,6 +153,7 @@ export default function RegisterVaccination() {
         ...prev,
         show: false,
       }));
+      setIsLoading(false);
     }, alertTime);
   };
 
@@ -200,6 +233,9 @@ export default function RegisterVaccination() {
     }
   };
 
+  const showLoading =
+    isLoading || isLoadingAllVaccines || isTakenVaccinesLoading;
+
   return (
     token && (
       <Layout>
@@ -230,6 +266,7 @@ export default function RegisterVaccination() {
                             value: e.target.value,
                           }));
                         }}
+                        disabled={pendingVaccines.length === 0}
                         fullWidth
                         variant="outlined"
                         defaultValue="Selecione"
@@ -237,24 +274,29 @@ export default function RegisterVaccination() {
                         renderValue={(selected) => {
                           if (selected.length === 0) {
                             return (
-                              <em style={{ color: "#656565" }}>Selecione</em>
+                              <em style={{ color: "#656565" }}>
+                                {!showLoading && pendingVaccines.length === 0
+                                  ? "Todas as vacinas foram cadastradas"
+                                  : "Selecione"}
+                              </em>
                             );
                           }
 
                           return selected;
                         }}
                       >
-                        <MenuItem disabled value="Selecione">
+                        <MenuItem disabled value="AAA">
                           <em>Selecione</em>
                         </MenuItem>
-                        {allVaccines?.map((vaccine) => (
-                          <MenuItem
-                            key={vaccine.id}
-                            value={vaccine.popularName}
-                          >
-                            {vaccine.popularName}
-                          </MenuItem>
-                        ))}
+                        {!isLoading &&
+                          pendingVaccines?.map((vaccine) => (
+                            <MenuItem
+                              key={vaccine.id}
+                              value={vaccine.popularName}
+                            >
+                              {vaccine.popularName}
+                            </MenuItem>
+                          ))}
                       </Select>
                       <FormHelperText className={styles.error_text}>
                         {name.error}
@@ -264,10 +306,16 @@ export default function RegisterVaccination() {
                   <Box className={styles.field_container}>
                     <DemoItem label="Data da vacinação">
                       <DatePicker
+                        disabled={pendingVaccines.length === 0}
                         defaultValue={null}
                         value={vaccineAppliedAt.value}
                         disableFuture
-                        format="DD/MM/YYYY"
+                        label={
+                          !showLoading && pendingVaccines.length === 0
+                            ? "Todas as vacinas foram cadastradas"
+                            : "DD/MM/YYYY"
+                        }
+                        format={"DD/MM/YYYY"}
                         onChange={(e) =>
                           setVaccineAppliedAt((prev) => ({
                             ...prev,
@@ -326,7 +374,7 @@ export default function RegisterVaccination() {
 
         <Backdrop
           sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={isLoading || isLoadingAllVaccines}
+          open={showLoading}
         >
           <CircularProgress color="inherit" />
         </Backdrop>
